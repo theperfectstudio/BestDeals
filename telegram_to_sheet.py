@@ -1,4 +1,5 @@
 import time
+import asyncio  # બોટને ૨૪ કલાક લાઈવ રાખવા માટે અગત્યનું મોડ્યુલ
 import re
 import os
 import json
@@ -74,7 +75,15 @@ async def handler(event):
             except Exception as e:
                 print(f"❌ Sheet Update Error: {e}")
 
-# --- ૫. રન ---
-print(f"🚀 GitHub Action Bot Started...")
+# --- ૫. રન (Always Live Infinite Loop Mode) ---
+async def main():
+    print(f"🚀 GitHub Action Bot Started & Listening to {CHANNEL_USERNAME}...")
+    # ટેલિગ્રામ ક્લાયન્ટ શરૂ કરો
+    await client.start()
+    
+    # આ અનંત લૂપ બોટને બેકગ્રાઉન્ડમાં ક્યારેય બંધ થવા નહીં દે
+    while True:
+        await asyncio.sleep(10) 
+
 with client:
-    client.run_until_disconnected()
+    client.loop.run_until_complete(main())

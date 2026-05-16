@@ -1,344 +1,335 @@
+<!-- =====================================================
+FILE: index.html
+===================================================== -->
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>
-        🔥 Best Deals
-    </title>
+<title>
+    🔥 Best Deals
+</title>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Fonts -->
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+<style>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+*{
+    font-family:Poppins,sans-serif;
+}
 
-    <style>
+body{
+    background:#f5f5f5;
+}
 
-        *{
-            font-family: 'Poppins', sans-serif;
-        }
+.category-btn{
 
-        body{
-            background:#f5f5f5;
-        }
+    background:white;
+    padding:10px 18px;
+    border-radius:999px;
+    font-weight:600;
+    border:1px solid #ddd;
+    white-space:nowrap;
+}
 
-        .deal-card{
-            transition:0.3s;
-        }
+.active-cat{
 
-        .deal-card:hover{
-            transform:translateY(-5px);
-        }
+    background:#f97316;
+    color:white;
+}
 
-        .caption-text{
-            display:-webkit-box;
-            -webkit-line-clamp:4;
-            -webkit-box-orient:vertical;
-            overflow:hidden;
-        }
+.deal-card{
+    transition:0.3s;
+}
 
-    </style>
+.deal-card:hover{
+    transform:translateY(-5px);
+}
+
+</style>
 
 </head>
 
 <body>
 
-    <!-- ================================================= -->
-    <!-- HEADER -->
-    <!-- ================================================= -->
+<!-- HEADER -->
 
-    <header
-        class="sticky top-0 z-50 bg-white shadow-sm border-b"
-    >
+<header class="bg-white shadow sticky top-0 z-50">
 
-        <div
-            class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between"
-        >
+    <div class="max-w-7xl mx-auto px-4 py-4">
+
+        <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
 
             <div>
 
-                <h1
-                    class="text-3xl font-extrabold text-orange-500"
-                >
+                <h1 class="text-3xl font-black text-orange-500">
                     🔥 Best Deals
                 </h1>
 
-                <p
-                    class="text-sm text-gray-500"
-                >
+                <p class="text-gray-500">
                     Auto Updated From Telegram
                 </p>
 
             </div>
 
-            <div
-                class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold"
+            <!-- SEARCH -->
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search deals..."
+                class="border rounded-2xl px-5 py-3 w-full md:w-80 outline-none"
             >
-                🟢 LIVE
-            </div>
 
         </div>
 
-    </header>
+        <!-- CATEGORY -->
 
-    <!-- ================================================= -->
-    <!-- MAIN -->
-    <!-- ================================================= -->
+        <div class="flex gap-3 mt-5 overflow-auto pb-2">
 
-    <main
-        class="max-w-7xl mx-auto px-4 py-8"
+            <button class="category-btn active-cat" data-category="All">
+                All
+            </button>
+
+            <button class="category-btn" data-category="Mobiles">
+                Mobiles
+            </button>
+
+            <button class="category-btn" data-category="Laptops">
+                Laptops
+            </button>
+
+            <button class="category-btn" data-category="Fashion">
+                Fashion
+            </button>
+
+            <button class="category-btn" data-category="Electronics">
+                Electronics
+            </button>
+
+            <button class="category-btn" data-category="Other">
+                Other
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- DEALS -->
+
+<main class="max-w-7xl mx-auto px-4 py-8">
+
+    <div
+        id="deals-container"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
     >
 
-        <!-- GRID -->
+    </div>
 
-        <div
-            id="deals-container"
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+</main>
 
-            <!-- Loading -->
+<script>
 
-            <div
-                class="col-span-full text-center py-20"
+let allDeals = [];
+
+let currentCategory = "All";
+
+async function loadDeals(){
+
+    const response = await fetch(
+        "deals.json?t=" + Date.now()
+    );
+
+    allDeals = await response.json();
+
+    renderDeals();
+}
+
+function renderDeals(){
+
+    const container =
+        document.getElementById(
+            "deals-container"
+        );
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value.toLowerCase();
+
+    container.innerHTML = "";
+
+    let filtered = allDeals.filter(deal => {
+
+        const matchesSearch =
+
+            deal.title.toLowerCase()
+            .includes(search)
+
+            ||
+
+            deal.caption.toLowerCase()
+            .includes(search);
+
+        const matchesCategory =
+
+            currentCategory === "All"
+
+            ||
+
+            deal.category === currentCategory;
+
+        return (
+            matchesSearch &&
+            matchesCategory
+        );
+    });
+
+    if(filtered.length === 0){
+
+        container.innerHTML = `
+
+            <div class="col-span-full text-center py-20">
+
+                <h2 class="text-3xl font-bold text-gray-400">
+                    No Deals Found
+                </h2>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+    filtered.forEach(deal => {
+
+        const card = `
+
+        <div class="deal-card bg-white rounded-3xl overflow-hidden shadow-md">
+
+            <img
+                src="${deal.image}"
+                class="w-full h-72 object-cover"
             >
 
-                <div
-                    class="text-3xl font-bold text-gray-400"
-                >
-                    Loading Deals...
+            <div class="p-5">
+
+                <div class="flex items-center justify-between mb-3">
+
+                    <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+
+                        ${deal.category}
+
+                    </span>
+
+                    <span class="bg-gray-800 text-white px-3 py-1 rounded-full text-xs font-bold">
+
+                        ${deal.store}
+
+                    </span>
+
                 </div>
+
+                <h2 class="text-xl font-black text-gray-800 leading-tight">
+
+                    ${deal.title}
+
+                </h2>
+
+                <div class="flex items-center gap-3 mt-4">
+
+                    <span class="text-3xl font-black">
+
+                        ₹${deal.new_price}
+
+                    </span>
+
+                    <span class="line-through text-gray-400">
+
+                        ₹${deal.old_price}
+
+                    </span>
+
+                </div>
+
+                <div class="mt-2 text-red-500 font-bold">
+
+                    ${deal.discount}
+
+                </div>
+
+                <a
+                    href="${deal.main_link}"
+                    target="_blank"
+                    class="block mt-5 bg-orange-500 hover:bg-orange-600 text-white text-center py-4 rounded-2xl font-bold"
+                >
+
+                    🔥 Grab Deal
+
+                </a>
 
             </div>
 
         </div>
 
-    </main>
-
-    <!-- ================================================= -->
-    <!-- SCRIPT -->
-    <!-- ================================================= -->
-
-    <script>
-
-        async function loadDeals(){
-
-            try{
-
-                const response = await fetch(
-                    "deals.json?t=" + Date.now()
-                );
-
-                const deals = await response.json();
-
-                renderDeals(deals);
-
-            }catch(error){
-
-                console.error(error);
-
-                document.getElementById(
-                    "deals-container"
-                ).innerHTML = `
-
-                    <div
-                        class="col-span-full text-center py-20"
-                    >
-
-                        <div
-                            class="text-4xl font-bold text-red-500"
-                        >
-                            ❌ Failed To Load Deals
-                        </div>
-
-                    </div>
-
-                `;
-            }
-        }
-
-        // =================================================
-
-        function renderDeals(deals){
-
-            const container = document.getElementById(
-                "deals-container"
-            );
-
-            container.innerHTML = "";
-
-            if(deals.length === 0){
-
-                container.innerHTML = `
-
-                    <div
-                        class="col-span-full text-center py-20"
-                    >
-
-                        <div
-                            class="text-3xl font-bold text-gray-400"
-                        >
-                            No Deals Available
-                        </div>
-
-                    </div>
-
-                `;
-
-                return;
-            }
-
-            deals.forEach(deal => {
-
-                let storeColor = "bg-gray-700";
-
-                if(deal.store === "Amazon")
-                    storeColor = "bg-yellow-500";
-
-                else if(deal.store === "Flipkart")
-                    storeColor = "bg-blue-600";
-
-                else if(deal.store === "Myntra")
-                    storeColor = "bg-pink-600";
-
-                else if(deal.store === "Ajio")
-                    storeColor = "bg-black";
-
-                else if(deal.store === "Nykaa")
-                    storeColor = "bg-rose-600";
-
-                const card = `
-
-                    <div
-                        class="deal-card bg-white rounded-3xl overflow-hidden shadow-md"
-                    >
-
-                        <!-- IMAGE -->
-
-                        <div
-                            class="relative"
-                        >
-
-                            <img
-                                src="${deal.image || 'https://via.placeholder.com/600x600?text=No+Image'}"
-                                class="w-full h-72 object-cover"
-                            >
-
-                            <!-- Discount -->
-
-                            <div
-                                class="absolute top-3 left-3 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-xl"
-                            >
-                                ${deal.discount}
-                            </div>
-
-                            <!-- Store -->
-
-                            <div
-                                class="absolute top-3 right-3 ${storeColor} text-white text-sm font-bold px-3 py-1 rounded-xl"
-                            >
-                                ${deal.store}
-                            </div>
-
-                        </div>
-
-                        <!-- CONTENT -->
-
-                        <div
-                            class="p-5"
-                        >
-
-                            <!-- Title -->
-
-                            <h2
-                                class="text-xl font-extrabold text-gray-800 leading-tight"
-                            >
-                                ${deal.title}
-                            </h2>
-
-                            <!-- Price -->
-
-                            <div
-                                class="flex items-center gap-3 mt-4"
-                            >
-
-                                <div
-                                    class="text-3xl font-black text-gray-900"
-                                >
-                                    ₹${deal.new_price}
-                                </div>
-
-                                <div
-                                    class="text-lg line-through text-gray-400"
-                                >
-                                    ₹${deal.old_price}
-                                </div>
-
-                            </div>
-
-                            <!-- Caption -->
-
-                            <div
-                                class="caption-text mt-4 text-gray-600 text-sm leading-7 whitespace-pre-line"
-                            >
-                                ${deal.caption}
-                            </div>
-
-                            <!-- Button -->
-
-                            <a
-                                href="${deal.main_link}"
-                                target="_blank"
-                                class="block mt-6 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-center py-4 rounded-2xl font-bold text-lg transition"
-                            >
-                                🔥 Grab Deal
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-                container.innerHTML += card;
-
-            });
-
-        }
-
-        // =================================================
-
-        loadDeals();
-
-        // Auto refresh every 30 sec
-
-        setInterval(
-            loadDeals,
-            30000
+        `;
+
+        container.innerHTML += card;
+    });
+}
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "input",
+    renderDeals
+);
+
+document.querySelectorAll(
+    ".category-btn"
+).forEach(btn => {
+
+    btn.addEventListener("click", () => {
+
+        document.querySelectorAll(
+            ".category-btn"
+        ).forEach(b =>
+            b.classList.remove("active-cat")
         );
 
-    </script>
+        btn.classList.add("active-cat");
+
+        currentCategory =
+            btn.dataset.category;
+
+        renderDeals();
+    });
+});
+
+loadDeals();
+
+setInterval(
+    loadDeals,
+    30000
+);
+
+</script>
 
 </body>
 

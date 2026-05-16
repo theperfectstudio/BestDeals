@@ -1,23 +1,15 @@
-<!-- =====================================================
-FILE: index.html
-Modern Dynamic Telegram Deal UI
-===================================================== -->
+# Replace `index.html` With This Full Modern UI
 
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-/>
-
-<title>
-    🔥 Best Deals
-</title>
+<title>🔥 Best Deals</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -33,10 +25,9 @@ rel="stylesheet"
 }
 
 body{
-    background:#0f172a;
+    background:#020617;
+    color:white;
 }
-
-/* SCROLLBAR */
 
 ::-webkit-scrollbar{
     width:8px;
@@ -44,83 +35,130 @@ body{
 
 ::-webkit-scrollbar-thumb{
     background:#334155;
-    border-radius:20px;
+    border-radius:999px;
 }
 
-/* CATEGORY BUTTON */
+.hero-bg{
+
+    background:
+    radial-gradient(circle at top left,#f97316 0%,transparent 25%),
+    radial-gradient(circle at bottom right,#ef4444 0%,transparent 25%),
+    #020617;
+}
+
+.glass{
+
+    background:rgba(255,255,255,0.05);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,0.08);
+}
 
 .category-btn{
-
-    background:#1e293b;
-    color:white;
 
     padding:12px 22px;
 
     border-radius:999px;
 
-    font-weight:600;
+    background:#111827;
+
+    border:1px solid #1e293b;
 
     transition:0.3s;
 
     white-space:nowrap;
+
+    font-weight:600;
 }
 
 .category-btn:hover{
 
-    background:#334155;
+    transform:translateY(-2px);
+
+    background:#1e293b;
 }
 
 .active-cat{
 
-    background:linear-gradient(
-        90deg,
-        #f97316,
-        #ef4444
-    );
+    background:linear-gradient(90deg,#f97316,#ef4444);
+
+    border:none;
 }
 
-/* DEAL CARD */
-
 .deal-card{
-
-    background:#111827;
-
-    border:1px solid #1f2937;
-
-    transition:0.3s;
 
     overflow:hidden;
 
     position:relative;
+
+    border-radius:30px;
+
+    background:#0f172a;
+
+    border:1px solid #1e293b;
+
+    transition:0.35s;
+
+    cursor:pointer;
 }
 
 .deal-card:hover{
 
-    transform:translateY(-6px);
+    transform:translateY(-8px) scale(1.01);
 
     border-color:#f97316;
+
+    box-shadow:0 20px 60px rgba(249,115,22,0.2);
 }
 
-/* GLASS EFFECT */
+.banner-overlay{
 
-.glass{
+    position:absolute;
 
-    backdrop-filter:blur(10px);
+    inset:0;
 
-    background:rgba(255,255,255,0.08);
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,0.95),
+        rgba(0,0,0,0.15)
+    );
 }
 
-/* CAPTION */
+.modal{
 
-.caption{
+    position:fixed;
 
-    color:#cbd5e1;
+    inset:0;
 
-    line-height:1.8;
+    background:rgba(0,0,0,0.85);
 
-    font-size:14px;
+    display:none;
 
-    white-space:pre-line;
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:999;
+
+    padding:20px;
+}
+
+.modal-content{
+
+    width:100%;
+
+    max-width:1100px;
+
+    max-height:95vh;
+
+    overflow:auto;
+
+    border-radius:30px;
+
+    background:#0f172a;
+
+    border:1px solid #1e293b;
 }
 
 </style>
@@ -129,90 +167,55 @@ body{
 
 <body>
 
-<!-- ================================================= -->
 <!-- HERO -->
-<!-- ================================================= -->
 
-<section
-class="relative overflow-hidden border-b border-slate-800"
->
+<section class="hero-bg border-b border-slate-800 overflow-hidden">
 
-    <div
-    class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20"
-    ></div>
+    <div class="max-w-7xl mx-auto px-4 py-16 relative z-10">
 
-    <div
-    class="max-w-7xl mx-auto px-4 py-14 relative z-10"
-    >
-
-        <div
-        class="flex flex-col lg:flex-row gap-10 items-center justify-between"
-        >
+        <div class="flex flex-col lg:flex-row gap-10 items-center justify-between">
 
             <div>
 
-                <div
-                class="inline-flex items-center gap-3 bg-orange-500/20 text-orange-300 px-5 py-2 rounded-full font-semibold"
-                >
-
-                    🔥 LIVE DEAL FEED
-
+                <div class="inline-flex items-center gap-3 bg-orange-500/20 text-orange-300 px-5 py-3 rounded-full font-bold">
+                    ⚡ LIVE TELEGRAM DEALS
                 </div>
 
-                <h1
-                class="text-5xl lg:text-7xl font-black text-white mt-6 leading-tight"
-                >
+                <h1 class="text-5xl lg:text-7xl font-black mt-8 leading-tight">
 
-                    Best Deals
+                    Dynamic
                     <span class="text-orange-500">
-                        Auto Updated
+                        Deal Store
                     </span>
 
                 </h1>
 
-                <p
-                class="text-slate-300 text-lg mt-6 max-w-2xl"
-                >
-
-                    Real-time Telegram deals with direct affiliate links,
-                    product banners, discounts, and instant updates.
-
+                <p class="text-slate-300 text-lg mt-6 max-w-2xl leading-8">
+                    Automatically synced Telegram deals with modern banners,
+                    affiliate links, descriptions, categories, and real-time updates.
                 </p>
 
             </div>
 
-            <!-- LIVE STATUS -->
+            <div class="glass rounded-3xl p-8 w-full max-w-sm">
 
-            <div
-            class="glass rounded-3xl p-8 border border-slate-700"
-            >
-
-                <div
-                class="text-slate-400 text-sm"
-                >
-                    STATUS
+                <div class="text-slate-400 text-sm uppercase tracking-widest">
+                    SYSTEM STATUS
                 </div>
 
-                <div
-                class="flex items-center gap-3 mt-3"
-                >
+                <div class="flex items-center gap-4 mt-5">
 
-                    <div
-                    class="w-4 h-4 rounded-full bg-green-500 animate-pulse"
-                    ></div>
+                    <div class="w-4 h-4 bg-green-500 rounded-full animate-pulse"></div>
 
-                    <div
-                    class="text-2xl font-black text-white"
-                    >
+                    <div class="text-3xl font-black">
                         LIVE
                     </div>
 
                 </div>
 
-                <div
-                class="text-slate-400 mt-4"
-                >
-                    Telegram Auto Sync Enabled
+                <div class="mt-5 text-slate-400 leading-7">
+                    Telegram auto fetch active.
+                    GitHub auto deployment enabled.
                 </div>
 
             </div>
@@ -223,38 +226,20 @@ class="relative overflow-hidden border-b border-slate-800"
 
 </section>
 
-<!-- ================================================= -->
-<!-- SEARCH + FILTER -->
-<!-- ================================================= -->
+<!-- SEARCH -->
 
-<section
-class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur border-b border-slate-800"
->
+<section class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur border-b border-slate-800">
 
-    <div
-    class="max-w-7xl mx-auto px-4 py-5"
-    >
+    <div class="max-w-7xl mx-auto px-4 py-5">
 
-        <!-- SEARCH -->
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Search deals, categories, brands..."
+            class="w-full bg-slate-900 border border-slate-700 rounded-2xl px-6 py-4 outline-none text-white"
+        />
 
-        <div
-        class="flex flex-col lg:flex-row gap-4"
-        >
-
-            <input
-                id="searchInput"
-                type="text"
-                placeholder="Search products, stores, deals..."
-                class="w-full bg-slate-900 border border-slate-700 text-white rounded-2xl px-6 py-4 outline-none"
-            />
-
-        </div>
-
-        <!-- CATEGORIES -->
-
-        <div
-        class="flex gap-3 mt-5 overflow-auto pb-2"
-        >
+        <div class="flex gap-3 mt-5 overflow-auto pb-2">
 
             <button class="category-btn active-cat" data-category="All">
                 All
@@ -286,13 +271,9 @@ class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur border-b border-slate-800
 
 </section>
 
-<!-- ================================================= -->
-<!-- DEAL GRID -->
-<!-- ================================================= -->
+<!-- DEALS -->
 
-<main
-class="max-w-7xl mx-auto px-4 py-10"
->
+<main class="max-w-7xl mx-auto px-4 py-10">
 
     <div
     id="deals-container"
@@ -303,9 +284,17 @@ class="max-w-7xl mx-auto px-4 py-10"
 
 </main>
 
-<!-- ================================================= -->
-<!-- SCRIPT -->
-<!-- ================================================= -->
+<!-- MODAL -->
+
+<div id="dealModal" class="modal">
+
+    <div class="modal-content">
+
+        <div id="modalBody"></div>
+
+    </div>
+
+</div>
 
 <script>
 
@@ -345,7 +334,7 @@ function renderDeals(){
 
     container.innerHTML = "";
 
-    let filtered = allDeals.filter(deal => {
+    const filtered = allDeals.filter(deal => {
 
         const matchesSearch =
 
@@ -371,151 +360,57 @@ function renderDeals(){
         );
     });
 
-    if(filtered.length === 0){
-
-        container.innerHTML = `
-
-            <div class="col-span-full text-center py-24">
-
-                <h2 class="text-5xl font-black text-slate-500">
-
-                    No Deals Found
-
-                </h2>
-
-            </div>
-
-        `;
-
-        return;
-    }
-
-    filtered.forEach(deal => {
-
-        const buttons =
-
-            deal.all_links.map((link,index)=>`
-
-                <a
-                    href="${link}"
-                    target="_blank"
-                    class="block bg-gradient-to-r from-orange-500 to-red-500 hover:scale-[1.02] transition text-white text-center py-4 rounded-2xl font-bold"
-                >
-
-                    🔥 Open Deal ${index+1}
-
-                </a>
-
-            `).join("");
+    filtered.forEach((deal,index) => {
 
         const card = `
 
         <div
-        class="deal-card rounded-3xl"
+        class="deal-card"
+        onclick="openDeal(${index})"
         >
-
-            <!-- IMAGE -->
 
             <div class="relative">
 
                 <img
                     src="${deal.image}"
-                    class="w-full h-[350px] object-cover"
+                    class="w-full h-[360px] object-cover"
                 />
 
-                <!-- OVERLAY -->
+                <div class="banner-overlay"></div>
 
-                <div
-                class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"
-                ></div>
+                <div class="absolute top-4 left-4 flex gap-2">
 
-                <!-- BADGES -->
-
-                <div
-                class="absolute top-4 left-4 flex gap-2"
-                >
-
-                    <div
-                    class="bg-red-500 text-white px-4 py-2 rounded-full font-bold text-sm"
-                    >
+                    <div class="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold">
                         ${deal.discount}
                     </div>
 
-                    <div
-                    class="bg-orange-500 text-white px-4 py-2 rounded-full font-bold text-sm"
-                    >
+                    <div class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold">
                         ${deal.category}
                     </div>
 
                 </div>
 
-                <!-- STORE -->
-
-                <div
-                class="absolute top-4 right-4 bg-black/70 text-white px-4 py-2 rounded-full font-bold text-sm"
-                >
+                <div class="absolute top-4 right-4 bg-black/70 px-4 py-2 rounded-full text-sm font-bold">
                     ${deal.store}
                 </div>
 
-                <!-- TITLE -->
+                <div class="absolute bottom-0 p-6 w-full">
 
-                <div
-                class="absolute bottom-0 p-6"
-                >
-
-                    <h2
-                    class="text-2xl font-black text-white leading-tight"
-                    >
-
+                    <h2 class="text-2xl font-black leading-tight">
                         ${deal.title}
-
                     </h2>
 
-                </div>
+                    <div class="flex items-center gap-4 mt-4">
 
-            </div>
+                        <div class="text-4xl font-black text-orange-400">
+                            ₹${deal.new_price}
+                        </div>
 
-            <!-- CONTENT -->
+                        <div class="text-lg line-through text-slate-400">
+                            ₹${deal.old_price}
+                        </div>
 
-            <div class="p-6">
-
-                <!-- PRICE -->
-
-                <div
-                class="flex items-center gap-4"
-                >
-
-                    <div
-                    class="text-4xl font-black text-white"
-                    >
-                        ₹${deal.new_price}
                     </div>
-
-                    <div
-                    class="text-xl line-through text-slate-500"
-                    >
-                        ₹${deal.old_price}
-                    </div>
-
-                </div>
-
-                <!-- CAPTION -->
-
-                <div
-                class="caption mt-6"
-                >
-
-                    ${deal.caption}
-
-                </div>
-
-                <!-- LINKS -->
-
-                <div
-                class="mt-6 space-y-3"
-                >
-
-                    ${buttons}
 
                 </div>
 
@@ -527,6 +422,126 @@ function renderDeals(){
 
         container.innerHTML += card;
     });
+}
+
+function openDeal(index){
+
+    const deal = allDeals[index];
+
+    const buttons = deal.all_links.map((link,i)=>`
+
+        <a
+            href="${link}"
+            target="_blank"
+            class="block bg-gradient-to-r from-orange-500 to-red-500 text-center py-4 rounded-2xl font-bold hover:scale-[1.02] transition"
+        >
+            🔥 Open Link ${i+1}
+        </a>
+
+    `).join("");
+
+    document.getElementById("modalBody").innerHTML = `
+
+        <div class="relative">
+
+            <img
+                src="${deal.image}"
+                class="w-full h-[450px] object-cover"
+            />
+
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+
+            <button
+                onclick="closeModal()"
+                class="absolute top-5 right-5 bg-red-500 w-12 h-12 rounded-full text-2xl font-black"
+            >
+                ×
+            </button>
+
+            <div class="absolute bottom-0 p-8 w-full">
+
+                <div class="flex gap-3 mb-5 flex-wrap">
+
+                    <div class="bg-orange-500 px-4 py-2 rounded-full font-bold text-sm">
+                        ${deal.category}
+                    </div>
+
+                    <div class="bg-red-500 px-4 py-2 rounded-full font-bold text-sm">
+                        ${deal.discount}
+                    </div>
+
+                    <div class="bg-black/70 px-4 py-2 rounded-full font-bold text-sm">
+                        ${deal.store}
+                    </div>
+
+                </div>
+
+                <h1 class="text-4xl font-black leading-tight max-w-4xl">
+                    ${deal.title}
+                </h1>
+
+                <div class="flex items-center gap-5 mt-6">
+
+                    <div class="text-5xl font-black text-orange-400">
+                        ₹${deal.new_price}
+                    </div>
+
+                    <div class="text-2xl line-through text-slate-400">
+                        ₹${deal.old_price}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="p-8">
+
+            <div class="glass rounded-3xl p-6 border border-slate-700">
+
+                <div class="text-orange-400 font-black text-xl mb-5">
+                    📄 Full Description
+                </div>
+
+                <div class="text-slate-300 leading-8 whitespace-pre-line text-[15px]">
+                    ${deal.caption}
+                </div>
+
+            </div>
+
+            <div class="mt-8 grid gap-4">
+
+                ${buttons}
+
+            </div>
+
+        </div>
+
+    `;
+
+    document.getElementById(
+        "dealModal"
+    ).style.display = "flex";
+}
+
+function closeModal(){
+
+    document.getElementById(
+        "dealModal"
+    ).style.display = "none";
+}
+
+window.onclick = function(event){
+
+    const modal = document.getElementById(
+        "dealModal"
+    );
+
+    if(event.target === modal){
+
+        closeModal();
+    }
 }
 
 /* SEARCH */
@@ -561,11 +576,7 @@ document.querySelectorAll(
     });
 });
 
-/* LOAD */
-
 loadDeals();
-
-/* AUTO REFRESH */
 
 setInterval(
     loadDeals,
@@ -577,3 +588,18 @@ setInterval(
 </body>
 
 </html>
+```
+
+# Features Added 🚀
+
+* Full modern glassmorphism UI
+* Dynamic animated cards
+* Full-screen popup modal
+* Banner click opens detailed deal window
+* All links shown inside popup
+* Full Telegram caption shown properly
+* Live modern gradient buttons
+* Sticky search/filter system
+* Premium dark UI design
+* Mobile responsive layout
+* Auto-refresh from deals.json

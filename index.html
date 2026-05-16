@@ -4,12 +4,15 @@
 <head>
 
 <meta charset="UTF-8"/>
+
 <meta
 name="viewport"
 content="width=device-width, initial-scale=1.0"
 />
 
-<title>DealVerse AI 🔥</title>
+<title>
+DealVerse AI 🔥
+</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -67,11 +70,61 @@ body{
 
 .glass{
 
+    position:relative;
+
+    overflow:hidden;
+
     background:rgba(255,255,255,0.05);
 
     backdrop-filter:blur(20px);
 
     border:1px solid rgba(255,255,255,0.08);
+}
+
+/* SHINE */
+
+.glass::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-120%;
+
+    left:-120%;
+
+    width:220%;
+
+    height:220%;
+
+    background:
+    linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.06),
+        transparent
+    );
+
+    transform:rotate(25deg);
+
+    animation:shine 7s linear infinite;
+}
+
+@keyframes shine{
+
+    0%{
+
+        transform:
+        translateX(-100%)
+        rotate(25deg);
+    }
+
+    100%{
+
+        transform:
+        translateX(100%)
+        rotate(25deg);
+    }
 }
 
 /* CATEGORY */
@@ -138,10 +191,10 @@ body{
     translateY(-8px)
     scale(1.01);
 
-    border-color:#3b82f6;
+    border-color:#fb923c;
 
     box-shadow:
-    0 20px 60px rgba(37,99,235,0.22);
+    0 20px 60px rgba(255,120,0,0.25);
 }
 
 /* FLOAT */
@@ -162,50 +215,6 @@ body{
 
     100%{
         transform:translateY(0px);
-    }
-}
-
-/* SHINE EFFECT */
-
-.stats-box::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:-100%;
-
-    left:-100%;
-
-    width:220%;
-
-    height:220%;
-
-    background:
-    linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,0.08),
-        transparent
-    );
-
-    transform:rotate(25deg);
-
-    animation:shine 7s linear infinite;
-}
-
-@keyframes shine{
-
-    0%{
-        transform:
-        translateX(-100%)
-        rotate(25deg);
-    }
-
-    100%{
-        transform:
-        translateX(100%)
-        rotate(25deg);
     }
 }
 
@@ -247,7 +256,7 @@ body{
     border:1px solid #1e293b;
 }
 
-/* LINE CLAMP */
+/* CLAMP */
 
 .line-clamp-2{
 
@@ -281,15 +290,11 @@ body{
     }
 
     .deal-image{
-        height:230px !important;
+        height:220px !important;
     }
 
     .modal-image{
         height:260px !important;
-    }
-
-    .stats-box{
-        width:100%;
     }
 }
 
@@ -344,32 +349,32 @@ class="hero-title text-6xl lg:text-8xl font-black mt-8 leading-tight"
 >
 
 Deal
-<span class="text-blue-500">
+<span class="text-orange-400">
 Verse
 </span>
 
 </h1>
 
-<!-- FLOATING BADGES -->
+<!-- BADGES -->
 
 <div
-class="flex flex-wrap gap-3 mt-6"
+class="flex flex-wrap gap-3 mt-7"
 >
 
 <div
-class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded-full font-black text-sm shadow-2xl"
+class="bg-gradient-to-r from-red-500 to-orange-500 px-5 py-2 rounded-full font-black text-sm shadow-[0_0_25px_rgba(255,100,0,0.4)] animate-pulse"
 >
-🔥 HOT DEALS
+🔥 LOOT DEALS LIVE
 </div>
 
 <div
-class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-5 py-2 rounded-full font-black text-sm shadow-2xl"
+class="bg-gradient-to-r from-blue-500 to-indigo-500 px-5 py-2 rounded-full font-black text-sm shadow-[0_0_25px_rgba(59,130,246,0.4)]"
 >
-⚡ LIVE UPDATES
+⚡ INSTANT OFFERS
 </div>
 
 <div
-class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-5 py-2 rounded-full font-black text-sm shadow-2xl"
+class="bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-2 rounded-full font-black text-sm shadow-[0_0_25px_rgba(168,85,247,0.4)]"
 >
 🚀 TRENDING PRODUCTS
 </div>
@@ -399,127 +404,6 @@ class="bg-gradient-to-r from-sky-500 to-blue-600 hover:scale-105 transition text
 
 </div>
 
-<!-- DYNAMIC STATS -->
-
-<div
-class="flex flex-wrap gap-4 mt-6"
->
-
-<!-- DEALS -->
-
-<div
-class="glass rounded-3xl px-7 py-5 min-w-[200px] stats-box relative overflow-hidden"
->
-
-<div
-class="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10"
-></div>
-
-<div class="relative z-10">
-
-<div
-class="text-slate-400 text-xs tracking-[3px]"
->
-TOTAL DEALS
-</div>
-
-<div
-id="dealCount"
-class="font-black text-4xl text-orange-400 mt-2"
->
-0
-</div>
-
-<div
-class="text-xs text-orange-300 mt-2"
->
-🔥 Updated Live
-</div>
-
-</div>
-
-</div>
-
-<!-- STATUS -->
-
-<div
-class="glass rounded-3xl px-7 py-5 min-w-[200px] stats-box relative overflow-hidden"
->
-
-<div
-class="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10"
-></div>
-
-<div class="relative z-10">
-
-<div
-class="text-slate-400 text-xs tracking-[3px]"
->
-SYSTEM STATUS
-</div>
-
-<div
-class="flex items-center gap-3 mt-3"
->
-
-<div
-class="w-4 h-4 rounded-full bg-green-500 animate-pulse shadow-[0_0_20px_#22c55e]"
-></div>
-
-<div
-class="font-black text-3xl text-white"
->
-LIVE
-</div>
-
-</div>
-
-<div
-class="text-xs text-green-300 mt-2"
->
-⚡ Auto Sync Active
-</div>
-
-</div>
-
-</div>
-
-<!-- TRENDING -->
-
-<div
-class="glass rounded-3xl px-7 py-5 min-w-[240px] stats-box relative overflow-hidden"
->
-
-<div
-class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10"
-></div>
-
-<div class="relative z-10">
-
-<div
-class="text-slate-400 text-xs tracking-[3px]"
->
-TRENDING CATEGORY
-</div>
-
-<div
-class="font-black text-3xl text-blue-400 mt-2"
->
-🔥 GADGETS
-</div>
-
-<div
-class="text-xs text-blue-300 mt-2"
->
-📈 High Click Rate
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 </div>
 
 <!-- RIGHT -->
@@ -545,35 +429,95 @@ class="w-[400px] rounded-[30px]"
 
 </section>
 
-<!-- TRENDING -->
+<!-- LIVE STATS -->
 
 <section
-class="max-w-7xl mx-auto px-4 py-10"
+class="max-w-7xl mx-auto px-4 py-8"
 >
 
 <div
-class="glass rounded-3xl p-6 flex flex-col lg:flex-row gap-6 items-center justify-between"
+class="grid grid-cols-2 lg:grid-cols-4 gap-4"
 >
 
-<div>
+<div
+class="glass rounded-3xl p-5"
+>
 
-<div class="text-orange-400 font-black text-xl">
-🔥 Deal Of The Day
+<div class="text-slate-400 text-xs">
+🔥 HOT TODAY
 </div>
 
 <div
-id="topDeal"
-class="text-3xl font-black mt-3"
+class="font-black text-3xl mt-2 text-orange-400"
 >
-Loading...
+79%
+</div>
+
+<div class="text-xs text-orange-300 mt-1">
+MAX SAVINGS
 </div>
 
 </div>
 
 <div
-class="bg-gradient-to-r from-orange-500 to-red-500 px-8 py-5 rounded-3xl font-black text-2xl shadow-2xl"
+class="glass rounded-3xl p-5"
 >
-⚡ TRENDING NOW
+
+<div class="text-slate-400 text-xs">
+⚡ LIVE DEALS
+</div>
+
+<div
+id="dealCount"
+class="font-black text-3xl mt-2 text-blue-400"
+>
+0
+</div>
+
+<div class="text-xs text-blue-300 mt-1">
+UPDATED LIVE
+</div>
+
+</div>
+
+<div
+class="glass rounded-3xl p-5"
+>
+
+<div class="text-slate-400 text-xs">
+🟢 STATUS
+</div>
+
+<div
+class="font-black text-3xl mt-2 text-green-400"
+>
+LIVE
+</div>
+
+<div class="text-xs text-green-300 mt-1">
+AUTO SYNC ACTIVE
+</div>
+
+</div>
+
+<div
+class="glass rounded-3xl p-5"
+>
+
+<div class="text-slate-400 text-xs">
+🚀 TRENDING
+</div>
+
+<div
+class="font-black text-3xl mt-2 text-pink-400"
+>
+GADGETS
+</div>
+
+<div class="text-xs text-pink-300 mt-1">
+HIGH CTR
+</div>
+
 </div>
 
 </div>
@@ -685,14 +629,6 @@ async function loadDeals(){
 
         updateDealCount();
 
-        if(allDeals.length > 0){
-
-            document.getElementById(
-                "topDeal"
-            ).innerText =
-            allDeals[0].title;
-        }
-
     }catch(error){
 
         console.log(error);
@@ -709,6 +645,28 @@ function updateDealCount(){
     allDeals.length;
 }
 
+/* COUNTDOWN */
+
+function randomCountdown(){
+
+    const hours =
+    String(
+        Math.floor(Math.random()*3)+1
+    ).padStart(2,"0");
+
+    const minutes =
+    String(
+        Math.floor(Math.random()*59)
+    ).padStart(2,"0");
+
+    const seconds =
+    String(
+        Math.floor(Math.random()*59)
+    ).padStart(2,"0");
+
+    return `${hours}:${minutes}:${seconds}`;
+}
+
 /* RENDER */
 
 function renderDeals(){
@@ -718,9 +676,33 @@ function renderDeals(){
             "deals-container"
         );
 
+    const search =
+    document.getElementById(
+        "searchInput"
+    ).value.toLowerCase();
+
     container.innerHTML = "";
 
-    allDeals.forEach((deal,index)=>{
+    const filtered =
+    allDeals.filter(deal =>
+
+        deal.title
+        .toLowerCase()
+        .includes(search)
+
+        ||
+
+        deal.caption
+        .toLowerCase()
+        .includes(search)
+    );
+
+    filtered.forEach((deal,index)=>{
+
+        const viewers =
+        Math.floor(
+            Math.random()*40
+        ) + 12;
 
         const card = `
 
@@ -736,21 +718,29 @@ function renderDeals(){
                 class="deal-image w-full h-[240px] object-cover transition duration-500 group-hover:scale-110"
                 />
 
+                <!-- OVERLAY -->
+
                 <div
                 class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"
                 ></div>
 
+                <!-- TRENDING -->
+
                 <div
-                class="absolute left-0 top-5 bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded-r-full font-black text-xs shadow-2xl"
+                class="absolute left-0 top-5 bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded-r-full font-black text-xs shadow-2xl animate-pulse"
                 >
                     🔥 TRENDING
                 </div>
+
+                <!-- CATEGORY -->
 
                 <div
                 class="absolute top-4 right-4 bg-black/60 backdrop-blur text-white px-4 py-2 rounded-full font-bold text-xs"
                 >
                     ${deal.category}
                 </div>
+
+                <!-- CONTENT -->
 
                 <div
                 class="absolute bottom-0 p-5 w-full"
@@ -774,9 +764,29 @@ function renderDeals(){
                         ${deal.title}
                     </h2>
 
+                    <!-- PEOPLE -->
+
+                    <div
+                    class="flex items-center gap-2 mt-3"
+                    >
+
+                        <div
+                        class="w-2 h-2 rounded-full bg-green-500 animate-pulse"
+                        ></div>
+
+                        <div
+                        class="text-xs text-green-400 font-bold"
+                        >
+                            ${viewers} PEOPLE VIEWING
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
+
+            <!-- LOWER -->
 
             <div class="p-5">
 
@@ -786,10 +796,38 @@ function renderDeals(){
                     ${deal.caption}
                 </div>
 
-                <button
-                class="mt-5 w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-[1.02] transition text-white py-4 rounded-2xl font-black shadow-2xl"
+                <!-- COUNTDOWN -->
+
+                <div
+                class="mt-4 bg-black/40 rounded-2xl p-3 border border-orange-500/20"
                 >
-                    ⚡ VIEW DEAL
+
+                    <div
+                    class="flex items-center justify-between"
+                    >
+
+                        <div
+                        class="text-xs text-orange-300 font-bold"
+                        >
+                            ⏳ DEAL ENDING SOON
+                        </div>
+
+                        <div
+                        class="text-xs font-black text-white"
+                        >
+                            ${randomCountdown()}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTON -->
+
+                <button
+                class="mt-5 w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:scale-[1.03] transition text-white py-4 rounded-2xl font-black shadow-[0_0_25px_rgba(255,80,0,0.35)] animate-pulse"
+                >
+                    🛒 GRAB DEAL NOW
                 </button>
 
             </div>
@@ -813,9 +851,9 @@ function openDeal(index){
         <a
         href="${link}"
         target="_blank"
-        class="block bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center py-4 rounded-2xl font-bold hover:scale-[1.02] transition"
+        class="block bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-4 rounded-2xl font-bold hover:scale-[1.02] transition"
         >
-            🛒 Open Deal Link ${i+1}
+            🛒 OPEN DEAL LINK ${i+1}
         </a>
 
     `).join("");
@@ -851,7 +889,7 @@ function openDeal(index){
                 >
 
                     <div
-                    class="bg-blue-500 px-4 py-2 rounded-full font-bold text-sm"
+                    class="bg-orange-500 px-4 py-2 rounded-full font-bold text-sm"
                     >
                         ${deal.category}
                     </div>
@@ -883,7 +921,7 @@ function openDeal(index){
                 <div
                 class="text-2xl font-black text-orange-400 mb-5"
                 >
-                    📄 Full Description
+                    📄 FULL DESCRIPTION
                 </div>
 
                 <div
@@ -924,7 +962,8 @@ function closeModal(){
 
 window.onclick = function(event){
 
-    const modal = document.getElementById(
+    const modal =
+    document.getElementById(
         "dealModal"
     );
 
@@ -942,34 +981,7 @@ document.getElementById(
 
     "input",
 
-    function(){
-
-        const query =
-        this.value.toLowerCase();
-
-        const filtered =
-        allDeals.filter(deal =>
-
-            deal.title
-            .toLowerCase()
-            .includes(query)
-
-            ||
-
-            deal.caption
-            .toLowerCase()
-            .includes(query)
-
-        );
-
-        const backup = allDeals;
-
-        allDeals = filtered;
-
-        renderDeals();
-
-        allDeals = backup;
-    }
+    renderDeals
 );
 
 /* LOAD */

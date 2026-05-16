@@ -4,14 +4,9 @@
 <head>
 
 <meta charset="UTF-8"/>
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>
-    DealVerse 🔥
-</title>
+<title>DealVerse 🔥</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -239,10 +234,38 @@ class="relative overflow-hidden border-b border-slate-800"
                 class="text-slate-300 text-lg mt-7 leading-8 max-w-2xl"
                 >
 
-                    ⚡ Discover Viral Deals Before Everyone Else
-Real-time Telegram powered shopping offers, cashback finds & trending discounts — all in one dynamic experience. 🔥
+                    ⚡ Discover Viral Deals Before Everyone Else  
+                    Real-time Telegram powered shopping offers, cashback finds & trending discounts — all in one dynamic experience. 🔥
 
                 </p>
+
+                <!-- TELEGRAM BUTTON -->
+
+                <div class="flex flex-wrap gap-4 mt-10">
+
+                    <a
+                        href="https://t.me/best_dealsareon"
+                        target="_blank"
+                        class="bg-gradient-to-r from-sky-500 to-blue-600 hover:scale-105 transition text-white px-8 py-4 rounded-2xl font-black shadow-2xl flex items-center gap-3"
+                    >
+                        🚀 Subscribe Telegram Channel
+                    </a>
+
+                    <div
+                    class="glass rounded-2xl px-6 py-4"
+                    >
+
+                        <div class="text-slate-400 text-xs">
+                            LIVE DEAL ALERTS
+                        </div>
+
+                        <div class="font-black text-xl text-orange-400 mt-1">
+                            INSTANT UPDATES
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -360,8 +383,6 @@ let allDeals = [];
 
 let currentCategory = "All";
 
-/* LOAD */
-
 async function loadDeals(){
 
     try{
@@ -379,8 +400,6 @@ async function loadDeals(){
         console.error(error);
     }
 }
-
-/* RENDER */
 
 function renderDeals(){
 
@@ -452,8 +471,6 @@ function renderDeals(){
         onclick="openDeal(${index})"
         >
 
-            <!-- IMAGE -->
-
             <div class="relative overflow-hidden">
 
                 <img
@@ -461,13 +478,9 @@ function renderDeals(){
                     class="deal-image w-full h-[240px] object-cover transition duration-500 group-hover:scale-110"
                 />
 
-                <!-- OVERLAY -->
-
                 <div
                 class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"
                 ></div>
-
-                <!-- HOT TAG -->
 
                 <div
                 class="absolute left-0 top-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-r-full font-black text-xs tracking-wide shadow-xl"
@@ -475,17 +488,11 @@ function renderDeals(){
                     🔥 TRENDING
                 </div>
 
-                <!-- DISCOUNT -->
-
                 ${discountBadge}
-
-                <!-- BOTTOM CONTENT -->
 
                 <div
                 class="absolute bottom-0 p-5 w-full"
                 >
-
-                    <!-- CATEGORY + STORE -->
 
                     <div
                     class="flex items-center gap-2 mb-3 flex-wrap"
@@ -505,8 +512,6 @@ function renderDeals(){
 
                     </div>
 
-                    <!-- TITLE -->
-
                     <h2
                     class="text-xl font-black text-white leading-tight line-clamp-2"
                     >
@@ -517,19 +522,13 @@ function renderDeals(){
 
             </div>
 
-            <!-- LOWER SECTION -->
-
             <div class="p-5">
-
-                <!-- DESCRIPTION -->
 
                 <div
                 class="text-slate-400 text-sm leading-7 line-clamp-3"
                 >
                     ${deal.caption}
                 </div>
-
-                <!-- BUTTON -->
 
                 <button
                 class="mt-5 w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-indigo-600 hover:to-blue-600 transition text-white py-4 rounded-2xl font-black shadow-xl"
@@ -546,8 +545,6 @@ function renderDeals(){
         container.innerHTML += card;
     });
 }
-
-/* MODAL */
 
 function openDeal(index){
 
@@ -629,8 +626,6 @@ function openDeal(index){
 
         <div class="p-6">
 
-            <!-- DESCRIPTION -->
-
             <div
             class="glass rounded-3xl p-6"
             >
@@ -649,8 +644,6 @@ function openDeal(index){
 
             </div>
 
-            <!-- LINKS -->
-
             <div
             class="grid gap-4 mt-7"
             >
@@ -668,16 +661,12 @@ function openDeal(index){
     ).style.display = "flex";
 }
 
-/* CLOSE */
-
 function closeModal(){
 
     document.getElementById(
         "dealModal"
     ).style.display = "none";
 }
-
-/* OUTSIDE CLICK */
 
 window.onclick = function(event){
 
@@ -691,16 +680,12 @@ window.onclick = function(event){
     }
 }
 
-/* SEARCH */
-
 document.getElementById(
     "searchInput"
 ).addEventListener(
     "input",
     renderDeals
 );
-
-/* CATEGORY */
 
 document.querySelectorAll(
     ".category-btn"
@@ -723,11 +708,7 @@ document.querySelectorAll(
     });
 });
 
-/* LOAD */
-
 loadDeals();
-
-/* AUTO REFRESH */
 
 setInterval(
     loadDeals,

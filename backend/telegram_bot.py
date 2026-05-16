@@ -1,3 +1,8 @@
+# =====================================================
+# FILE: backend/telegram_bot.py
+# AI CLEAN + DYNAMIC DEAL GENERATOR
+# =====================================================
+
 import asyncio
 import os
 import re
@@ -19,7 +24,7 @@ SESSION_STR = os.getenv("SESSION_STR")
 
 CHANNEL_USERNAME = "@best_dealsareon"
 
-MAX_POSTS = 20
+MAX_POSTS = 25
 
 # =====================================================
 # PATHS
@@ -42,7 +47,7 @@ IMAGES_DIR = os.path.join(
 )
 
 # =====================================================
-# CREATE FOLDERS
+# CREATE DIRS
 # =====================================================
 
 os.makedirs(IMAGES_DIR, exist_ok=True)
@@ -71,15 +76,12 @@ try:
 
 except Exception as e:
 
-    print(
-        f"⚠️ JSON ERROR: {e}",
-        flush=True
-    )
+    print(f"⚠️ JSON ERROR: {e}")
 
     deals = []
 
 # =====================================================
-# TELEGRAM CLIENT
+# TELEGRAM
 # =====================================================
 
 client = TelegramClient(
@@ -87,60 +89,6 @@ client = TelegramClient(
     API_ID,
     API_HASH
 )
-
-# =====================================================
-# PRICE EXTRACTION
-# =====================================================
-
-def extract_prices(text):
-
-    prices = re.findall(
-        r'(?:₹|Rs\.?|INR)\s?(\d+(?:,\d+)*)',
-        text,
-        flags=re.IGNORECASE
-    )
-
-    old_price = 0
-    new_price = 0
-    discount = "0% OFF"
-
-    try:
-
-        if len(prices) >= 2:
-
-            p1 = int(prices[0].replace(",", ""))
-
-            p2 = int(prices[1].replace(",", ""))
-
-            old_price = max(p1, p2)
-
-            new_price = min(p1, p2)
-
-            if old_price > 0:
-
-                disc = (
-                    (old_price - new_price)
-                    / old_price
-                ) * 100
-
-                discount = f"{round(disc)}% OFF"
-
-        elif len(prices) == 1:
-
-            new_price = int(
-                prices[0].replace(",", "")
-            )
-
-            old_price = new_price
-
-    except:
-        pass
-
-    return (
-        old_price,
-        new_price,
-        discount
-    )
 
 # =====================================================
 # STORE DETECTION
@@ -162,51 +110,102 @@ def detect_store(text):
     elif "ajio" in lower:
         return "Ajio"
 
-    elif "nykaa" in lower:
-        return "Nykaa"
+    elif "boat" in lower:
+        return "Boat"
 
-    return "Store"
+    return "Trending"
 
 # =====================================================
-# CATEGORY DETECTION
+# CATEGORY
 # =====================================================
 
 def detect_category(text):
 
     lower = text.lower()
 
-    if any(word in lower for word in [
-        "mobile",
+    if any(x in lower for x in [
         "iphone",
+        "samsung",
         "realme",
         "redmi",
-        "samsung"
+        "mobile"
     ]):
         return "Mobiles"
 
-    elif any(word in lower for word in [
+    elif any(x in lower for x in [
         "laptop",
         "macbook",
-        "dell",
-        "hp"
+        "hp",
+        "dell"
     ]):
         return "Laptops"
 
-    elif any(word in lower for word in [
-        "shirt",
+    elif any(x in lower for x in [
         "shoe",
+        "shirt",
         "fashion"
     ]):
         return "Fashion"
 
-    elif any(word in lower for word in [
-        "watch",
+    elif any(x in lower for x in [
         "earbuds",
-        "boat"
+        "watch",
+        "speaker"
     ]):
         return "Electronics"
 
     return "Other"
+
+# =====================================================
+# AI CLEAN CAPTION
+# =====================================================
+
+def clean_caption(text):
+
+    lines = text.split("\n")
+
+    cleaned = []
+
+    for line in lines:
+
+        line = line.strip()
+
+        if not line:
+            continue
+
+        # REMOVE TELEGRAM LINKS
+
+        if "t.me/" in line:
+            continue
+
+        cleaned.append(line)
+
+    return "\n".join(cleaned[:12])
+
+# =====================================================
+# TITLE
+# =====================================================
+
+def generate_title(text):
+
+    lines = text.split("\n")
+
+    title = lines[0][:120]
+
+    title = title.replace("🔥","")
+
+    return title.strip()
+
+# =====================================================
+# LOAD EXISTING LINKS
+# =====================================================
+
+existing_links = {
+
+    d.get("main_link","")
+
+    for d in deals
+}
 
 # =====================================================
 # SAVE JSON
@@ -233,24 +232,11 @@ def save_json():
 
 async def main():
 
-    print(
-        "🚀 FETCHING TELEGRAM POSTS...",
-        flush=True
-    )
+    print("🚀 FETCHING DEALS...")
 
     await client.start()
 
-    print(
-        "✅ TELEGRAM CONNECTED",
-        flush=True
-    )
-
-    existing_links = {
-
-        deal.get("main_link", "")
-
-        for deal in deals
-    }
+    print("✅ TELEGRAM CONNECTED")
 
     new_count = 0
 
@@ -264,7 +250,6 @@ async def main():
             text = message.message or ""
 
             if not text:
-
                 continue
 
             urls = re.findall(
@@ -272,45 +257,22 @@ async def main():
                 text
             )
 
-            main_link = (
-                urls[0]
-                if urls
-                else "#"
-            )
+            if not urls:
+                continue
 
-            # =========================================
-            # DUPLICATE CHECK
-            # =========================================
+            main_link = urls[0]
+
+            # DUPLICATE
 
             if main_link in existing_links:
 
-                print(
-                    "⚠️ DUPLICATE SKIPPED",
-                    flush=True
-                )
+                print("⚠️ DUPLICATE")
 
                 continue
 
-            print(
-                f"📩 NEW DEAL: {message.id}",
-                flush=True
-            )
+            print(f"📩 NEW DEAL {message.id}")
 
-            title = text.split("\n")[0][:180]
-
-            (
-                old_price,
-                new_price,
-                discount
-            ) = extract_prices(text)
-
-            store = detect_store(text)
-
-            category = detect_category(text)
-
-            # =========================================
-            # DOWNLOAD IMAGE
-            # =========================================
+            # IMAGE
 
             image_path = ""
 
@@ -340,21 +302,23 @@ async def main():
                         f"images/{filename}"
                     )
 
-                    print(
-                        "🖼 IMAGE SAVED",
-                        flush=True
-                    )
+                    print("🖼 IMAGE SAVED")
 
                 except Exception as e:
 
-                    print(
-                        f"⚠️ IMAGE ERROR: {e}",
-                        flush=True
-                    )
+                    print(f"⚠️ IMAGE ERROR: {e}")
 
-            # =========================================
-            # CREATE DEAL
-            # =========================================
+            # DATA
+
+            cleaned_caption = clean_caption(text)
+
+            title = generate_title(text)
+
+            category = detect_category(text)
+
+            store = detect_store(text)
+
+            # SAVE
 
             deal = {
 
@@ -362,23 +326,17 @@ async def main():
 
                 "title": title,
 
-                "caption": text,
+                "caption": cleaned_caption,
 
                 "image": image_path,
-
-                "old_price": old_price,
-
-                "new_price": new_price,
-
-                "discount": discount,
 
                 "main_link": main_link,
 
                 "all_links": urls,
 
-                "store": store,
+                "category": category,
 
-                "category": category
+                "store": store
             }
 
             deals.insert(0, deal)
@@ -389,26 +347,18 @@ async def main():
 
         except Exception as e:
 
-            print(
-                f"❌ POST ERROR: {e}",
-                flush=True
-            )
+            print(f"❌ ERROR: {e}")
 
-    # =================================================
-    # SAVE JSON
-    # =================================================
+    # LIMIT
+
+    deals[:] = deals[:100]
 
     save_json()
 
-    print(
-        f"✅ {new_count} NEW DEALS ADDED",
-        flush=True
-    )
+    print(f"✅ {new_count} NEW DEALS ADDED")
 
     await client.disconnect()
 
-# =====================================================
-# START
 # =====================================================
 
 if __name__ == "__main__":

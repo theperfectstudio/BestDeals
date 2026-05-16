@@ -240,6 +240,10 @@ body{
     .modal-image{
         height:260px !important;
     }
+
+    .stats-box{
+        width:100%;
+    }
 }
 
 </style>
@@ -318,12 +322,14 @@ class="bg-gradient-to-r from-sky-500 to-blue-600 hover:scale-105 transition text
 
 <div class="flex flex-wrap gap-4 mt-6">
 
+<!-- VISITORS -->
+
 <div
-class="glass rounded-2xl px-6 py-4 min-w-[180px]"
+class="glass rounded-2xl px-6 py-4 min-w-[180px] stats-box"
 >
 
 <div class="text-slate-400 text-xs">
-👀 LIVE VISITORS
+👀 TOTAL VISITORS
 </div>
 
 <div
@@ -335,8 +341,10 @@ class="font-black text-3xl text-green-400 mt-2"
 
 </div>
 
+<!-- DEALS -->
+
 <div
-class="glass rounded-2xl px-6 py-4 min-w-[180px]"
+class="glass rounded-2xl px-6 py-4 min-w-[180px] stats-box"
 >
 
 <div class="text-slate-400 text-xs">
@@ -352,8 +360,10 @@ class="font-black text-3xl text-orange-400 mt-2"
 
 </div>
 
+<!-- STATUS -->
+
 <div
-class="glass rounded-2xl px-6 py-4 min-w-[180px]"
+class="glass rounded-2xl px-6 py-4 min-w-[180px] stats-box"
 >
 
 <div class="text-slate-400 text-xs">
@@ -529,7 +539,7 @@ let allDeals = [];
 
 let currentCategory = "All";
 
-/* LOAD */
+/* LOAD DEALS */
 
 async function loadDeals(){
 
@@ -847,26 +857,6 @@ document.querySelectorAll(
     });
 });
 
-/* VISITOR COUNT */
-
-function updateVisitors(){
-
-    const count = Math.floor(
-        Math.random() * 400
-    ) + 120;
-
-    document.getElementById(
-        "visitorCount"
-    ).innerText = count;
-}
-
-setInterval(
-    updateVisitors,
-    8000
-);
-
-updateVisitors();
-
 /* DEAL COUNT */
 
 function updateDealCount(){
@@ -877,9 +867,47 @@ function updateDealCount(){
     allDeals.length;
 }
 
+/* REAL VISITOR COUNT */
+
+async function updateVisitorCount(){
+
+    try{
+
+        const namespace =
+        "dealverse-ai";
+
+        const key =
+        "visitors";
+
+        const response =
+        await fetch(
+
+            `https://api.countapi.xyz/hit/${namespace}/${key}`
+
+        );
+
+        const data =
+        await response.json();
+
+        document.getElementById(
+            "visitorCount"
+        ).innerText =
+        data.value;
+
+    }catch(e){
+
+        console.log(
+            "Visitor Counter Error:",
+            e
+        );
+    }
+}
+
 /* INITIAL LOAD */
 
 loadDeals();
+
+updateVisitorCount();
 
 /* AUTO REFRESH */
 

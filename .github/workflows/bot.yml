@@ -9,14 +9,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    timeout-minutes: 360
+    timeout-minutes: 15
 
     permissions:
       contents: write
 
     steps:
 
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -28,25 +28,11 @@ jobs:
         run: |
           pip install -r backend/requirements.txt
 
-      - name: Run Telegram Bot
+      - name: Run Bot
         env:
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}
           SESSION_STR: ${{ secrets.SESSION_STR }}
 
         run: |
-          python backend/telegram_bot.py
-
-      - name: Commit Updated Deals
-
-        run: |
-
-          git config --global user.name "github-actions"
-
-          git config --global user.email "actions@github.com"
-
-          git add .
-
-          git commit -m "auto update deals" || echo "No changes"
-
-          git push
+          python -u backend/telegram_bot.py

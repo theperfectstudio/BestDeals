@@ -5,15 +5,19 @@ on:
     - cron: '0 */6 * * *' # દર ૬ કલાકે રીસ્ટાર્ટ થશે
   workflow_dispatch: # મેન્યુઅલ બટન
 
+# અહીં આપણે આખા વર્કફ્લો માટે Node 24 ફરજિયાત કરી દીધું છે
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   run-bot:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4  # v3 માંથી બદલીને v4 કર્યું (Node 24 સપોર્ટ)
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5  # v4 માંથી બદલીને v5 કર્યું (Node 24 સપોર્ટ)
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 

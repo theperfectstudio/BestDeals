@@ -7,6 +7,9 @@ import os
 import re
 import json
 import shutil
+import requests
+
+from bs4 import BeautifulSoup
 
 from telethon import TelegramClient
 from telethon.sessions import StringSession
@@ -52,7 +55,7 @@ IMAGES_DIR = os.path.join(
 os.makedirs(IMAGES_DIR, exist_ok=True)
 
 # =====================================================
-# LOAD EXISTING DEALS
+# LOAD JSON
 # =====================================================
 
 deals = []
@@ -105,9 +108,7 @@ def extract_prices(text):
     )
 
     old_price = 0
-
     new_price = 0
-
     discount = "0% OFF"
 
     try:
@@ -184,9 +185,9 @@ def detect_category(text):
     if any(word in lower for word in [
         "mobile",
         "iphone",
-        "samsung",
         "redmi",
         "realme",
+        "samsung",
         "vivo",
         "oppo"
     ]):
@@ -195,30 +196,92 @@ def detect_category(text):
     elif any(word in lower for word in [
         "laptop",
         "macbook",
-        "lenovo",
         "hp",
-        "dell"
+        "dell",
+        "lenovo"
     ]):
         return "Laptops"
 
     elif any(word in lower for word in [
         "shirt",
         "shoe",
-        "jeans",
-        "kurta",
-        "fashion"
+        "fashion",
+        "jeans"
     ]):
         return "Fashion"
 
     elif any(word in lower for word in [
+        "earbuds",
         "watch",
         "boat",
-        "earbuds",
         "headphone"
     ]):
         return "Electronics"
 
     return "Other"
+
+# =====================================================
+# LIVE PRICE FETCH
+# =====================================================
+
+def fetch_live_price(url):
+
+    try:
+
+        headers = {
+
+            "User-Agent":
+            "Mozilla/5.0"
+        }
+
+        response = requests.get(
+            url,
+            headers=headers,
+            timeout=10
+        )
+
+        html = response.text
+
+        soup = BeautifulSoup(
+            html,
+            "html.parser"
+        )
+
+        # AMAZON
+
+        if "amazon" in url:
+
+            price = soup.select_one(
+                ".a-price-whole"
+            )
+
+            if price:
+
+                return (
+                    "₹" +
+                    price.text.strip()
+                )
+
+        # FLIPKART
+
+        elif "flipkart" in url:
+
+            price = soup.select_one(
+                "._30jeq3"
+            )
+
+            if price:
+
+                return price.text.strip()
+
+    except Exception as e:
+
+        print(
+            f"⚠️ PRICE FETCH ERROR: {e}",
+            flush=True
+        )
+
+    return ""
 
 # =====================================================
 # SAVE JSON
@@ -291,7 +354,7 @@ async def main():
             )
 
             # =========================================
-            # SKIP DUPLICATE
+            # DUPLICATE CHECK
             # =========================================
 
             if main_link in existing_links:
@@ -319,6 +382,18 @@ async def main():
             store = detect_store(text)
 
             category = detect_category(text)
+
+            # =========================================
+            # LIVE PRICE
+            # =========================================
+
+            live_price = ""
+
+            if urls:
+
+                live_price = fetch_live_price(
+                    urls[0]
+                )
 
             # =========================================
             # DOWNLOAD IMAGE
@@ -381,7 +456,9 @@ async def main():
 
                 "store": store,
 
-                "category": category
+                "category": category,
+
+                "live_price": live_price
             }
 
             deals.insert(0, deal)

@@ -11,7 +11,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 API_ID = int(os.getenv('API_ID', '35795778'))
 API_HASH = os.getenv('API_HASH', 'd4256dd43d5184feed3f3680e5f3812f')
 SESSION_STR = os.getenv('SESSION_STR')
-CREDENTIALS_JSON = os.getenv('CREDENTIALS_JSON') # Google Sheet Key
+CREDENTIALS_JSON = os.getenv('CREDENTIALS_JSON')
 CHANNEL_USERNAME = '@best_dealsareon' 
 SHEET_NAME = "EarnKaro_Deals"
 
@@ -71,7 +71,15 @@ async def handler(event):
             except Exception as e:
                 print(f"❌ Sheet Update Error: {e}")
 
-# --- ૫. રન ---
-print(f"🚀 GitHub Action Bot Started...")
+# --- ૫. રન (Always Live Infinite Loop) ---
+async def main():
+    print(f"🚀 GitHub Action Bot Started & Listening to {CHANNEL_USERNAME}...")
+    # ક્લાયન્ટ કનેક્ટ કરો
+    await client.start()
+    
+    # જ્યાં સુધી મેન્યુઅલી બંધ ન થાય ત્યાં સુધી લૂપ ચાલુ રાખશે
+    while True:
+        await time.sleep(10) # દર ૧૦ સેકન્ડે કનેક્શન જીવંત રાખશે
+
 with client:
-    client.run_until_disconnected()
+    client.loop.run_until_complete(main())

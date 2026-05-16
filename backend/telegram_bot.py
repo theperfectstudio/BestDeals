@@ -1,119 +1,144 @@
 # =====================================================
-# FILE: backend/telegram_bot.py
-# AI CLEAN + DYNAMIC DEAL GENERATOR
+# DEALVERSE AI BOT
 # =====================================================
 
-import asyncio
+from telethon.sync import TelegramClient
+
 import os
 import re
 import json
-import shutil
-
-from telethon import TelegramClient
-from telethon.sessions import StringSession
-
-# =====================================================
-# CONFIG
-# =====================================================
-
-API_ID = int(os.getenv("API_ID"))
-
-API_HASH = os.getenv("API_HASH")
-
-SESSION_STR = os.getenv("SESSION_STR")
-
-CHANNEL_USERNAME = "@best_dealsareon"
-
-MAX_POSTS = 25
-
-# =====================================================
-# PATHS
-# =====================================================
-
-BASE_DIR = os.path.dirname(__file__)
-
-ROOT_DIR = os.path.abspath(
-    os.path.join(BASE_DIR, "..")
-)
-
-JSON_FILE = os.path.join(
-    ROOT_DIR,
-    "deals.json"
-)
-
-IMAGES_DIR = os.path.join(
-    ROOT_DIR,
-    "images"
-)
-
-# =====================================================
-# CREATE DIRS
-# =====================================================
-
-os.makedirs(IMAGES_DIR, exist_ok=True)
-
-# =====================================================
-# LOAD EXISTING DEALS
-# =====================================================
-
-deals = []
-
-try:
-
-    if os.path.exists(JSON_FILE):
-
-        with open(
-            JSON_FILE,
-            "r",
-            encoding="utf-8"
-        ) as f:
-
-            raw = f.read().strip()
-
-            if raw:
-
-                deals = json.loads(raw)
-
-except Exception as e:
-
-    print(f"⚠️ JSON ERROR: {e}")
-
-    deals = []
+import requests
+import asyncio
 
 # =====================================================
 # TELEGRAM
 # =====================================================
 
+API_ID = os.getenv("API_ID")
+
+API_HASH = os.getenv("API_HASH")
+
+SESSION_STR = os.getenv("SESSION_STR")
+
+CHANNEL = "best_dealsareon"
+
+# =====================================================
+# EARNKARO
+# =====================================================
+
+EARNKARO_TOKEN = os.getenv(
+    "EARNKARO_TOKEN"
+)
+
+# =====================================================
+# FILES
+# =====================================================
+
+DEALS_FILE = "deals.json"
+
+IMAGES_DIR = "images"
+
+os.makedirs(
+    IMAGES_DIR,
+    exist_ok=True
+)
+
+# =====================================================
+# LOAD DEALS
+# =====================================================
+
+try:
+
+    with open(
+        DEALS_FILE,
+        "r",
+        encoding="utf-8"
+    ) as f:
+
+        deals = json.load(f)
+
+except:
+
+    deals = []
+
+# =====================================================
+# EXISTING IDS
+# =====================================================
+
+existing_ids = [
+
+    deal.get("message_id")
+
+    for deal in deals
+]
+
+# =====================================================
+# CLIENT
+# =====================================================
+
 client = TelegramClient(
-    StringSession(SESSION_STR),
+
+    "session",
+
     API_ID,
+
     API_HASH
 )
 
 # =====================================================
-# STORE DETECTION
+# EARNKARO CONVERT
 # =====================================================
 
-def detect_store(text):
+def convert_to_earnkaro(url):
 
-    lower = text.lower()
+    try:
 
-    if "amazon" in lower:
-        return "Amazon"
+        response = requests.post(
 
-    elif "flipkart" in lower:
-        return "Flipkart"
+            "https://webapi.earnkaro.com/api/affiliate/link-converter",
 
-    elif "myntra" in lower:
-        return "Myntra"
+            headers={
 
-    elif "ajio" in lower:
-        return "Ajio"
+                "Authorization":
+                f"Bearer {EARNKARO_TOKEN}",
 
-    elif "boat" in lower:
-        return "Boat"
+                "Content-Type":
+                "application/json"
+            },
 
-    return "Trending"
+            json={
+                "url":url
+            },
+
+            timeout=20
+        )
+
+        data = response.json()
+
+        print(data)
+
+        if(
+
+            "data" in data
+
+            and
+
+            "shortUrl" in data["data"]
+
+        ):
+
+            return data["data"]["shortUrl"]
+
+        return url
+
+    except Exception as e:
+
+        print(
+            "EARNKARO ERROR:",
+            e
+        )
+
+        return url
 
 # =====================================================
 # CATEGORY
@@ -121,110 +146,97 @@ def detect_store(text):
 
 def detect_category(text):
 
-    lower = text.lower()
+    text = text.lower()
 
-    if any(x in lower for x in [
-        "iphone",
-        "samsung",
-        "realme",
-        "redmi",
-        "mobile"
-    ]):
+    if any(
+
+        word in text
+
+        for word in [
+
+            "iphone",
+            "mobile",
+            "phone",
+            "samsung",
+            "redmi",
+            "realme"
+        ]
+    ):
+
         return "Mobiles"
 
-    elif any(x in lower for x in [
-        "laptop",
-        "macbook",
-        "hp",
-        "dell"
-    ]):
+    elif any(
+
+        word in text
+
+        for word in [
+
+            "laptop",
+            "macbook",
+            "hp",
+            "dell"
+        ]
+    ):
+
         return "Laptops"
 
-    elif any(x in lower for x in [
-        "shoe",
-        "shirt",
-        "fashion"
-    ]):
+    elif any(
+
+        word in text
+
+        for word in [
+
+            "shoe",
+            "shirt",
+            "fashion",
+            "kurta"
+        ]
+    ):
+
         return "Fashion"
 
-    elif any(x in lower for x in [
-        "earbuds",
-        "watch",
-        "speaker"
-    ]):
+    elif any(
+
+        word in text
+
+        for word in [
+
+            "earbuds",
+            "speaker",
+            "tv",
+            "watch"
+        ]
+    ):
+
         return "Electronics"
 
     return "Other"
 
 # =====================================================
-# AI CLEAN CAPTION
+# STORE
 # =====================================================
 
-def clean_caption(text):
+def detect_store(url):
 
-    lines = text.split("\n")
+    url = url.lower()
 
-    cleaned = []
+    if "amazon" in url:
 
-    for line in lines:
+        return "Amazon"
 
-        line = line.strip()
+    elif "flipkart" in url:
 
-        if not line:
-            continue
+        return "Flipkart"
 
-        # REMOVE TELEGRAM LINKS
+    elif "myntra" in url:
 
-        if "t.me/" in line:
-            continue
+        return "Myntra"
 
-        cleaned.append(line)
+    elif "ajio" in url:
 
-    return "\n".join(cleaned[:12])
+        return "Ajio"
 
-# =====================================================
-# TITLE
-# =====================================================
-
-def generate_title(text):
-
-    lines = text.split("\n")
-
-    title = lines[0][:120]
-
-    title = title.replace("🔥","")
-
-    return title.strip()
-
-# =====================================================
-# LOAD EXISTING LINKS
-# =====================================================
-
-existing_links = {
-
-    d.get("main_link","")
-
-    for d in deals
-}
-
-# =====================================================
-# SAVE JSON
-# =====================================================
-
-def save_json():
-
-    with open(
-        JSON_FILE,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        json.dump(
-            deals,
-            f,
-            ensure_ascii=False,
-            indent=2
-        )
+    return "Store"
 
 # =====================================================
 # MAIN
@@ -232,135 +244,221 @@ def save_json():
 
 async def main():
 
-    print("🚀 FETCHING DEALS...")
+    await client.start(
+        session=SESSION_STR
+    )
 
-    await client.start()
+    messages = await client.get_messages(
 
-    print("✅ TELEGRAM CONNECTED")
+        CHANNEL,
 
-    new_count = 0
+        limit=20
+    )
 
-    async for message in client.iter_messages(
-        CHANNEL_USERNAME,
-        limit=MAX_POSTS
-    ):
+    new_deals = deals.copy()
 
-        try:
+    for msg in messages:
 
-            text = message.message or ""
+        if msg.id in existing_ids:
 
-            if not text:
-                continue
+            continue
 
-            urls = re.findall(
-                r'(https?://\S+)',
-                text
+        text = msg.message or ""
+
+        if not text:
+
+            continue
+
+        print(
+            "NEW MESSAGE:",
+            msg.id
+        )
+
+        # =============================================
+        # URLS
+        # =============================================
+
+        urls = re.findall(
+
+            r'https?://\S+',
+
+            text
+        )
+
+        if not urls:
+
+            continue
+
+        # =============================================
+        # TITLE
+        # =============================================
+
+        lines = text.split("\n")
+
+        title = lines[0][:120]
+
+        # =============================================
+        # IMAGE
+        # =============================================
+
+        image_path = ""
+
+        if msg.photo:
+
+            file_path = await msg.download_media(
+
+                file=IMAGES_DIR
             )
 
-            if not urls:
-                continue
+            image_path = file_path
 
-            main_link = urls[0]
+        # =============================================
+        # AFFILIATE LINKS
+        # =============================================
 
-            # DUPLICATE
+        affiliate_links = []
 
-            if main_link in existing_links:
+        for url in urls:
 
-                print("⚠️ DUPLICATE")
+            earn_link = convert_to_earnkaro(
+                url
+            )
 
-                continue
+            affiliate_links.append(
+                earn_link
+            )
 
-            print(f"📩 NEW DEAL {message.id}")
+        # =============================================
+        # SEARCH LINKS
+        # =============================================
 
-            # IMAGE
+        amazon_search = (
 
-            image_path = ""
+            "https://www.amazon.in/s?k="
 
-            if message.photo:
+            +
 
-                try:
+            requests.utils.quote(title)
+        )
 
-                    downloaded = (
-                        await message.download_media()
-                    )
+        flipkart_search = (
 
-                    filename = os.path.basename(
-                        downloaded
-                    )
+            "https://www.flipkart.com/search?q="
 
-                    final_path = os.path.join(
-                        IMAGES_DIR,
-                        filename
-                    )
+            +
 
-                    shutil.move(
-                        downloaded,
-                        final_path
-                    )
+            requests.utils.quote(title)
+        )
 
-                    image_path = (
-                        f"images/{filename}"
-                    )
+        google_search = (
 
-                    print("🖼 IMAGE SAVED")
+            "https://www.google.com/search?q="
 
-                except Exception as e:
+            +
 
-                    print(f"⚠️ IMAGE ERROR: {e}")
+            requests.utils.quote(title)
+        )
 
-            # DATA
+        # =============================================
+        # CONVERT SEARCH LINKS
+        # =============================================
 
-            cleaned_caption = clean_caption(text)
+        amazon_search_aff = convert_to_earnkaro(
+            amazon_search
+        )
 
-            title = generate_title(text)
+        flipkart_search_aff = convert_to_earnkaro(
+            flipkart_search
+        )
 
-            category = detect_category(text)
+        google_search_aff = convert_to_earnkaro(
+            google_search
+        )
 
-            store = detect_store(text)
+        # =============================================
+        # STORE
+        # =============================================
 
-            # SAVE
+        store = detect_store(
+            urls[0]
+        )
 
-            deal = {
+        # =============================================
+        # CATEGORY
+        # =============================================
 
-                "id": message.id,
+        category = detect_category(
+            text
+        )
 
-                "title": title,
+        # =============================================
+        # SAVE
+        # =============================================
 
-                "caption": cleaned_caption,
+        deal = {
 
-                "image": image_path,
+            "message_id":msg.id,
 
-                "main_link": main_link,
+            "title":title,
 
-                "all_links": urls,
+            "caption":text,
 
-                "category": category,
+            "image":image_path,
 
-                "store": store
-            }
+            "category":category,
 
-            deals.insert(0, deal)
+            "store":store,
 
-            existing_links.add(main_link)
+            "all_links":affiliate_links,
 
-            new_count += 1
+            "amazon_search":
+            amazon_search_aff,
 
-        except Exception as e:
+            "flipkart_search":
+            flipkart_search_aff,
 
-            print(f"❌ ERROR: {e}")
+            "google_search":
+            google_search_aff
+        }
 
-    # LIMIT
+        new_deals.insert(
+            0,
+            deal
+        )
 
-    deals[:] = deals[:100]
+    # =============================================
+    # SAVE JSON
+    # =============================================
 
-    save_json()
+    with open(
 
-    print(f"✅ {new_count} NEW DEALS ADDED")
+        DEALS_FILE,
+
+        "w",
+
+        encoding="utf-8"
+
+    ) as f:
+
+        json.dump(
+
+            new_deals,
+
+            f,
+
+            ensure_ascii=False,
+
+            indent=2
+        )
+
+    print(
+        "DEALS UPDATED"
+    )
 
     await client.disconnect()
 
 # =====================================================
+# RUN
+# =====================================================
 
-if __name__ == "__main__":
-
-    asyncio.run(main())
+asyncio.run(main())

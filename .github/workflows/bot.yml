@@ -1,14 +1,36 @@
+# =====================================================
+# FILE: .github/workflows/bot.yml
+# =====================================================
+
 name: Telegram Deal Bot
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
+# =====================================================
+# TRIGGERS
+# =====================================================
+
 on:
 
+  # MANUAL RUN
   workflow_dispatch:
 
+  # AUTO RUN EVERY 5 MINUTES
   schedule:
     - cron: '*/5 * * * *'
+
+# =====================================================
+# PREVENT OVERLAPPING WORKFLOWS
+# =====================================================
+
+concurrency:
+  group: telegram-deals
+  cancel-in-progress: true
+
+# =====================================================
+# JOBS
+# =====================================================
 
 jobs:
 
@@ -16,31 +38,82 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    timeout-minutes: 10
+
     permissions:
       contents: write
 
     steps:
 
+      # =============================================
+      # CHECKOUT REPOSITORY
+      # =============================================
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+        with:
+          fetch-depth: 0
+
+      # =============================================
+      # SETUP PYTHON
+      # =============================================
+
       - name: Setup Python
         uses: actions/setup-python@v5
+
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
+      # =============================================
+      # DEBUG FILES
+      # =============================================
+
+      - name: Debug Repository
+
         run: |
+
+          echo "===== REPOSITORY FILES ====="
+
+          ls -R
+
+          echo "===== REQUIREMENTS ====="
+
+          cat backend/requirements.txt
+
+      # =============================================
+      # INSTALL DEPENDENCIES
+      # =============================================
+
+      - name: Install Dependencies
+
+        run: |
+
+          python -m pip install --upgrade pip
+
           pip install -r backend/requirements.txt
 
-      - name: Run Telegram Fetcher
+      # =============================================
+      # RUN TELEGRAM BOT
+      # =============================================
+
+      - name: Run Telegram Bot
+
         env:
+
           API_ID: ${{ secrets.API_ID }}
+
           API_HASH: ${{ secrets.API_HASH }}
+
           SESSION_STR: ${{ secrets.SESSION_STR }}
 
         run: |
+
           python -u backend/telegram_bot.py
+
+      # =============================================
+      # COMMIT & PUSH CHANGES
+      # =============================================
 
       - name: Commit Updated Deals
 
@@ -50,8 +123,37 @@ jobs:
 
           git config --global user.email "actions@github.com"
 
-          git add .
+          # ALWAYS SYNC LATEST REMOTE
 
-          git commit -m "auto update deals" || echo "No changes"
+          git fetch origin
 
-          git push
+          git checkout main
+
+          git reset --hard origin/main
+
+          # KEEP GENERATED FILES
+
+          git add deals.json images/ || true
+
+          # CHECK FOR CHANGES
+
+          git diff --cached --quiet && echo "No changes" && exit 0
+
+          # COMMIT
+
+          git commit -m "auto update deals"
+
+          # SAFE PUSH WITH RETRY
+
+          for i in 1 2 3
+          do
+
+            git pull --rebase origin main || true
+
+            git push origin main && break
+
+            echo "Push failed. Retrying..."
+
+            sleep 5
+
+          done

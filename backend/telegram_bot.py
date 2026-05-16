@@ -25,17 +25,17 @@ CHANNEL_USERNAME = "@best_dealsareon"
 
 BASE_DIR = os.path.dirname(__file__)
 
-FRONTEND_DIR = os.path.abspath(
-    os.path.join(BASE_DIR, "../frontend")
+ROOT_DIR = os.path.abspath(
+    os.path.join(BASE_DIR, "..")
 )
 
 JSON_FILE = os.path.join(
-    FRONTEND_DIR,
+    ROOT_DIR,
     "deals.json"
 )
 
 IMAGES_DIR = os.path.join(
-    FRONTEND_DIR,
+    ROOT_DIR,
     "images"
 )
 
@@ -53,7 +53,7 @@ deals = []
 
 try:
 
-    # Create JSON file if missing
+    # Create JSON if missing
     if not os.path.exists(JSON_FILE):
 
         with open(
@@ -115,7 +115,7 @@ client = TelegramClient(
 )
 
 # =====================================================
-# EXTRACT PRICES
+# PRICE EXTRACTION
 # =====================================================
 
 def extract_prices(text):
@@ -181,7 +181,7 @@ def extract_prices(text):
     )
 
 # =====================================================
-# DETECT STORE
+# STORE DETECTION
 # =====================================================
 
 def detect_store(text):
@@ -444,7 +444,6 @@ async def main():
             flush=True
         )
 
-        # Keep alive forever
         await client.run_until_disconnected()
 
     except Exception as e:

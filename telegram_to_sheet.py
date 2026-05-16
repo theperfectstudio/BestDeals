@@ -1,5 +1,4 @@
 import time
-import asyncio  # અસિંક્રોનસ લૂપ માટે જરૂરી
 import re
 import os
 import json
@@ -12,16 +11,16 @@ from oauth2client.service_account import ServiceAccountCredentials
 API_ID = int(os.getenv('API_ID', '35795778'))
 API_HASH = os.getenv('API_HASH', 'd4256dd43d5184feed3f3680e5f3812f')
 SESSION_STR = os.getenv('SESSION_STR')
-CREDENTIALS_JSON = os.getenv('CREDENTIALS_JSON')
+CREDENTIALS_JSON = os.getenv('CREDENTIALS_JSON') # Google Sheet Key
 CHANNEL_USERNAME = '@best_dealsareon' 
 SHEET_NAME = "EarnKaro_Deals"
 
-# --- ૨. ગૂગલ શીટ કનેક્શન ---
+# --- ૨. ગૂગલ શીટ કનેક્શન (સુરક્ષિત રીત) ---
 def connect_sheet():
     try:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
         
-        # GitHub સિક્રેટના JSON ટેક્સ્ટને ડિક્શનરીમાં ફેરવવું
+        # GitHub સિક્રેટમાંથી JSON ડેટા લોડ કરવો
         creds_dict = json.loads(CREDENTIALS_JSON)
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
         
@@ -49,7 +48,7 @@ def extract_prices_and_discount(text):
         
     return old_price, new_price, discount_text
 
-# --- ૪. ટેલિગ્રામ ક્લાયન્ટ સેટઅપ (StringSession) ---
+# --- ૪. ટેલિગ્રામ ક્લાયન્ટ સેટઅપ (StringSession સાથે) ---
 client = TelegramClient(StringSession(SESSION_STR), API_ID, API_HASH)
 
 @client.on(events.NewMessage(chats=CHANNEL_USERNAME))
@@ -57,7 +56,7 @@ async def handler(event):
     msg_text = event.message.message
     if not msg_text: return
 
-    print(f"\n📩 નવી પોસ્ટ મળી, એનાલિસિસ ચાલુ...")
+    print(f"\n📩 નવી પોસ્ટ એનાલિસિસ...")
     urls = re.findall(r'(https?://\S+)', msg_text)
     
     if urls:
@@ -71,18 +70,11 @@ async def handler(event):
             try:
                 timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
                 sheet.append_row([timestamp, title, image_url, old_p, new_p, discount, profit_link])
-                print(f"✅ શીટમાં સેવ થયું: {title}")
+                print(f"✅ સેવ થયું: {title}")
             except Exception as e:
                 print(f"❌ Sheet Update Error: {e}")
 
-# --- ૫. રન (Always Live Infinite Loop) ---
-async def main():
-    print(f"🚀 GitHub Action Bot Started & Listening to {CHANNEL_USERNAME}...")
-    await client.start()
-    
-    # બોટને સતત બેકગ્રાઉન્ડમાં લાઈવ રાખવા માટેનો લૂપ
-    while True:
-        await asyncio.sleep(10) 
-
+# --- ૫. રન ---
+print(f"🚀 GitHub Action Bot Started...")
 with client:
-    client.loop.run_until_complete(main())
+    client.run_until_disconnected()

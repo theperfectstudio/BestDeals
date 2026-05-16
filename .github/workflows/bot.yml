@@ -50,6 +50,7 @@ jobs:
       # =============================================
 
       - name: Checkout Repository
+
         uses: actions/checkout@v4
 
         with:
@@ -60,20 +61,21 @@ jobs:
       # =============================================
 
       - name: Setup Python
+
         uses: actions/setup-python@v5
 
         with:
           python-version: '3.10'
 
       # =============================================
-      # DEBUG FILES
+      # DEBUG REPOSITORY
       # =============================================
 
       - name: Debug Repository
 
         run: |
 
-          echo "===== REPOSITORY FILES ====="
+          echo "===== ROOT FILES ====="
 
           ls -R
 
@@ -92,6 +94,10 @@ jobs:
           python -m pip install --upgrade pip
 
           pip install -r backend/requirements.txt
+
+          echo "===== INSTALLED PACKAGES ====="
+
+          pip list
 
       # =============================================
       # RUN TELEGRAM BOT
@@ -112,30 +118,32 @@ jobs:
           python -u backend/telegram_bot.py
 
       # =============================================
-      # COMMIT & PUSH CHANGES
+      # COMMIT & PUSH UPDATED FILES
       # =============================================
 
       - name: Commit Updated Deals
 
         run: |
 
+          # CONFIGURE GIT
+
           git config --global user.name "github-actions"
 
           git config --global user.email "actions@github.com"
 
-          # ALWAYS SYNC LATEST REMOTE
+          # FETCH LATEST REMOTE
 
-          git fetch origin
+          git fetch origin main
 
-          git checkout main
+          # SAFE REBASE
 
-          git reset --hard origin/main
+          git pull --rebase origin main || true
 
-          # KEEP GENERATED FILES
+          # ADD GENERATED FILES
 
           git add deals.json images/ || true
 
-          # CHECK FOR CHANGES
+          # CHECK IF CHANGES EXIST
 
           git diff --cached --quiet && echo "No changes" && exit 0
 
@@ -143,17 +151,17 @@ jobs:
 
           git commit -m "auto update deals"
 
-          # SAFE PUSH WITH RETRY
+          # PUSH WITH AUTO RETRY
 
           for i in 1 2 3
           do
-
-            git pull --rebase origin main || true
 
             git push origin main && break
 
             echo "Push failed. Retrying..."
 
             sleep 5
+
+            git pull --rebase origin main || true
 
           done

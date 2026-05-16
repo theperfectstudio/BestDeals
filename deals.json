@@ -1,1 +1,60 @@
-[]
+[
+  {
+    "id": 12688,
+    "title": "Flipkart: Sasa Lele Sale Best Mobile Deals Under 15k",
+    "caption": "Flipkart: Sasa Lele Sale Best Mobile Deals Under 15k\n\nOppo K14x: https://fkrt.cc/haUbxsx\nAi+ Pulse Nova 2: https://fkrt.cc/hG38Dtm\nVivo T4 Lite: https://fkrt.cc/h18r0GE\nVivo P4 Lite: https://fkrt.cc/hmfAWdD\n\n• Get Upto 10% Off Using SBI CARD",
+    "image": "images/photo_2026-05-16_09-31-49.jpg",
+    "old_price": 0,
+    "new_price": 0,
+    "discount": "0% OFF",
+    "main_link": "https://fkrt.cc/haUbxsx",
+    "all_links": [
+      "https://fkrt.cc/haUbxsx",
+      "https://fkrt.cc/hG38Dtm",
+      "https://fkrt.cc/h18r0GE",
+      "https://fkrt.cc/hmfAWdD"
+    ],
+    "store": "Flipkart",
+    "category": "Mobiles",
+    "live_price": ""
+  },
+  {
+    "id": 12692,
+    "title": "Shakti Pressure Washer @4249",
+    "caption": "Shakti Pressure Washer @4249\n\nhttps://fkrt.cc/hVNi8VV\n\nShop Other Car & Bike Accessories Up to 70% Off\n\nhttps://fkrt.cc/hTKVaAC",
+    "image": "images/photo_2026-05-16_10-05-16.jpg",
+    "old_price": 0,
+    "new_price": 0,
+    "discount": "0% OFF",
+    "main_link": "https://fkrt.cc/hVNi8VV",
+    "all_links": [
+      "https://fkrt.cc/hVNi8VV",
+      "https://fkrt.cc/hTKVaAC"
+    ],
+    "store": "Store",
+    "category": "Other",
+    "live_price": ""
+  },
+  {
+    "id": 12693,
+    "title": "Ajio Loot : Upto 80% Off On Buda Jeans Co Clothing. ",
+    "caption": "Ajio Loot : Upto 80% Off On Buda Jeans Co Clothing. \n\nT-Shirt : https://ajiio.in/JF5nH7v\nTrousers : https://ajiio.in/Sd5Fr3U\nShirt : https://ajiio.in/aTGR6rp\nJeans : https://ajiio.in/ODDs0dY\nSweatshirts & Sweaters : https://ajiio.in/jcoN3PO\nJackets : https://ajiio.in/ejrLZXv\nTrackpants & Shorts : https://ajiio.in/KnOy9dY",
+    "image": "images/photo_2026-05-16_10-35-30.jpg",
+    "old_price": 0,
+    "new_price": 0,
+    "discount": "0% OFF",
+    "main_link": "https://ajiio.in/JF5nH7v",
+    "all_links": [
+      "https://ajiio.in/JF5nH7v",
+      "https://ajiio.in/Sd5Fr3U",
+      "https://ajiio.in/aTGR6rp",
+      "https://ajiio.in/ODDs0dY",
+      "https://ajiio.in/jcoN3PO",
+      "https://ajiio.in/ejrLZXv",
+      "https://ajiio.in/KnOy9dY"
+    ],
+    "store": "Ajio",
+    "category": "Fashion",
+    "live_price": ""
+  }
+]

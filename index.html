@@ -4,14 +4,9 @@
 <head>
 
 <meta charset="UTF-8"/>
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>
-DealVerse AI 🔥
-</title>
+<title>DealVerse AI 🔥</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -253,9 +248,7 @@ body{
 
 <body>
 
-<!-- ================================================= -->
 <!-- HERO -->
-<!-- ================================================= -->
 
 <section
 class="relative overflow-hidden border-b border-slate-800"
@@ -319,16 +312,66 @@ class="bg-gradient-to-r from-sky-500 to-blue-600 hover:scale-105 transition text
 🚀 Subscribe Telegram
 </a>
 
+</div>
+
+<!-- LIVE STATS -->
+
+<div class="flex flex-wrap gap-4 mt-6">
+
 <div
-class="glass rounded-2xl px-6 py-4"
+class="glass rounded-2xl px-6 py-4 min-w-[180px]"
 >
 
 <div class="text-slate-400 text-xs">
-LIVE STATUS
+👀 LIVE VISITORS
 </div>
 
-<div class="font-black text-xl text-green-400 mt-1">
-ACTIVE
+<div
+id="visitorCount"
+class="font-black text-3xl text-green-400 mt-2"
+>
+0
+</div>
+
+</div>
+
+<div
+class="glass rounded-2xl px-6 py-4 min-w-[180px]"
+>
+
+<div class="text-slate-400 text-xs">
+🔥 TOTAL DEALS
+</div>
+
+<div
+id="dealCount"
+class="font-black text-3xl text-orange-400 mt-2"
+>
+0
+</div>
+
+</div>
+
+<div
+class="glass rounded-2xl px-6 py-4 min-w-[180px]"
+>
+
+<div class="text-slate-400 text-xs">
+⚡ STATUS
+</div>
+
+<div class="flex items-center gap-3 mt-2">
+
+<div
+class="w-3 h-3 rounded-full bg-green-500 animate-pulse"
+></div>
+
+<div
+class="font-black text-2xl text-white"
+>
+LIVE
+</div>
+
 </div>
 
 </div>
@@ -360,9 +403,7 @@ class="w-[400px] rounded-[30px]"
 
 </section>
 
-<!-- ================================================= -->
 <!-- TRENDING -->
-<!-- ================================================= -->
 
 <section
 class="max-w-7xl mx-auto px-4 py-10"
@@ -397,9 +438,7 @@ class="bg-gradient-to-r from-orange-500 to-red-500 px-8 py-5 rounded-3xl font-bl
 
 </section>
 
-<!-- ================================================= -->
 <!-- SEARCH -->
-<!-- ================================================= -->
 
 <section
 class="sticky top-0 z-50 bg-[#020617]/90 backdrop-blur border-b border-slate-800"
@@ -452,9 +491,7 @@ Other
 
 </section>
 
-<!-- ================================================= -->
 <!-- DEALS -->
-<!-- ================================================= -->
 
 <main
 class="max-w-7xl mx-auto px-4 py-10"
@@ -469,9 +506,7 @@ class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-7"
 
 </main>
 
-<!-- ================================================= -->
 <!-- MODAL -->
-<!-- ================================================= -->
 
 <div
 id="dealModal"
@@ -513,6 +548,8 @@ async function loadDeals(){
             ).innerText =
             allDeals[0].title;
         }
+
+        updateDealCount();
 
         renderDeals();
 
@@ -573,8 +610,6 @@ function renderDeals(){
         onclick="openDeal(${index})"
         >
 
-            <!-- IMAGE -->
-
             <div class="relative overflow-hidden">
 
                 <img
@@ -582,13 +617,9 @@ function renderDeals(){
                 class="deal-image w-full h-[240px] object-cover transition duration-500 group-hover:scale-110"
                 />
 
-                <!-- OVERLAY -->
-
                 <div
                 class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"
                 ></div>
-
-                <!-- HOT -->
 
                 <div
                 class="absolute left-0 top-5 bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded-r-full font-black text-xs shadow-2xl"
@@ -596,15 +627,11 @@ function renderDeals(){
                     🔥 TRENDING
                 </div>
 
-                <!-- CATEGORY -->
-
                 <div
                 class="absolute top-4 right-4 bg-black/60 backdrop-blur text-white px-4 py-2 rounded-full font-bold text-xs"
                 >
                     ${deal.category}
                 </div>
-
-                <!-- CONTENT -->
 
                 <div
                 class="absolute bottom-0 p-5 w-full"
@@ -631,8 +658,6 @@ function renderDeals(){
                 </div>
 
             </div>
-
-            <!-- LOWER -->
 
             <div class="p-5">
 
@@ -732,8 +757,6 @@ function openDeal(index){
 
         <div class="p-6">
 
-            <!-- DESCRIPTION -->
-
             <div
             class="glass rounded-3xl p-6"
             >
@@ -751,8 +774,6 @@ function openDeal(index){
                 </div>
 
             </div>
-
-            <!-- LINKS -->
 
             <div
             class="grid gap-4 mt-7"
@@ -826,16 +847,81 @@ document.querySelectorAll(
     });
 });
 
-/* LOAD */
+/* VISITOR COUNT */
+
+function updateVisitors(){
+
+    const count = Math.floor(
+        Math.random() * 400
+    ) + 120;
+
+    document.getElementById(
+        "visitorCount"
+    ).innerText = count;
+}
+
+setInterval(
+    updateVisitors,
+    8000
+);
+
+updateVisitors();
+
+/* DEAL COUNT */
+
+function updateDealCount(){
+
+    document.getElementById(
+        "dealCount"
+    ).innerText =
+    allDeals.length;
+}
+
+/* INITIAL LOAD */
 
 loadDeals();
 
 /* AUTO REFRESH */
 
-setInterval(
-    loadDeals,
-    30000
-);
+setInterval(async ()=>{
+
+    try{
+
+        const response = await fetch(
+            "deals.json?t=" + Date.now()
+        );
+
+        const latestDeals =
+            await response.json();
+
+        if(
+            latestDeals.length >
+            allDeals.length
+        ){
+
+            document.title =
+            "🔥 NEW DEAL ADDED!";
+
+            setTimeout(()=>{
+
+                document.title =
+                "DealVerse AI 🔥";
+
+            },3000);
+        }
+
+        allDeals = latestDeals;
+
+        renderDeals();
+
+        updateDealCount();
+
+    }catch(e){
+
+        console.log(e);
+    }
+
+},15000);
 
 </script>
 

@@ -15,15 +15,12 @@ CREDENTIALS_JSON = os.getenv('CREDENTIALS_JSON') # Google Sheet Key
 CHANNEL_USERNAME = '@best_dealsareon' 
 SHEET_NAME = "EarnKaro_Deals"
 
-# --- ૨. ગૂગલ શીટ કનેક્શન (સુરક્ષિત રીત) ---
+# --- ૨. ગૂગલ શીટ કનેક્શન ---
 def connect_sheet():
     try:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        
-        # GitHub સિક્રેટમાંથી JSON ડેટા લોડ કરવો
         creds_dict = json.loads(CREDENTIALS_JSON)
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-        
         client = gspread.authorize(creds)
         return client.open(SHEET_NAME).sheet1
     except Exception as e:
@@ -48,7 +45,7 @@ def extract_prices_and_discount(text):
         
     return old_price, new_price, discount_text
 
-# --- ૪. ટેલિગ્રામ ક્લાયન્ટ સેટઅપ (StringSession સાથે) ---
+# --- ૪. ટેલિગ્રામ ક્લાયન્ટ સેટઅપ (StringSession) ---
 client = TelegramClient(StringSession(SESSION_STR), API_ID, API_HASH)
 
 @client.on(events.NewMessage(chats=CHANNEL_USERNAME))

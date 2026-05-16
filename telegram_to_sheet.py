@@ -9,24 +9,20 @@ from telethon import TelegramClient, events
 from telethon.sessions import StringSession
 from oauth2client.service_account import ServiceAccountCredentials
 
-# =========================================================
-# 1. GitHub Secrets
-# =========================================================
-
-API_ID = int(os.getenv("API_ID", "35795778"))
-API_HASH = os.getenv("API_HASH", "d4256dd43d5184feed3f3680e5f3812f")
+API_ID = int(os.getenv("API_ID"))
+API_HASH = os.getenv("API_HASH")
 SESSION_STR = os.getenv("SESSION_STR")
 CREDENTIALS_JSON = os.getenv("CREDENTIALS_JSON")
 
 CHANNEL_USERNAME = "@best_dealsareon"
 SHEET_NAME = "EarnKaro_Deals"
 
-# =========================================================
-# 2. Google Sheet Connection
-# =========================================================
+# =====================================================
 
 def connect_sheet():
+
     try:
+
         scope = [
             "https://spreadsheets.google.com/feeds",
             "https://www.googleapis.com/auth/drive"
@@ -39,21 +35,19 @@ def connect_sheet():
             scope
         )
 
-        gspread_client = gspread.authorize(creds)
-
-        sheet = gspread_client.open(SHEET_NAME).sheet1
+        client = gspread.authorize(creds)
 
         print("✅ Google Sheet Connected")
 
-        return sheet
+        return client.open(SHEET_NAME).sheet1
 
     except Exception as e:
-        print(f"❌ Sheet Connection Error: {e}")
+
+        print(f"❌ Sheet Error: {e}")
+
         return None
 
-# =========================================================
-# 3. Extract Price & Discount
-# =========================================================
+# =====================================================
 
 def extract_prices_and_discount(text):
 
@@ -65,7 +59,7 @@ def extract_prices_and_discount(text):
 
     old_price = 0
     new_price = 0
-    discount_text = "0%"
+    discount = "0%"
 
     try:
 
@@ -77,13 +71,11 @@ def extract_prices_and_discount(text):
             old_price = max(p1, p2)
             new_price = min(p1, p2)
 
-            if old_price > 0:
+            discount_val = (
+                (old_price - new_price) / old_price
+            ) * 100
 
-                discount_val = (
-                    (old_price - new_price) / old_price
-                ) * 100
-
-                discount_text = f"{round(discount_val)}%"
+            discount = f"{round(discount_val)}%"
 
         elif len(prices) == 1:
 
@@ -91,23 +83,14 @@ def extract_prices_and_discount(text):
             old_price = new_price
 
     except Exception as e:
-        print(f"❌ Price Extraction Error: {e}")
 
-    return old_price, new_price, discount_text
+        print(f"❌ Price Error: {e}")
 
-# =========================================================
-# 4. Validate Secrets
-# =========================================================
+    return old_price, new_price, discount
 
-if not SESSION_STR:
-    raise Exception("❌ SESSION_STR Secret Missing")
+# =====================================================
 
-if not CREDENTIALS_JSON:
-    raise Exception("❌ CREDENTIALS_JSON Secret Missing")
-
-# =========================================================
-# 5. Telegram Client
-# =========================================================
+sheet = connect_sheet()
 
 client = TelegramClient(
     StringSession(SESSION_STR),
@@ -115,15 +98,7 @@ client = TelegramClient(
     API_HASH
 )
 
-# =========================================================
-# 6. Connect Google Sheet
-# =========================================================
-
-sheet = connect_sheet()
-
-# =========================================================
-# 7. Telegram Message Handler
-# =========================================================
+# =====================================================
 
 @client.on(events.NewMessage(chats=CHANNEL_USERNAME))
 async def handler(event):
@@ -135,36 +110,30 @@ async def handler(event):
         if not msg_text:
             return
 
-        print("\n📩 New Telegram Post Detected")
+        print("📩 New Deal Received")
 
-        # URL Extract
         urls = re.findall(r'(https?://\S+)', msg_text)
 
         if not urls:
-            print("⚠️ No URL Found")
             return
 
-        # Main Affiliate Link
         profit_link = urls[0]
 
-        # Optional Image URL
         image_url = (
             urls[1]
             if len(urls) > 1
-            else "No Image URL"
+            else "No Image"
         )
 
-        # First Line as Title
         title = msg_text.split("\n")[0][:150]
 
-        # Extract Prices
-        old_price, new_price, discount = extract_prices_and_discount(msg_text)
+        old_price, new_price, discount = (
+            extract_prices_and_discount(msg_text)
+        )
 
-        # Timestamp
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
-        # Final Row
-        row_data = [
+        row = [
             timestamp,
             title,
             image_url,
@@ -174,54 +143,30 @@ async def handler(event):
             profit_link
         ]
 
-        # Save to Google Sheet
         if sheet:
 
-            sheet.append_row(row_data)
+            sheet.append_row(row)
 
-            print("✅ Deal Saved Successfully")
-            print(f"📝 Title: {title}")
-            print(f"💰 Price: ₹{new_price}")
-            print(f"🏷️ Discount: {discount}")
-
-        else:
-            print("❌ Google Sheet Not Connected")
+            print("✅ Saved:", title)
 
     except Exception as e:
+
         print(f"❌ Handler Error: {e}")
 
-# =========================================================
-# 8. Main Function
-# =========================================================
+# =====================================================
 
 async def main():
 
-    print(
-        f"🚀 Bot Started & Listening to {CHANNEL_USERNAME}..."
-    )
+    print(f"🚀 Listening to {CHANNEL_USERNAME}")
 
-    # Telegram Login
     await client.start()
 
-    print("✅ Telegram Client Connected")
+    print("✅ Telegram Connected")
 
-    # Keep Bot Running Forever
     await client.run_until_disconnected()
 
-# =========================================================
-# 9. Run Application
-# =========================================================
+# =====================================================
 
 if __name__ == "__main__":
 
-    try:
-
-        asyncio.run(main())
-
-    except KeyboardInterrupt:
-
-        print("🛑 Bot Stopped")
-
-    except Exception as e:
-
-        print(f"❌ Main Error: {e}")
+    asyncio.run(main())

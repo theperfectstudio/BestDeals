@@ -1,5 +1,8 @@
 name: Telegram Deal Bot
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 on:
   workflow_dispatch:
 
@@ -28,7 +31,7 @@ jobs:
         run: |
           pip install -r backend/requirements.txt
 
-      - name: Run Bot
+      - name: Run Telegram Bot
         env:
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}

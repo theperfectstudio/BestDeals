@@ -32,7 +32,7 @@ app.add_middleware(
 # EARNKARO TOKEN
 # =====================================================
 
-EARNKARO_TOKEN = "YOUR_EARNKARO_JWT_TOKEN"
+EARNKARO_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzhiZDVhODYxNWQyZmQ3MDZkZjA5YzkiLCJlYXJua2FybyI6IjU2Njg5MiIsImlhdCI6MTc3ODgzMjI2OX0.S0aKJ7VAl1rQkhBu7-vCTsX5lvsYQz6WTn-4gw43ob0"
 
 # =====================================================
 # PATHS

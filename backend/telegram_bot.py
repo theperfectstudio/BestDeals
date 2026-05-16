@@ -53,7 +53,7 @@ deals = []
 
 try:
 
-    # create file if missing
+    # Create JSON file if missing
     if not os.path.exists(JSON_FILE):
 
         with open(
@@ -64,7 +64,7 @@ try:
 
             f.write("[]")
 
-    # read safely
+    # Read JSON safely
     with open(
         JSON_FILE,
         "r",
@@ -83,10 +83,14 @@ try:
 
 except Exception as e:
 
-    print(f"⚠️ JSON ERROR: {e}", flush=True)
+    print(
+        f"⚠️ JSON ERROR: {e}",
+        flush=True
+    )
 
     deals = []
 
+    # Auto repair JSON
     with open(
         JSON_FILE,
         "w",
@@ -95,7 +99,10 @@ except Exception as e:
 
         f.write("[]")
 
-print("✅ JSON READY", flush=True)
+print(
+    "✅ JSON READY",
+    flush=True
+)
 
 # =====================================================
 # TELEGRAM CLIENT
@@ -108,7 +115,7 @@ client = TelegramClient(
 )
 
 # =====================================================
-# PRICE EXTRACTION
+# EXTRACT PRICES
 # =====================================================
 
 def extract_prices(text):
@@ -120,17 +127,25 @@ def extract_prices(text):
     )
 
     old_price = 0
+
     new_price = 0
+
     discount = "0% OFF"
 
     try:
 
         if len(prices) >= 2:
 
-            p1 = int(prices[0].replace(",", ""))
-            p2 = int(prices[1].replace(",", ""))
+            p1 = int(
+                prices[0].replace(",", "")
+            )
+
+            p2 = int(
+                prices[1].replace(",", "")
+            )
 
             old_price = max(p1, p2)
+
             new_price = min(p1, p2)
 
             if old_price > 0:
@@ -140,7 +155,9 @@ def extract_prices(text):
                     / old_price
                 ) * 100
 
-                discount = f"{round(disc)}% OFF"
+                discount = (
+                    f"{round(disc)}% OFF"
+                )
 
         elif len(prices) == 1:
 
@@ -153,14 +170,18 @@ def extract_prices(text):
     except Exception as e:
 
         print(
-            f"⚠️ Price Extraction Error: {e}",
+            f"⚠️ PRICE ERROR: {e}",
             flush=True
         )
 
-    return old_price, new_price, discount
+    return (
+        old_price,
+        new_price,
+        discount
+    )
 
 # =====================================================
-# STORE DETECTION
+# DETECT STORE
 # =====================================================
 
 def detect_store(text):
@@ -213,7 +234,7 @@ def save_json():
     except Exception as e:
 
         print(
-            f"❌ JSON Save Error: {e}",
+            f"❌ JSON SAVE ERROR: {e}",
             flush=True
         )
 
@@ -221,24 +242,32 @@ def save_json():
 # TELEGRAM MESSAGE HANDLER
 # =====================================================
 
-@client.on(events.NewMessage(chats=CHANNEL_USERNAME))
+@client.on(
+    events.NewMessage(
+        chats=CHANNEL_USERNAME
+    )
+)
+
 async def handler(event):
 
     try:
 
-        text = event.message.message or ""
+        text = (
+            event.message.message
+            or ""
+        )
 
         if not text:
 
             return
 
         print(
-            "\n📩 New Telegram Deal Received",
+            "\n📩 NEW TELEGRAM DEAL",
             flush=True
         )
 
         # =============================================
-        # EXTRACT LINKS
+        # EXTRACT URLS
         # =============================================
 
         urls = re.findall(
@@ -246,21 +275,29 @@ async def handler(event):
             text
         )
 
-        main_link = urls[0] if urls else "#"
+        main_link = (
+            urls[0]
+            if urls
+            else "#"
+        )
 
         # =============================================
         # TITLE
         # =============================================
 
-        title = text.split("\n")[0][:180]
+        title = (
+            text.split("\n")[0][:180]
+        )
 
         # =============================================
         # PRICES
         # =============================================
 
-        old_price, new_price, discount = (
-            extract_prices(text)
-        )
+        (
+            old_price,
+            new_price,
+            discount
+        ) = extract_prices(text)
 
         # =============================================
         # STORE
@@ -278,10 +315,14 @@ async def handler(event):
 
             try:
 
-                downloaded = await event.download_media()
+                downloaded = (
+                    await event.download_media()
+                )
 
-                filename = os.path.basename(
-                    downloaded
+                filename = (
+                    os.path.basename(
+                        downloaded
+                    )
                 )
 
                 final_path = os.path.join(
@@ -294,17 +335,19 @@ async def handler(event):
                     final_path
                 )
 
-                image_path = f"images/{filename}"
+                image_path = (
+                    f"images/{filename}"
+                )
 
                 print(
-                    "🖼 Image Downloaded",
+                    "🖼 IMAGE DOWNLOADED",
                     flush=True
                 )
 
             except Exception as e:
 
                 print(
-                    f"❌ Image Error: {e}",
+                    f"❌ IMAGE ERROR: {e}",
                     flush=True
                 )
 
@@ -348,14 +391,14 @@ async def handler(event):
         save_json()
 
         print(
-            "✅ Deal Saved Successfully",
+            "✅ DEAL SAVED",
             flush=True
         )
 
     except Exception as e:
 
         print(
-            f"❌ Handler Error: {e}",
+            f"❌ HANDLER ERROR: {e}",
             flush=True
         )
 
@@ -368,50 +411,40 @@ async def main():
     try:
 
         print(
-            "🚀 Starting Telegram Bot...",
+            "🚀 BOT STARTING...",
             flush=True
         )
 
         print(
-            "🔌 Connecting To Telegram...",
+            "🔌 CONNECTING TELEGRAM...",
             flush=True
         )
 
-        await client.connect()
+        await client.start()
 
         print(
-            "✅ Telegram Client Connected",
+            "✅ TELEGRAM CONNECTED",
             flush=True
         )
-
-        # SESSION CHECK
-
-        if not await client.is_user_authorized():
-
-            print(
-                "❌ SESSION INVALID",
-                flush=True
-            )
-
-            return
 
         me = await client.get_me()
 
         print(
-            f"👤 Logged In As: {me.first_name}",
+            f"👤 LOGGED IN AS: {me.first_name}",
             flush=True
         )
 
         print(
-            f"📡 Listening To Channel: {CHANNEL_USERNAME}",
+            f"📡 LISTENING TO: {CHANNEL_USERNAME}",
             flush=True
         )
 
         print(
-            "⏳ Waiting For New Messages...",
+            "⏳ WAITING FOR POSTS...",
             flush=True
         )
 
+        # Keep alive forever
         await client.run_until_disconnected()
 
     except Exception as e:

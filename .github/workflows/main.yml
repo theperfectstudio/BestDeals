@@ -1,32 +1,30 @@
-name: Run Telegram To Sheet Bot
+name: Telegram Deal Bot 24/7
 
 on:
   schedule:
-    - cron: '*/10 * * * *' # દર ૧૦ મિનિટે સ્ક્રિપ્ટ રન થશે
-  workflow_dispatch: # મેન્યુઅલી રન કરવા માટે
+    - cron: '0 */6 * * *' # દર ૬ કલાકે એકવાર સેફ્ટી માટે રીસ્ટાર્ટ થશે
+  workflow_dispatch: # મેન્યુઅલ બટન
 
 jobs:
-  build:
+  run-bot:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: symbols/setup-python@v4
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
 
-      - name: Run script
+      - name: Start Bot (Infinite Loop)
         env:
-          # અહીં આપણે સિક્રેટ્સનો ઉપયોગ કરીશું
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}
-          CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}
           SESSION_STR: ${{ secrets.SESSION_STR }}
+          CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}
+        # આ કમાન્ડ બોટને બેકગ્રાઉન્ડમાં સતત ચાલુ રાખશે
         run: python telegram_to_sheet.py

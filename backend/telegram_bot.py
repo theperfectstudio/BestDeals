@@ -1,3 +1,7 @@
+# =====================================================
+# FILE: backend/telegram_bot.py
+# =====================================================
+
 import asyncio
 import os
 import re
@@ -101,7 +105,9 @@ def extract_prices(text):
     )
 
     old_price = 0
+
     new_price = 0
+
     discount = "0% OFF"
 
     try:
@@ -168,6 +174,53 @@ def detect_store(text):
     return "Store"
 
 # =====================================================
+# CATEGORY DETECTION
+# =====================================================
+
+def detect_category(text):
+
+    lower = text.lower()
+
+    if any(word in lower for word in [
+        "mobile",
+        "iphone",
+        "samsung",
+        "redmi",
+        "realme",
+        "vivo",
+        "oppo"
+    ]):
+        return "Mobiles"
+
+    elif any(word in lower for word in [
+        "laptop",
+        "macbook",
+        "lenovo",
+        "hp",
+        "dell"
+    ]):
+        return "Laptops"
+
+    elif any(word in lower for word in [
+        "shirt",
+        "shoe",
+        "jeans",
+        "kurta",
+        "fashion"
+    ]):
+        return "Fashion"
+
+    elif any(word in lower for word in [
+        "watch",
+        "boat",
+        "earbuds",
+        "headphone"
+    ]):
+        return "Electronics"
+
+    return "Other"
+
+# =====================================================
 # SAVE JSON
 # =====================================================
 
@@ -187,7 +240,7 @@ def save_json():
         )
 
 # =====================================================
-# MAIN FETCH SYSTEM
+# MAIN
 # =====================================================
 
 async def main():
@@ -204,13 +257,11 @@ async def main():
         flush=True
     )
 
-    existing_ids = {
+    existing_links = {
 
-        deal["id"]
+        deal.get("main_link", "")
 
         for deal in deals
-
-        if "id" in deal
     }
 
     new_count = 0
@@ -222,24 +273,11 @@ async def main():
 
         try:
 
-            if message.id in existing_ids:
-
-                continue
-
             text = message.message or ""
 
             if not text:
 
                 continue
-
-            print(
-                f"📩 NEW POST: {message.id}",
-                flush=True
-            )
-
-            # =========================================
-            # URLS
-            # =========================================
 
             urls = re.findall(
                 r'(https?://\S+)',
@@ -253,14 +291,24 @@ async def main():
             )
 
             # =========================================
-            # TITLE
+            # SKIP DUPLICATE
             # =========================================
+
+            if main_link in existing_links:
+
+                print(
+                    "⚠️ DUPLICATE SKIPPED",
+                    flush=True
+                )
+
+                continue
+
+            print(
+                f"📩 NEW DEAL: {message.id}",
+                flush=True
+            )
 
             title = text.split("\n")[0][:180]
-
-            # =========================================
-            # PRICES
-            # =========================================
 
             (
                 old_price,
@@ -268,14 +316,12 @@ async def main():
                 discount
             ) = extract_prices(text)
 
-            # =========================================
-            # STORE
-            # =========================================
-
             store = detect_store(text)
 
+            category = detect_category(text)
+
             # =========================================
-            # IMAGE
+            # DOWNLOAD IMAGE
             # =========================================
 
             image_path = ""
@@ -333,10 +379,14 @@ async def main():
 
                 "all_links": urls,
 
-                "store": store
+                "store": store,
+
+                "category": category
             }
 
             deals.insert(0, deal)
+
+            existing_links.add(main_link)
 
             new_count += 1
 
@@ -355,11 +405,6 @@ async def main():
 
     print(
         f"✅ {new_count} NEW DEALS ADDED",
-        flush=True
-    )
-
-    print(
-        "🎉 BOT FINISHED",
         flush=True
     )
 

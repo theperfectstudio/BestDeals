@@ -40,7 +40,7 @@ IMAGES_DIR = os.path.join(
 )
 
 # =====================================================
-# CREATE FOLDERS
+# CREATE REQUIRED FOLDERS
 # =====================================================
 
 os.makedirs(IMAGES_DIR, exist_ok=True)
@@ -53,6 +53,7 @@ deals = []
 
 try:
 
+    # create file if missing
     if not os.path.exists(JSON_FILE):
 
         with open(
@@ -63,6 +64,7 @@ try:
 
             f.write("[]")
 
+    # read safely
     with open(
         JSON_FILE,
         "r",
@@ -81,7 +83,7 @@ try:
 
 except Exception as e:
 
-    print(f"⚠️ JSON ERROR: {e}")
+    print(f"⚠️ JSON ERROR: {e}", flush=True)
 
     deals = []
 
@@ -93,7 +95,7 @@ except Exception as e:
 
         f.write("[]")
 
-print("✅ JSON READY")
+print("✅ JSON READY", flush=True)
 
 # =====================================================
 # TELEGRAM CLIENT
@@ -126,11 +128,9 @@ def extract_prices(text):
         if len(prices) >= 2:
 
             p1 = int(prices[0].replace(",", ""))
-
             p2 = int(prices[1].replace(",", ""))
 
             old_price = max(p1, p2)
-
             new_price = min(p1, p2)
 
             if old_price > 0:
@@ -152,7 +152,10 @@ def extract_prices(text):
 
     except Exception as e:
 
-        print(f"⚠️ Price Extraction Error: {e}")
+        print(
+            f"⚠️ Price Extraction Error: {e}",
+            flush=True
+        )
 
     return old_price, new_price, discount
 
@@ -202,14 +205,20 @@ def save_json():
                 indent=2
             )
 
-        print("✅ deals.json Updated")
+        print(
+            "✅ deals.json Updated",
+            flush=True
+        )
 
     except Exception as e:
 
-        print(f"❌ JSON Save Error: {e}")
+        print(
+            f"❌ JSON Save Error: {e}",
+            flush=True
+        )
 
 # =====================================================
-# MESSAGE HANDLER
+# TELEGRAM MESSAGE HANDLER
 # =====================================================
 
 @client.on(events.NewMessage(chats=CHANNEL_USERNAME))
@@ -223,14 +232,17 @@ async def handler(event):
 
             return
 
-        print("\n📩 New Telegram Deal Received")
+        print(
+            "\n📩 New Telegram Deal Received",
+            flush=True
+        )
 
         # =============================================
         # EXTRACT LINKS
         # =============================================
 
         urls = re.findall(
-            r'(https?://\\S+)',
+            r'(https?://\S+)',
             text
         )
 
@@ -243,7 +255,7 @@ async def handler(event):
         title = text.split("\n")[0][:180]
 
         # =============================================
-        # PRICE
+        # PRICES
         # =============================================
 
         old_price, new_price, discount = (
@@ -284,11 +296,17 @@ async def handler(event):
 
                 image_path = f"images/{filename}"
 
-                print("🖼 Image Downloaded")
+                print(
+                    "🖼 Image Downloaded",
+                    flush=True
+                )
 
             except Exception as e:
 
-                print(f"❌ Image Error: {e}")
+                print(
+                    f"❌ Image Error: {e}",
+                    flush=True
+                )
 
         # =============================================
         # CREATE DEAL OBJECT
@@ -315,7 +333,6 @@ async def handler(event):
             "all_links": urls,
 
             "store": store
-
         }
 
         # =============================================
@@ -330,11 +347,17 @@ async def handler(event):
 
         save_json()
 
-        print("✅ Deal Saved Successfully")
+        print(
+            "✅ Deal Saved Successfully",
+            flush=True
+        )
 
     except Exception as e:
 
-        print(f"❌ Handler Error: {e}")
+        print(
+            f"❌ Handler Error: {e}",
+            flush=True
+        )
 
 # =====================================================
 # MAIN
@@ -344,30 +367,62 @@ async def main():
 
     try:
 
-        print("🚀 Starting Telegram Bot...")
+        print(
+            "🚀 Starting Telegram Bot...",
+            flush=True
+        )
 
-        print("🔌 Connecting To Telegram...")
+        print(
+            "🔌 Connecting To Telegram...",
+            flush=True
+        )
 
-        await client.start()
+        await client.connect()
 
-        print("✅ Telegram Connected Successfully")
+        print(
+            "✅ Telegram Client Connected",
+            flush=True
+        )
+
+        # SESSION CHECK
+
+        if not await client.is_user_authorized():
+
+            print(
+                "❌ SESSION INVALID",
+                flush=True
+            )
+
+            return
 
         me = await client.get_me()
 
-        print(f"👤 Logged In As: {me.first_name}")
+        print(
+            f"👤 Logged In As: {me.first_name}",
+            flush=True
+        )
 
-        print(f"📡 Listening To Channel: {CHANNEL_USERNAME}")
+        print(
+            f"📡 Listening To Channel: {CHANNEL_USERNAME}",
+            flush=True
+        )
 
-        print("⏳ Waiting For New Messages...")
+        print(
+            "⏳ Waiting For New Messages...",
+            flush=True
+        )
 
         await client.run_until_disconnected()
 
     except Exception as e:
 
-        print(f"❌ MAIN ERROR: {e}")
+        print(
+            f"❌ MAIN ERROR: {e}",
+            flush=True
+        )
 
 # =====================================================
-# START
+# START APP
 # =====================================================
 
 if __name__ == "__main__":

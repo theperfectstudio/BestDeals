@@ -1,25 +1,123 @@
+# =====================================================
+# FILE: .github/workflows/bot.yml
+# =====================================================
+
+name: Telegram Deal Bot
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+# =====================================================
+# TRIGGERS
+# =====================================================
+
+on:
+
+  workflow_dispatch:
+
+  schedule:
+    - cron: '*/5 * * * *'
+
+# =====================================================
+# PREVENT OVERLAPPING WORKFLOWS
+# =====================================================
+
+concurrency:
+  group: telegram-deals
+  cancel-in-progress: true
+
+# =====================================================
+# JOBS
+# =====================================================
+
+jobs:
+
+  run-bot:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+
+      # =============================================
+      # CHECKOUT REPOSITORY
+      # =============================================
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # =============================================
+      # SETUP PYTHON
+      # =============================================
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+
+        with:
+          python-version: '3.10'
+
+      # =============================================
+      # INSTALL DEPENDENCIES
+      # =============================================
+
+      - name: Install Dependencies
+
+        run: |
+
+          pip install -r backend/requirements.txt
+
+      # =============================================
+      # RUN TELEGRAM BOT
+      # =============================================
+
+      - name: Run Telegram Fetcher
+
+        env:
+
+          API_ID: ${{ secrets.API_ID }}
+
+          API_HASH: ${{ secrets.API_HASH }}
+
+          SESSION_STR: ${{ secrets.SESSION_STR }}
+
+        run: |
+
+          python -u backend/telegram_bot.py
+
+      # =============================================
+      # COMMIT & PUSH UPDATED FILES
+      # =============================================
+
       - name: Commit Updated Deals
 
         run: |
+
+          # CONFIGURE GIT
 
           git config --global user.name "github-actions"
 
           git config --global user.email "actions@github.com"
 
-          # HARD RESET
+          # RESET ANY CONFLICTED STATE
+
           git reset --hard
 
-          # CLEAN FILES
           git clean -fd
 
-          # FETCH LATEST
+          # FETCH LATEST REMOTE CHANGES
+
           git pull origin main --rebase
 
-          # ADD FILES
+          # ADD UPDATED FILES
+
           git add .
 
-          # COMMIT
+          # CREATE COMMIT IF CHANGES EXIST
+
           git commit -m "auto update deals" || echo "No changes"
 
-          # PUSH
+          # PUSH TO GITHUB
+
           git push origin main

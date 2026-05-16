@@ -3,10 +3,15 @@
 
 <head>
 
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8"/>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+/>
 
-<title>DealVerse 🔥</title>
+<title>
+    DealVerse 🔥
+</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -26,7 +31,7 @@ body{
     background:
     radial-gradient(circle at top left,#2563eb22,transparent 25%),
     radial-gradient(circle at bottom right,#f9731622,transparent 25%),
-    #0b1120;
+    #020617;
 
     overflow-x:hidden;
 }
@@ -57,13 +62,13 @@ body{
 
 .category-btn{
 
-    padding:12px 22px;
+    padding:10px 18px;
 
     border-radius:999px;
 
     background:#111827;
 
-    border:1px solid #1f2937;
+    border:1px solid #1e293b;
 
     color:white;
 
@@ -72,6 +77,8 @@ body{
     font-weight:600;
 
     white-space:nowrap;
+
+    font-size:14px;
 }
 
 .category-btn:hover{
@@ -100,7 +107,7 @@ body{
 
     overflow:hidden;
 
-    border-radius:32px;
+    border-radius:28px;
 
     background:#111827;
 
@@ -114,13 +121,13 @@ body{
 .deal-card:hover{
 
     transform:
-    translateY(-10px)
+    translateY(-6px)
     scale(1.01);
 
     border-color:#3b82f6;
 
     box-shadow:
-    0 25px 60px rgba(37,99,235,0.25);
+    0 20px 50px rgba(37,99,235,0.22);
 }
 
 .banner-overlay{
@@ -131,8 +138,8 @@ body{
 
     background:linear-gradient(
         to top,
-        rgba(0,0,0,0.95),
-        rgba(0,0,0,0.1)
+        rgba(0,0,0,0.96),
+        rgba(0,0,0,0.08)
     );
 }
 
@@ -144,7 +151,7 @@ body{
 
     inset:0;
 
-    background:rgba(0,0,0,0.88);
+    background:rgba(0,0,0,0.9);
 
     z-index:999;
 
@@ -154,44 +161,53 @@ body{
 
     justify-content:center;
 
-    padding:20px;
+    padding:10px;
 }
 
 .modal-content{
 
     width:100%;
 
-    max-width:1200px;
+    max-width:1000px;
 
     max-height:95vh;
 
     overflow:auto;
 
-    border-radius:35px;
+    border-radius:30px;
 
     background:#0f172a;
 
     border:1px solid #1e293b;
 }
 
-/* ANIMATION */
+/* MOBILE FIX */
 
-.float{
-    animation:float 5s ease-in-out infinite;
-}
+@media(max-width:768px){
 
-@keyframes float{
-
-    0%{
-        transform:translateY(0px);
+    .hero-title{
+        font-size:50px;
+        line-height:1;
     }
 
-    50%{
-        transform:translateY(-10px);
+    .modal-content{
+        border-radius:20px;
     }
 
-    100%{
-        transform:translateY(0px);
+    .modal-image{
+        height:280px !important;
+    }
+
+    .deal-image{
+        height:300px !important;
+    }
+
+    .deal-price{
+        font-size:34px !important;
+    }
+
+    .modal-price{
+        font-size:42px !important;
     }
 }
 
@@ -205,7 +221,9 @@ body{
 <!-- HERO -->
 <!-- ================================================= -->
 
-<section class="relative overflow-hidden border-b border-slate-800">
+<section
+class="relative overflow-hidden border-b border-slate-800"
+>
 
     <div
     class="absolute w-[700px] h-[700px] bg-blue-500/20 blur-[150px] -top-40 -left-40 rounded-full"
@@ -216,7 +234,7 @@ body{
     ></div>
 
     <div
-    class="max-w-7xl mx-auto px-4 py-16 relative z-10"
+    class="max-w-7xl mx-auto px-4 py-14 relative z-10"
     >
 
         <div
@@ -228,13 +246,13 @@ body{
             <div>
 
                 <div
-                class="inline-flex items-center gap-3 bg-blue-500/20 text-blue-300 px-5 py-3 rounded-full font-bold"
+                class="inline-flex items-center gap-3 bg-blue-500/20 text-blue-300 px-5 py-3 rounded-full font-bold text-sm"
                 >
                     ⚡ LIVE TELEGRAM DEALS
                 </div>
 
                 <h1
-                class="text-6xl lg:text-8xl font-black text-white mt-8 leading-tight"
+                class="hero-title text-6xl lg:text-8xl font-black text-white mt-8 leading-tight"
                 >
 
                     Deal
@@ -245,34 +263,34 @@ body{
                 </h1>
 
                 <p
-                class="text-slate-300 text-xl mt-8 leading-9 max-w-2xl"
+                class="text-slate-300 text-lg mt-7 leading-8 max-w-2xl"
                 >
 
-                    Discover trending products, viral discounts,
-                    cashback offers and exclusive affiliate deals
-                    updated automatically from Telegram.
+                    Trending Telegram offers, viral products,
+                    shopping discounts and cashback deals —
+                    updated automatically.
 
                 </p>
 
                 <div
-                class="flex gap-5 mt-10 flex-wrap"
+                class="flex gap-4 mt-8 flex-wrap"
                 >
 
                     <div
-                    class="glass rounded-3xl px-6 py-5"
+                    class="glass rounded-2xl px-5 py-4"
                     >
 
-                        <div class="text-slate-400 text-sm">
+                        <div class="text-slate-400 text-xs">
                             LIVE STATUS
                         </div>
 
                         <div class="flex items-center gap-3 mt-2">
 
                             <div
-                            class="w-4 h-4 rounded-full bg-green-500 animate-pulse"
+                            class="w-3 h-3 rounded-full bg-green-500 animate-pulse"
                             ></div>
 
-                            <div class="font-black text-2xl text-white">
+                            <div class="font-black text-xl text-white">
                                 ACTIVE
                             </div>
 
@@ -281,14 +299,14 @@ body{
                     </div>
 
                     <div
-                    class="glass rounded-3xl px-6 py-5"
+                    class="glass rounded-2xl px-5 py-4"
                     >
 
-                        <div class="text-slate-400 text-sm">
+                        <div class="text-slate-400 text-xs">
                             AUTO UPDATE
                         </div>
 
-                        <div class="font-black text-2xl text-orange-400 mt-2">
+                        <div class="font-black text-xl text-orange-400 mt-2">
                             ENABLED
                         </div>
 
@@ -300,17 +318,15 @@ body{
 
             <!-- RIGHT -->
 
-            <div
-            class="relative float"
-            >
+            <div class="hidden lg:block">
 
                 <div
-                class="glass rounded-[40px] p-5 border border-white/10"
+                class="glass rounded-[35px] p-5"
                 >
 
                     <img
                     src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=1200"
-                    class="w-[420px] rounded-[30px]"
+                    class="w-[400px] rounded-[25px]"
                     />
 
                 </div>
@@ -338,8 +354,8 @@ class="sticky top-0 z-50 bg-[#020617]/90 backdrop-blur border-b border-slate-800
         <input
             id="searchInput"
             type="text"
-            placeholder="Search deals, brands, products..."
-            class="w-full bg-slate-900 border border-slate-700 rounded-2xl px-6 py-5 outline-none text-white text-lg"
+            placeholder="Search deals..."
+            class="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 outline-none text-white"
         />
 
         <!-- CATEGORY -->
@@ -388,7 +404,7 @@ class="max-w-7xl mx-auto px-4 py-10"
 
     <div
     id="deals-container"
-    class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
+    class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
     >
 
     </div>
@@ -420,7 +436,7 @@ let allDeals = [];
 
 let currentCategory = "All";
 
-/* LOAD DEALS */
+/* LOAD */
 
 async function loadDeals(){
 
@@ -491,13 +507,11 @@ function renderDeals(){
         onclick="openDeal(${index})"
         >
 
-            <!-- IMAGE -->
-
             <div class="relative">
 
                 <img
                     src="${deal.image}"
-                    class="w-full h-[380px] object-cover"
+                    class="deal-image w-full h-[350px] object-cover"
                 />
 
                 <div class="banner-overlay"></div>
@@ -505,42 +519,24 @@ function renderDeals(){
                 <!-- HOT -->
 
                 <div
-                class="absolute top-5 left-0 bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-r-full font-black shadow-2xl"
+                class="absolute top-4 left-0 bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded-r-full font-black text-sm"
                 >
                     HOT DEAL
                 </div>
 
-                <!-- DISCOUNT -->
+                <!-- CATEGORY -->
 
                 <div
-                class="absolute top-5 right-5 bg-black/70 backdrop-blur px-5 py-3 rounded-full font-black text-white"
+                class="absolute top-4 right-4 bg-black/70 backdrop-blur px-4 py-2 rounded-full font-bold text-xs"
                 >
-                    ${deal.discount}
+                    ${deal.category}
                 </div>
 
                 <!-- CONTENT -->
 
                 <div
-                class="absolute bottom-0 p-6 w-full"
+                class="absolute bottom-0 p-5 w-full"
                 >
-
-                    <div
-                    class="flex items-center gap-3 mb-4"
-                    >
-
-                        <div
-                        class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold"
-                        >
-                            ${deal.category}
-                        </div>
-
-                        <div
-                        class="bg-black/60 text-white px-4 py-2 rounded-full text-sm font-bold"
-                        >
-                            ${deal.store}
-                        </div>
-
-                    </div>
 
                     <h2
                     class="text-2xl font-black text-white leading-tight"
@@ -549,19 +545,19 @@ function renderDeals(){
                     </h2>
 
                     <div
-                    class="flex items-center gap-4 mt-5"
+                    class="flex items-center gap-4 mt-4"
                     >
 
                         <div
-                        class="text-4xl font-black text-orange-400"
+                        class="deal-price text-4xl font-black text-orange-400"
                         >
-                            ₹${deal.new_price}
+                            ${deal.discount}
                         </div>
 
                         <div
-                        class="text-xl line-through text-slate-400"
+                        class="text-sm text-slate-300 bg-black/40 px-3 py-2 rounded-full"
                         >
-                            ₹${deal.old_price}
+                            ${deal.store}
                         </div>
 
                     </div>
@@ -578,7 +574,7 @@ function renderDeals(){
     });
 }
 
-/* OPEN MODAL */
+/* MODAL */
 
 function openDeal(index){
 
@@ -589,7 +585,7 @@ function openDeal(index){
         <a
             href="${link}"
             target="_blank"
-            class="block bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center py-5 rounded-2xl font-bold hover:scale-[1.02] transition"
+            class="block bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center py-4 rounded-2xl font-bold hover:scale-[1.02] transition"
         >
             🛒 Open Deal Link ${i+1}
         </a>
@@ -604,7 +600,7 @@ function openDeal(index){
 
             <img
                 src="${deal.image}"
-                class="w-full h-[500px] object-cover"
+                class="modal-image w-full h-[450px] object-cover"
             />
 
             <div
@@ -613,77 +609,59 @@ function openDeal(index){
 
             <button
                 onclick="closeModal()"
-                class="absolute top-6 right-6 bg-red-500 w-14 h-14 rounded-full text-3xl font-black"
+                class="absolute top-5 right-5 bg-red-500 w-12 h-12 rounded-full text-2xl font-black"
             >
                 ×
             </button>
 
             <div
-            class="absolute bottom-0 p-8 w-full"
+            class="absolute bottom-0 p-6 w-full"
             >
 
                 <div
                 class="flex gap-3 flex-wrap mb-5"
                 >
 
-                    <div class="bg-orange-500 px-5 py-3 rounded-full font-bold">
+                    <div class="bg-orange-500 px-4 py-2 rounded-full font-bold text-sm">
                         ${deal.discount}
                     </div>
 
-                    <div class="bg-blue-500 px-5 py-3 rounded-full font-bold">
+                    <div class="bg-blue-500 px-4 py-2 rounded-full font-bold text-sm">
                         ${deal.category}
                     </div>
 
-                    <div class="bg-black/70 px-5 py-3 rounded-full font-bold">
+                    <div class="bg-black/70 px-4 py-2 rounded-full font-bold text-sm">
                         ${deal.store}
                     </div>
 
                 </div>
 
                 <h1
-                class="text-5xl font-black text-white leading-tight max-w-5xl"
+                class="text-3xl lg:text-5xl font-black text-white leading-tight"
                 >
                     ${deal.title}
                 </h1>
-
-                <div
-                class="flex items-center gap-5 mt-6"
-                >
-
-                    <div
-                    class="text-6xl font-black text-orange-400"
-                    >
-                        ₹${deal.new_price}
-                    </div>
-
-                    <div
-                    class="text-3xl line-through text-slate-400"
-                    >
-                        ₹${deal.old_price}
-                    </div>
-
-                </div>
 
             </div>
 
         </div>
 
-        <div class="p-8">
+        <div class="p-6">
 
             <!-- DESCRIPTION -->
 
             <div
-            class="glass rounded-3xl p-7"
+            class="glass rounded-3xl p-6"
             >
 
                 <div
                 class="text-2xl font-black text-orange-400 mb-5"
                 >
-                    📄 Product Description
+                    📄 Full Description
                 </div>
 
                 <div
-                class="text-slate-300 leading-9 whitespace-pre-line text-[16px]"
+                class="text-slate-300 leading-8 whitespace-pre-line text-[15px]"
                 >
                     ${deal.caption}
                 </div>
@@ -693,7 +671,7 @@ function openDeal(index){
             <!-- LINKS -->
 
             <div
-            class="grid gap-4 mt-8"
+            class="grid gap-4 mt-7"
             >
 
                 ${buttons}

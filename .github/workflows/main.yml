@@ -2,7 +2,7 @@ name: Telegram Deal Bot 24/7
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # દર ૬ કલાકે એકવાર સેફ્ટી માટે રીસ્ટાર્ટ થશે
+    - cron: '0 */6 * * *' # દર ૬ કલાકે રીસ્ટાર્ટ થશે
   workflow_dispatch: # મેન્યુઅલ બટન
 
 jobs:
@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # v3 માંથી બદલીને v4 કર્યું (Node 24 સપોર્ટ)
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5  # v4 માંથી બદલીને v5 કર્યું (Node 24 સપોર્ટ)
         with:
           python-version: '3.10'
 
@@ -26,5 +26,4 @@ jobs:
           API_HASH: ${{ secrets.API_HASH }}
           SESSION_STR: ${{ secrets.SESSION_STR }}
           CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}
-        # આ કમાન્ડ બોટને બેકગ્રાઉન્ડમાં સતત ચાલુ રાખશે
         run: python telegram_to_sheet.py

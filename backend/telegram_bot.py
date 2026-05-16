@@ -4,7 +4,7 @@ import re
 import json
 import shutil
 
-from telethon import TelegramClient, events
+from telethon import TelegramClient
 from telethon.sessions import StringSession
 
 # =====================================================
@@ -18,6 +18,8 @@ API_HASH = os.getenv("API_HASH")
 SESSION_STR = os.getenv("SESSION_STR")
 
 CHANNEL_USERNAME = "@best_dealsareon"
+
+MAX_POSTS = 20
 
 # =====================================================
 # PATHS
@@ -40,46 +42,32 @@ IMAGES_DIR = os.path.join(
 )
 
 # =====================================================
-# CREATE REQUIRED FOLDERS
+# CREATE FOLDERS
 # =====================================================
 
 os.makedirs(IMAGES_DIR, exist_ok=True)
 
 # =====================================================
-# SAFE JSON LOAD
+# LOAD EXISTING DEALS
 # =====================================================
 
 deals = []
 
 try:
 
-    # Create JSON if missing
-    if not os.path.exists(JSON_FILE):
+    if os.path.exists(JSON_FILE):
 
         with open(
             JSON_FILE,
-            "w",
+            "r",
             encoding="utf-8"
         ) as f:
 
-            f.write("[]")
+            raw = f.read().strip()
 
-    # Read JSON safely
-    with open(
-        JSON_FILE,
-        "r",
-        encoding="utf-8"
-    ) as f:
+            if raw:
 
-        raw = f.read().strip()
-
-        if raw == "":
-
-            deals = []
-
-        else:
-
-            deals = json.loads(raw)
+                deals = json.loads(raw)
 
 except Exception as e:
 
@@ -89,20 +77,6 @@ except Exception as e:
     )
 
     deals = []
-
-    # Auto repair JSON
-    with open(
-        JSON_FILE,
-        "w",
-        encoding="utf-8"
-    ) as f:
-
-        f.write("[]")
-
-print(
-    "✅ JSON READY",
-    flush=True
-)
 
 # =====================================================
 # TELEGRAM CLIENT
@@ -127,22 +101,16 @@ def extract_prices(text):
     )
 
     old_price = 0
-
     new_price = 0
-
     discount = "0% OFF"
 
     try:
 
         if len(prices) >= 2:
 
-            p1 = int(
-                prices[0].replace(",", "")
-            )
+            p1 = int(prices[0].replace(",", ""))
 
-            p2 = int(
-                prices[1].replace(",", "")
-            )
+            p2 = int(prices[1].replace(",", ""))
 
             old_price = max(p1, p2)
 
@@ -155,9 +123,7 @@ def extract_prices(text):
                     / old_price
                 ) * 100
 
-                discount = (
-                    f"{round(disc)}% OFF"
-                )
+                discount = f"{round(disc)}% OFF"
 
         elif len(prices) == 1:
 
@@ -167,12 +133,8 @@ def extract_prices(text):
 
             old_price = new_price
 
-    except Exception as e:
-
-        print(
-            f"⚠️ PRICE ERROR: {e}",
-            flush=True
-        )
+    except:
+        pass
 
     return (
         old_price,
@@ -211,118 +173,121 @@ def detect_store(text):
 
 def save_json():
 
-    try:
+    with open(
+        JSON_FILE,
+        "w",
+        encoding="utf-8"
+    ) as f:
 
-        with open(
-            JSON_FILE,
-            "w",
-            encoding="utf-8"
-        ) as f:
+        json.dump(
+            deals,
+            f,
+            ensure_ascii=False,
+            indent=2
+        )
 
-            json.dump(
-                deals,
-                f,
-                ensure_ascii=False,
-                indent=2
+# =====================================================
+# MAIN FETCH SYSTEM
+# =====================================================
+
+async def main():
+
+    print(
+        "🚀 FETCHING TELEGRAM POSTS...",
+        flush=True
+    )
+
+    await client.start()
+
+    print(
+        "✅ TELEGRAM CONNECTED",
+        flush=True
+    )
+
+    existing_ids = {
+
+        deal["id"]
+
+        for deal in deals
+
+        if "id" in deal
+    }
+
+    new_count = 0
+
+    async for message in client.iter_messages(
+        CHANNEL_USERNAME,
+        limit=MAX_POSTS
+    ):
+
+        try:
+
+            if message.id in existing_ids:
+
+                continue
+
+            text = message.message or ""
+
+            if not text:
+
+                continue
+
+            print(
+                f"📩 NEW POST: {message.id}",
+                flush=True
             )
 
-        print(
-            "✅ deals.json Updated",
-            flush=True
-        )
+            # =========================================
+            # URLS
+            # =========================================
 
-    except Exception as e:
+            urls = re.findall(
+                r'(https?://\S+)',
+                text
+            )
 
-        print(
-            f"❌ JSON SAVE ERROR: {e}",
-            flush=True
-        )
+            main_link = (
+                urls[0]
+                if urls
+                else "#"
+            )
 
-# =====================================================
-# TELEGRAM MESSAGE HANDLER
-# =====================================================
+            # =========================================
+            # TITLE
+            # =========================================
 
-@client.on(
-    events.NewMessage(
-        chats=CHANNEL_USERNAME
-    )
-)
+            title = text.split("\n")[0][:180]
 
-async def handler(event):
+            # =========================================
+            # PRICES
+            # =========================================
 
-    try:
+            (
+                old_price,
+                new_price,
+                discount
+            ) = extract_prices(text)
 
-        text = (
-            event.message.message
-            or ""
-        )
+            # =========================================
+            # STORE
+            # =========================================
 
-        if not text:
+            store = detect_store(text)
 
-            return
+            # =========================================
+            # IMAGE
+            # =========================================
 
-        print(
-            "\n📩 NEW TELEGRAM DEAL",
-            flush=True
-        )
+            image_path = ""
 
-        # =============================================
-        # EXTRACT URLS
-        # =============================================
-
-        urls = re.findall(
-            r'(https?://\S+)',
-            text
-        )
-
-        main_link = (
-            urls[0]
-            if urls
-            else "#"
-        )
-
-        # =============================================
-        # TITLE
-        # =============================================
-
-        title = (
-            text.split("\n")[0][:180]
-        )
-
-        # =============================================
-        # PRICES
-        # =============================================
-
-        (
-            old_price,
-            new_price,
-            discount
-        ) = extract_prices(text)
-
-        # =============================================
-        # STORE
-        # =============================================
-
-        store = detect_store(text)
-
-        # =============================================
-        # DOWNLOAD IMAGE
-        # =============================================
-
-        image_path = ""
-
-        if event.photo:
-
-            try:
+            if message.photo:
 
                 downloaded = (
-                    await event.download_media()
+                    await message.download_media()
                 )
 
-                filename = (
-                    os.path.basename(
-                        downloaded
-                    )
+                filename = os.path.basename(
+                    downloaded
                 )
 
                 final_path = os.path.join(
@@ -340,121 +305,68 @@ async def handler(event):
                 )
 
                 print(
-                    "🖼 IMAGE DOWNLOADED",
+                    "🖼 IMAGE SAVED",
                     flush=True
                 )
 
-            except Exception as e:
+            # =========================================
+            # CREATE DEAL
+            # =========================================
 
-                print(
-                    f"❌ IMAGE ERROR: {e}",
-                    flush=True
-                )
+            deal = {
 
-        # =============================================
-        # CREATE DEAL OBJECT
-        # =============================================
+                "id": message.id,
 
-        deal = {
+                "title": title,
 
-            "id": event.id,
+                "caption": text,
 
-            "title": title,
+                "image": image_path,
 
-            "caption": text,
+                "old_price": old_price,
 
-            "image": image_path,
+                "new_price": new_price,
 
-            "old_price": old_price,
+                "discount": discount,
 
-            "new_price": new_price,
+                "main_link": main_link,
 
-            "discount": discount,
+                "all_links": urls,
 
-            "main_link": main_link,
+                "store": store
+            }
 
-            "all_links": urls,
+            deals.insert(0, deal)
 
-            "store": store
-        }
+            new_count += 1
 
-        # =============================================
-        # INSERT LATEST FIRST
-        # =============================================
+        except Exception as e:
 
-        deals.insert(0, deal)
+            print(
+                f"❌ POST ERROR: {e}",
+                flush=True
+            )
 
-        # =============================================
-        # SAVE JSON
-        # =============================================
+    # =================================================
+    # SAVE JSON
+    # =================================================
 
-        save_json()
+    save_json()
 
-        print(
-            "✅ DEAL SAVED",
-            flush=True
-        )
+    print(
+        f"✅ {new_count} NEW DEALS ADDED",
+        flush=True
+    )
 
-    except Exception as e:
+    print(
+        "🎉 BOT FINISHED",
+        flush=True
+    )
 
-        print(
-            f"❌ HANDLER ERROR: {e}",
-            flush=True
-        )
+    await client.disconnect()
 
 # =====================================================
-# MAIN
-# =====================================================
-
-async def main():
-
-    try:
-
-        print(
-            "🚀 BOT STARTING...",
-            flush=True
-        )
-
-        print(
-            "🔌 CONNECTING TELEGRAM...",
-            flush=True
-        )
-
-        await client.start()
-
-        print(
-            "✅ TELEGRAM CONNECTED",
-            flush=True
-        )
-
-        me = await client.get_me()
-
-        print(
-            f"👤 LOGGED IN AS: {me.first_name}",
-            flush=True
-        )
-
-        print(
-            f"📡 LISTENING TO: {CHANNEL_USERNAME}",
-            flush=True
-        )
-
-        print(
-            "⏳ WAITING FOR POSTS...",
-            flush=True
-        )
-
-        await client.run_until_disconnected()
-
-    except Exception as e:
-
-        print(
-            f"❌ MAIN ERROR: {e}",
-            flush=True
-        )
-
-# =====================================================
-# START APP
+# START
 # =====================================================
 
 if __name__ == "__main__":

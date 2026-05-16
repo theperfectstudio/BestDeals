@@ -21,8 +21,8 @@ FILE: index.html
 <script src="https://cdn.tailwindcss.com"></script>
 
 <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet"
 >
 
 <style>
@@ -219,6 +219,22 @@ function renderDeals(){
 
     filtered.forEach(deal => {
 
+        const buttons =
+
+            deal.all_links.map((link,index)=>`
+
+                <a
+                    href="${link}"
+                    target="_blank"
+                    class="block bg-orange-500 hover:bg-orange-600 text-white text-center py-3 rounded-2xl font-bold"
+                >
+
+                    🔥 Grab Deal ${index+1}
+
+                </a>
+
+            `).join("");
+
         const card = `
 
         <div class="deal-card bg-white rounded-3xl overflow-hidden shadow-md">
@@ -274,15 +290,20 @@ function renderDeals(){
 
                 </div>
 
-                <a
-                    href="${deal.main_link}"
-                    target="_blank"
-                    class="block mt-5 bg-orange-500 hover:bg-orange-600 text-white text-center py-4 rounded-2xl font-bold"
-                >
+                ${deal.live_price
+                    ? `
+                    <div class="mt-3 text-green-600 font-bold">
+                        Live Price: ${deal.live_price}
+                    </div>
+                    `
+                    : ""
+                }
 
-                    🔥 Grab Deal
+                <div class="mt-5 space-y-3">
 
-                </a>
+                    ${buttons}
+
+                </div>
 
             </div>
 

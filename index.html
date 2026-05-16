@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Live Loot Deals Tracker | Mega Price Drops</title>
+    <!-- Tailwind CSS for Modern Premium UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Clean Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 text-white shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 py-8 text-center md:text-left md:flex md:items-center md:justify-between">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Live Loot Deals Tracker ⚡</h1>
+                <p class="text-sm mt-2 opacity-90 font-medium">Automated Real-Time Price Drops from Top Indian E-commerce Sites</p>
+            </div>
+            <div class="mt-4 md:mt-0 bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20 text-sm font-semibold inline-block">
+                🟢 Auto-Updating Every 3 Hours
+            </div>
+        </div>
+    </header>
+
+    <!-- Controls Section (Search & Filter) -->
+    <section class="max-w-7xl mx-auto w-full px-4 mt-8">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4 items-center justify-between">
+            <!-- Search Bar -->
+            <div class="w-full md:w-96 relative">
+                <input type="text" id="search-input" oninput="filterDeals()" placeholder="Search products (e.g., iPhone, Shoes)..." 
+                       class="w-full pl-4 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm transition">
+            </div>
+            
+            <!-- Store Filters -->
+            <div class="flex flex-wrap gap-2 w-full md:w-auto justify-center">
+                <button onclick="filterStore('All')" class="store-btn px-4 py-2 text-xs font-bold rounded-lg bg-gray-900 text-white transition shadow-sm">All Deals</button>
+                <button onclick="filterStore('Amazon')" class="store-btn px-4 py-2 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-amber-100 hover:text-amber-800 transition">Amazon</button>
+                <button onclick="filterStore('Flipkart')" class="store-btn px-4 py-2 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-800 transition">Flipkart</button>
+                <button onclick="filterStore('Myntra')" class="store-btn px-4 py-2 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-pink-100 hover:text-pink-800 transition">Myntra</button>
+                <button onclick="filterStore('Ajio')" class="store-btn px-4 py-2 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-800 transition">Ajio</button>
+                <button onclick="filterStore('Nykaa')" class="store-btn px-4 py-2 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-purple-100 hover:text-purple-800 transition">Nykaa</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content / Deals Grid -->
+    <main class="max-w-7xl mx-auto w-full px-4 py-8 flex-grow">
+        <div id="deals-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Loading Grid Skeleton -->
+            <div class="animate-pulse bg-white p-4 rounded-xl border border-gray-100 h-80 flex flex-col justify-between">
+                <div class="bg-gray-200 h-40 w-full rounded-lg"></div>
+                <div class="bg-gray-200 h-4 w-3/4 rounded mt-4"></div>
+                <div class="bg-gray-200 h-10 w-full rounded mt-4"></div>
+            </div>
+            <div class="animate-pulse bg-white p-4 rounded-xl border border-gray-100 h-80 flex flex-col justify-between hidden sm:flex">
+                <div class="bg-gray-200 h-40 w-full rounded-lg"></div>
+                <div class="bg-gray-200 h-4 w-3/4 rounded mt-4"></div>
+                <div class="bg-gray-200 h-10 w-full rounded mt-4"></div>
+            </div>
+            <div class="animate-pulse bg-white p-4 rounded-xl border border-gray-100 h-80 flex flex-col justify-between hidden md:flex">
+                <div class="bg-gray-200 h-40 w-full rounded-lg"></div>
+                <div class="bg-gray-200 h-4 w-3/4 rounded mt-4"></div>
+                <div class="bg-gray-200 h-10 w-full rounded mt-4"></div>
+            </div>
+            <div class="animate-pulse bg-white p-4 rounded-xl border border-gray-100 h-80 flex flex-col justify-between hidden lg:flex">
+                <div class="bg-gray-200 h-40 w-full rounded-lg"></div>
+                <div class="bg-gray-200 h-4 w-3/4 rounded mt-4"></div>
+                <div class="bg-gray-200 h-10 w-full rounded mt-4"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-gray-400 text-center py-6 border-t border-gray-800 text-sm mt-auto">
+        <p>© 2026 Live Loot Deals Tracker. Built with Automation.</p>
+        <p class="text-xs text-gray-500 mt-1">Disclaimer: Prices change rapidly. Always check the final price on the store page before buying.</p>
+    </footer>
+
+    <!-- Core Logic JavaScript -->
+    <script>
+        // ⚠️ ખુબ જ મહત્વનું: તમારી ગૂગલ શીટને "Publish to Web" કરીને તેની CSV લિંક અહિયાં પેસ્ટ કરો
+        const SHEET_CSV_URL = "YOUR_GOOGLE_SHEET_PUBLISHED_CSV_URL_HERE";
+
+        let allDeals = [];
+        let currentStoreFilter = 'All';
+
+        // 1. ગૂગલ શીટમાંથી CSV રીડ કરવું
+        async function loadDeals() {
+            try {
+                const response = await fetch(SHEET_CSV_URL);
+                if (!response.ok) throw new Error("Failed to fetch data");
+                
+                const csvData = await response.text();
+                parseCSV(csvData);
+                renderDeals(allDeals);
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("deals-container").innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-red-500 font-semibold">❌ Data loading failed.</p>
+                        <p class="text-gray-500 text-sm mt-1">Please ensure your Google Sheet URL is correct and published to web.</p>
+                    </div>`;
+            }
+        }
+
+        // 2. CSV ડેટાને ક્લીન ઑબ્જેક્ટ્સમાં કન્વર્ટ કરવું
+        function parseCSV(csvText) {
+            const lines = csvText.split(/\r?\n/);
+            allDeals = [];
+
+            // લાઈન ૧ હેડર છે એટલે લૂપ સેકન્ડ રો (i=1) થી શરૂ થશે
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                
+                // કૉમા વેલ્યુ સેપરેશન (સિમ્પલ સ્પ્લિટ)
+                const columns = lines[i].split(",");
+                if (columns.length >= 7) {
+                    const [id, title, img, oldPrice, newPrice, discount, link] = columns;
+                    
+                    // જો ખરેખર પ્રાઇસ ડ્રોપ થયો હોય (New Price < Old Price) તો જ લિસ્ટમાં એડ કરવું
+                    if (parseInt(newPrice) < parseInt(oldPrice)) {
+                        // ટાઇટલમાંથી સ્ટોરનું નામ બ્રેકેટમાંથી કાઢવા માટે (દા.ત. [Amazon] RealMe 12)
+                        let store = "Store";
+                        if (title.startsWith("[")) {
+                            store = title.substring(1, title.indexOf("]"));
+                        }
+
+                        allDeals.push({
+                            id: id.trim(),
+                            title: title.trim(),
+                            img: img.trim(),
+                            oldPrice: parseInt(oldPrice),
+                            newPrice: parseInt(newPrice),
+                            discount: discount.trim(),
+                            link: link.trim(),
+                            store: store
+                        });
+                    }
+                }
+            }
+        }
+
+        // 3. ડેટા કાર્ડને બ્રાઉઝર સ્ક્રીન પર રેન્ડર કરવા
+        function renderDeals(dealsList) {
+            const container = document.getElementById("deals-container");
+            container.innerHTML = "";
+
+            if (dealsList.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-gray-500 font-medium">No live price drops found for this selection.</p>
+                    </div>`;
+                return;
+            }
+
+            dealsList.forEach(deal => {
+                // સ્ટોર પ્રમાણે કલર બદલવા માટેનું નાનું કસ્ટમાઇઝેશન
+                let badgeColor = "bg-gray-600";
+                if (deal.store === "Amazon") badgeColor = "bg-amber-500";
+                else if (deal.store === "Flipkart") badgeColor = "bg-blue-600";
+                else if (deal.store === "Myntra") badgeColor = "bg-pink-600";
+                else if (deal.store === "Ajio") badgeColor = "bg-indigo-600";
+                else if (deal.store === "Nykaa") badgeColor = "bg-purple-600";
+
+                const cardHTML = `
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition duration-300 flex flex-col justify-between p-4 relative group">
+                        <div>
+                            <!-- ઈમેજ અને ડિસ્કાઉન્ટ બેજ -->
+                            <div class="relative bg-gray-50 rounded-xl p-4 mb-4 flex items-center justify-center h-48 overflow-hidden">
+                                <img src="${deal.img}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300" alt="Product Image">
+                                <span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-black px-2.5 py-1 rounded-md shadow-sm animate-pulse">${deal.discount} OFF</span>
+                                <span class="absolute top-3 right-3 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm ${badgeColor}">${deal.store}</span>
+                            </div>
+                            <!-- પ્રોડક્ટ ટાઇટલ -->
+                            <h2 class="text-gray-800 font-semibold text-sm line-clamp-2 leading-snug" title="${deal.title}">${deal.title}</h2>
+                        </div>
+                        
+                        <!-- પ્રાઇસ એન્ડ એક્શન સેક્શન -->
+                        <div class="mt-4">
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-black text-gray-900">₹${deal.newPrice.toLocaleString('en-IN')}</span>
+                                <span class="text-sm text-gray-400 line-through">₹${deal.oldPrice.toLocaleString('en-IN')}</span>
+                            </div>
+                            <a href="${deal.link}" target="_blank" rel="noopener" 
+                               class="w-full block text-center bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-3 px-4 rounded-xl mt-3 transition shadow-sm hover:shadow-md text-sm">
+                                Grab This Deal ➔
+                            </a>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        // 4. સ્ટોર પ્રમાણે ફિલ્ટર કરવાનું મેકેનિઝમ
+        function filterStore(storeName) {
+            currentStoreFilter = storeName;
+            
+            // એક્ટિવ બટનની ડિઝાઇન અપડેટ કરવી
+            const buttons = document.querySelectorAll('.store-btn');
+            buttons.forEach(btn => {
+                if (btn.innerText === storeName || (storeName === 'All' && btn.innerText === 'All Deals')) {
+                    btn.classList.remove('bg-gray-100', 'text-gray-700');
+                    btn.classList.add('bg-gray-900', 'text-white', 'shadow-sm');
+                } else {
+                    btn.classList.remove('bg-gray-900', 'text-white', 'shadow-sm');
+                    btn.classList.add('bg-gray-100', 'text-gray-700');
+                }
+            });
+
+            filterDeals();
+        }
+
+        // 5. સર્ચ બાર અને સ્ટોર ફિલ્ટર બંનેનું કમ્બાઈન્ડ કંટ્રોલર લોજિક
+        function filterDeals() {
+            const searchQuery = document.getElementById("search-input").value.toLowerCase();
+            
+            const filtered = allDeals.filter(deal => {
+                const matchesStore = (currentStoreFilter === 'All' || deal.store === currentStoreFilter);
+                const matchesSearch = deal.title.toLowerCase().includes(searchQuery);
+                return matchesStore && matchesSearch;
+            });
+
+            renderDeals(filtered);
+        }
+
+        // પેજ લોડ થતા જ ફંક્શન રન કરવું
+        window.onload = loadDeals;
+    </script>
+</body>
+</html>

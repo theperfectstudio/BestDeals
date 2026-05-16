@@ -4,9 +4,14 @@
 <head>
 
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+/>
 
-<title>DealVerse 🔥</title>
+<title>
+DealVerse AI 🔥
+</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -29,6 +34,8 @@ body{
     #020617;
 
     overflow-x:hidden;
+
+    color:white;
 }
 
 /* SCROLLBAR */
@@ -40,6 +47,22 @@ body{
 ::-webkit-scrollbar-thumb{
     background:#334155;
     border-radius:999px;
+}
+
+/* HERO GLOW */
+
+.hero-glow{
+
+    position:absolute;
+
+    width:700px;
+    height:700px;
+
+    border-radius:999px;
+
+    filter:blur(150px);
+
+    opacity:0.3;
 }
 
 /* GLASS */
@@ -64,8 +87,6 @@ body{
     background:#111827;
 
     border:1px solid #1e293b;
-
-    color:white;
 
     transition:0.3s;
 
@@ -102,7 +123,7 @@ body{
 
     overflow:hidden;
 
-    border-radius:28px;
+    border-radius:32px;
 
     background:#111827;
 
@@ -116,13 +137,34 @@ body{
 .deal-card:hover{
 
     transform:
-    translateY(-6px)
+    translateY(-8px)
     scale(1.01);
 
     border-color:#3b82f6;
 
     box-shadow:
-    0 20px 50px rgba(37,99,235,0.22);
+    0 20px 60px rgba(37,99,235,0.22);
+}
+
+/* FLOAT */
+
+.float{
+    animation:float 6s ease-in-out infinite;
+}
+
+@keyframes float{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
 }
 
 /* MODAL */
@@ -133,7 +175,7 @@ body{
 
     inset:0;
 
-    background:rgba(0,0,0,0.9);
+    background:rgba(0,0,0,0.92);
 
     z-index:999;
 
@@ -150,17 +192,41 @@ body{
 
     width:100%;
 
-    max-width:1000px;
+    max-width:1100px;
 
     max-height:95vh;
 
     overflow:auto;
 
-    border-radius:30px;
+    border-radius:35px;
 
     background:#0f172a;
 
     border:1px solid #1e293b;
+}
+
+/* LINE CLAMP */
+
+.line-clamp-2{
+
+    display:-webkit-box;
+
+    -webkit-line-clamp:2;
+
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
+}
+
+.line-clamp-3{
+
+    display:-webkit-box;
+
+    -webkit-line-clamp:3;
+
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
 }
 
 /* MOBILE */
@@ -168,16 +234,16 @@ body{
 @media(max-width:768px){
 
     .hero-title{
-        font-size:52px;
+        font-size:54px;
         line-height:1;
+    }
+
+    .deal-image{
+        height:230px !important;
     }
 
     .modal-image{
         height:260px !important;
-    }
-
-    .deal-image{
-        height:240px !important;
     }
 }
 
@@ -187,193 +253,238 @@ body{
 
 <body>
 
+<!-- ================================================= -->
 <!-- HERO -->
+<!-- ================================================= -->
 
 <section
 class="relative overflow-hidden border-b border-slate-800"
 >
 
-    <div
-    class="absolute w-[600px] h-[600px] bg-blue-500/20 blur-[150px] -top-40 -left-40 rounded-full"
-    ></div>
+<div
+class="hero-glow bg-blue-500 top-[-200px] left-[-200px]"
+></div>
 
-    <div
-    class="absolute w-[600px] h-[600px] bg-purple-500/20 blur-[150px] bottom-0 right-0 rounded-full"
-    ></div>
+<div
+class="hero-glow bg-purple-500 bottom-[-200px] right-[-200px]"
+></div>
 
-    <div
-    class="max-w-7xl mx-auto px-4 py-14 relative z-10"
-    >
+<div
+class="max-w-7xl mx-auto px-4 py-14 relative z-10"
+>
 
-        <div
-        class="flex flex-col lg:flex-row items-center justify-between gap-10"
-        >
+<div
+class="flex flex-col lg:flex-row items-center justify-between gap-10"
+>
 
-            <!-- LEFT -->
+<!-- LEFT -->
 
-            <div>
+<div>
 
-                <div
-                class="inline-flex items-center gap-3 bg-blue-500/20 text-blue-300 px-5 py-3 rounded-full font-bold text-sm"
-                >
-                    ⚡ LIVE DEAL FEED
-                </div>
+<div
+class="inline-flex items-center gap-3 bg-blue-500/20 text-blue-300 px-5 py-3 rounded-full font-bold text-sm"
+>
+⚡ AI POWERED DEAL PLATFORM
+</div>
 
-                <h1
-                class="hero-title text-6xl lg:text-8xl font-black text-white mt-8 leading-tight"
-                >
+<h1
+class="hero-title text-6xl lg:text-8xl font-black mt-8 leading-tight"
+>
 
-                    Deal
-                    <span class="text-blue-500">
-                        Verse
-                    </span>
+Deal
+<span class="text-blue-500">
+Verse
+</span>
 
-                </h1>
+</h1>
 
-                <p
-                class="text-slate-300 text-lg mt-7 leading-8 max-w-2xl"
-                >
+<p
+class="text-slate-300 text-lg mt-7 leading-8 max-w-2xl"
+>
 
-                    ⚡ Discover Viral Deals Before Everyone Else  
-                    Real-time Telegram powered shopping offers, cashback finds & trending discounts — all in one dynamic experience. 🔥
+⚡ Discover Viral Deals Before Everyone Else  
+AI curated Telegram shopping offers, cashback finds, trending products and instant affiliate deals — all in one premium experience.
 
-                </p>
+</p>
 
-                <!-- TELEGRAM BUTTON -->
+<!-- BUTTONS -->
 
-                <div class="flex flex-wrap gap-4 mt-10">
+<div class="flex flex-wrap gap-4 mt-10">
 
-                    <a
-                        href="https://t.me/best_dealsareon"
-                        target="_blank"
-                        class="bg-gradient-to-r from-sky-500 to-blue-600 hover:scale-105 transition text-white px-8 py-4 rounded-2xl font-black shadow-2xl flex items-center gap-3"
-                    >
-                        🚀 Subscribe Telegram Channel
-                    </a>
+<a
+href="https://t.me/best_dealsareon"
+target="_blank"
+class="bg-gradient-to-r from-sky-500 to-blue-600 hover:scale-105 transition text-white px-8 py-4 rounded-2xl font-black shadow-2xl flex items-center gap-3"
+>
+🚀 Subscribe Telegram
+</a>
 
-                    <div
-                    class="glass rounded-2xl px-6 py-4"
-                    >
+<div
+class="glass rounded-2xl px-6 py-4"
+>
 
-                        <div class="text-slate-400 text-xs">
-                            LIVE DEAL ALERTS
-                        </div>
+<div class="text-slate-400 text-xs">
+LIVE STATUS
+</div>
 
-                        <div class="font-black text-xl text-orange-400 mt-1">
-                            INSTANT UPDATES
-                        </div>
+<div class="font-black text-xl text-green-400 mt-1">
+ACTIVE
+</div>
 
-                    </div>
+</div>
 
-                </div>
+</div>
 
-            </div>
+</div>
 
-            <!-- RIGHT -->
+<!-- RIGHT -->
 
-            <div class="hidden lg:block">
+<div class="hidden lg:block float">
 
-                <div
-                class="glass rounded-[35px] p-5"
-                >
+<div
+class="glass rounded-[40px] p-5"
+>
 
-                    <img
-                    src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=1200"
-                    class="w-[380px] rounded-[25px]"
-                    />
+<img
+src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=1200"
+class="w-[400px] rounded-[30px]"
+/>
 
-                </div>
+</div>
 
-            </div>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
+<!-- ================================================= -->
+<!-- TRENDING -->
+<!-- ================================================= -->
+
+<section
+class="max-w-7xl mx-auto px-4 py-10"
+>
+
+<div
+class="glass rounded-3xl p-6 flex flex-col lg:flex-row gap-6 items-center justify-between"
+>
+
+<div>
+
+<div class="text-orange-400 font-black text-xl">
+🔥 Deal Of The Day
+</div>
+
+<div
+id="topDeal"
+class="text-3xl font-black mt-3"
+>
+Loading...
+</div>
+
+</div>
+
+<div
+class="bg-gradient-to-r from-orange-500 to-red-500 px-8 py-5 rounded-3xl font-black text-2xl shadow-2xl"
+>
+⚡ TRENDING NOW
+</div>
+
+</div>
+
+</section>
+
+<!-- ================================================= -->
 <!-- SEARCH -->
+<!-- ================================================= -->
 
 <section
 class="sticky top-0 z-50 bg-[#020617]/90 backdrop-blur border-b border-slate-800"
 >
 
-    <div
-    class="max-w-7xl mx-auto px-4 py-5"
-    >
+<div
+class="max-w-7xl mx-auto px-4 py-5"
+>
 
-        <input
-            id="searchInput"
-            type="text"
-            placeholder="Search deals..."
-            class="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 outline-none text-white"
-        />
+<input
+id="searchInput"
+type="text"
+placeholder="Search deals..."
+class="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 outline-none text-white"
+/>
 
-        <!-- CATEGORY -->
+<!-- CATEGORY -->
 
-        <div
-        class="flex gap-3 mt-5 overflow-auto pb-2"
-        >
+<div
+class="flex gap-3 mt-5 overflow-auto pb-2"
+>
 
-            <button class="category-btn active-cat" data-category="All">
-                All
-            </button>
+<button class="category-btn active-cat" data-category="All">
+All
+</button>
 
-            <button class="category-btn" data-category="Mobiles">
-                Mobiles
-            </button>
+<button class="category-btn" data-category="Mobiles">
+Mobiles
+</button>
 
-            <button class="category-btn" data-category="Laptops">
-                Laptops
-            </button>
+<button class="category-btn" data-category="Laptops">
+Laptops
+</button>
 
-            <button class="category-btn" data-category="Fashion">
-                Fashion
-            </button>
+<button class="category-btn" data-category="Fashion">
+Fashion
+</button>
 
-            <button class="category-btn" data-category="Electronics">
-                Electronics
-            </button>
+<button class="category-btn" data-category="Electronics">
+Electronics
+</button>
 
-            <button class="category-btn" data-category="Other">
-                Other
-            </button>
+<button class="category-btn" data-category="Other">
+Other
+</button>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
+<!-- ================================================= -->
 <!-- DEALS -->
+<!-- ================================================= -->
 
 <main
 class="max-w-7xl mx-auto px-4 py-10"
 >
 
-    <div
-    id="deals-container"
-    class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
-    >
+<div
+id="deals-container"
+class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-7"
+>
 
-    </div>
+</div>
 
 </main>
 
+<!-- ================================================= -->
 <!-- MODAL -->
+<!-- ================================================= -->
 
 <div
 id="dealModal"
 class="modal"
 >
 
-    <div
-    class="modal-content"
-    >
+<div
+class="modal-content"
+>
 
-        <div id="modalBody"></div>
+<div id="modalBody"></div>
 
-    </div>
+</div>
 
 </div>
 
@@ -382,6 +493,8 @@ class="modal"
 let allDeals = [];
 
 let currentCategory = "All";
+
+/* LOAD */
 
 async function loadDeals(){
 
@@ -393,6 +506,14 @@ async function loadDeals(){
 
         allDeals = await response.json();
 
+        if(allDeals.length > 0){
+
+            document.getElementById(
+                "topDeal"
+            ).innerText =
+            allDeals[0].title;
+        }
+
         renderDeals();
 
     }catch(error){
@@ -400,6 +521,8 @@ async function loadDeals(){
         console.error(error);
     }
 }
+
+/* RENDER */
 
 function renderDeals(){
 
@@ -443,27 +566,6 @@ function renderDeals(){
 
     filtered.forEach((deal,index)=>{
 
-        const discountBadge =
-
-            deal.discount &&
-            deal.discount !== "0% OFF"
-
-            ?
-
-            `
-
-            <div
-            class="absolute top-4 right-4 bg-gradient-to-r from-red-500 to-orange-500 px-4 py-2 rounded-full text-white font-black text-sm shadow-xl"
-            >
-                ${deal.discount}
-            </div>
-
-            `
-
-            :
-
-            "";
-
         const card = `
 
         <div
@@ -471,41 +573,49 @@ function renderDeals(){
         onclick="openDeal(${index})"
         >
 
+            <!-- IMAGE -->
+
             <div class="relative overflow-hidden">
 
                 <img
-                    src="${deal.image}"
-                    class="deal-image w-full h-[240px] object-cover transition duration-500 group-hover:scale-110"
+                src="${deal.image}"
+                class="deal-image w-full h-[240px] object-cover transition duration-500 group-hover:scale-110"
                 />
+
+                <!-- OVERLAY -->
 
                 <div
                 class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"
                 ></div>
 
+                <!-- HOT -->
+
                 <div
-                class="absolute left-0 top-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-r-full font-black text-xs tracking-wide shadow-xl"
+                class="absolute left-0 top-5 bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded-r-full font-black text-xs shadow-2xl"
                 >
                     🔥 TRENDING
                 </div>
 
-                ${discountBadge}
+                <!-- CATEGORY -->
+
+                <div
+                class="absolute top-4 right-4 bg-black/60 backdrop-blur text-white px-4 py-2 rounded-full font-bold text-xs"
+                >
+                    ${deal.category}
+                </div>
+
+                <!-- CONTENT -->
 
                 <div
                 class="absolute bottom-0 p-5 w-full"
                 >
 
                     <div
-                    class="flex items-center gap-2 mb-3 flex-wrap"
+                    class="flex items-center gap-2 flex-wrap mb-3"
                     >
 
                         <div
-                        class="bg-white/10 backdrop-blur text-white px-3 py-1 rounded-full text-xs font-bold border border-white/10"
-                        >
-                            ${deal.category}
-                        </div>
-
-                        <div
-                        class="bg-black/40 backdrop-blur text-slate-200 px-3 py-1 rounded-full text-xs font-bold"
+                        class="bg-white/10 backdrop-blur px-3 py-1 rounded-full text-xs font-bold"
                         >
                             ${deal.store}
                         </div>
@@ -513,7 +623,7 @@ function renderDeals(){
                     </div>
 
                     <h2
-                    class="text-xl font-black text-white leading-tight line-clamp-2"
+                    class="text-xl font-black leading-tight line-clamp-2"
                     >
                         ${deal.title}
                     </h2>
@@ -521,6 +631,8 @@ function renderDeals(){
                 </div>
 
             </div>
+
+            <!-- LOWER -->
 
             <div class="p-5">
 
@@ -531,7 +643,7 @@ function renderDeals(){
                 </div>
 
                 <button
-                class="mt-5 w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-indigo-600 hover:to-blue-600 transition text-white py-4 rounded-2xl font-black shadow-xl"
+                class="mt-5 w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-[1.02] transition text-white py-4 rounded-2xl font-black shadow-2xl"
                 >
                     ⚡ VIEW DEAL
                 </button>
@@ -546,6 +658,8 @@ function renderDeals(){
     });
 }
 
+/* MODAL */
+
 function openDeal(index){
 
     const deal = allDeals[index];
@@ -553,9 +667,9 @@ function openDeal(index){
     const buttons = deal.all_links.map((link,i)=>`
 
         <a
-            href="${link}"
-            target="_blank"
-            class="block bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center py-4 rounded-2xl font-bold hover:scale-[1.02] transition"
+        href="${link}"
+        target="_blank"
+        class="block bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center py-4 rounded-2xl font-bold hover:scale-[1.02] transition"
         >
             🛒 Open Deal Link ${i+1}
         </a>
@@ -569,8 +683,8 @@ function openDeal(index){
         <div class="relative">
 
             <img
-                src="${deal.image}"
-                class="modal-image w-full h-[400px] object-cover"
+            src="${deal.image}"
+            class="modal-image w-full h-[420px] object-cover"
             />
 
             <div
@@ -578,8 +692,8 @@ function openDeal(index){
             ></div>
 
             <button
-                onclick="closeModal()"
-                class="absolute top-5 right-5 bg-red-500 w-12 h-12 rounded-full text-2xl font-black"
+            onclick="closeModal()"
+            class="absolute top-5 right-5 bg-red-500 w-12 h-12 rounded-full text-2xl font-black"
             >
                 ×
             </button>
@@ -592,30 +706,22 @@ function openDeal(index){
                 class="flex gap-3 flex-wrap mb-5"
                 >
 
-                    ${deal.discount !== "0% OFF"
-                    ?
-
-                    `<div class="bg-orange-500 px-4 py-2 rounded-full font-bold text-sm">
-                        ${deal.discount}
-                    </div>`
-
-                    :
-
-                    ""
-                    }
-
-                    <div class="bg-blue-500 px-4 py-2 rounded-full font-bold text-sm">
+                    <div
+                    class="bg-blue-500 px-4 py-2 rounded-full font-bold text-sm"
+                    >
                         ${deal.category}
                     </div>
 
-                    <div class="bg-black/70 px-4 py-2 rounded-full font-bold text-sm">
+                    <div
+                    class="bg-black/70 px-4 py-2 rounded-full font-bold text-sm"
+                    >
                         ${deal.store}
                     </div>
 
                 </div>
 
                 <h1
-                class="text-3xl lg:text-5xl font-black text-white leading-tight"
+                class="text-3xl lg:text-5xl font-black leading-tight"
                 >
                     ${deal.title}
                 </h1>
@@ -625,6 +731,8 @@ function openDeal(index){
         </div>
 
         <div class="p-6">
+
+            <!-- DESCRIPTION -->
 
             <div
             class="glass rounded-3xl p-6"
@@ -644,6 +752,8 @@ function openDeal(index){
 
             </div>
 
+            <!-- LINKS -->
+
             <div
             class="grid gap-4 mt-7"
             >
@@ -661,12 +771,16 @@ function openDeal(index){
     ).style.display = "flex";
 }
 
+/* CLOSE */
+
 function closeModal(){
 
     document.getElementById(
         "dealModal"
     ).style.display = "none";
 }
+
+/* OUTSIDE CLICK */
 
 window.onclick = function(event){
 
@@ -680,12 +794,16 @@ window.onclick = function(event){
     }
 }
 
+/* SEARCH */
+
 document.getElementById(
     "searchInput"
 ).addEventListener(
     "input",
     renderDeals
 );
+
+/* CATEGORY */
 
 document.querySelectorAll(
     ".category-btn"
@@ -708,7 +826,11 @@ document.querySelectorAll(
     });
 });
 
+/* LOAD */
+
 loadDeals();
+
+/* AUTO REFRESH */
 
 setInterval(
     loadDeals,

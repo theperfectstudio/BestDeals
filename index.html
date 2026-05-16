@@ -1,5 +1,6 @@
 <!-- =====================================================
 FILE: index.html
+Modern Dynamic Telegram Deal UI
 ===================================================== -->
 
 <!DOCTYPE html>
@@ -12,7 +13,7 @@ FILE: index.html
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
->
+/>
 
 <title>
     🔥 Best Deals
@@ -21,42 +22,105 @@ FILE: index.html
 <script src="https://cdn.tailwindcss.com"></script>
 
 <link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
 rel="stylesheet"
->
+/>
 
 <style>
 
 *{
-    font-family:Poppins,sans-serif;
+    font-family:'Poppins',sans-serif;
 }
 
 body{
-    background:#f5f5f5;
+    background:#0f172a;
 }
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#334155;
+    border-radius:20px;
+}
+
+/* CATEGORY BUTTON */
 
 .category-btn{
 
-    background:white;
-    padding:10px 18px;
+    background:#1e293b;
+    color:white;
+
+    padding:12px 22px;
+
     border-radius:999px;
+
     font-weight:600;
-    border:1px solid #ddd;
+
+    transition:0.3s;
+
     white-space:nowrap;
+}
+
+.category-btn:hover{
+
+    background:#334155;
 }
 
 .active-cat{
 
-    background:#f97316;
-    color:white;
+    background:linear-gradient(
+        90deg,
+        #f97316,
+        #ef4444
+    );
 }
 
+/* DEAL CARD */
+
 .deal-card{
+
+    background:#111827;
+
+    border:1px solid #1f2937;
+
     transition:0.3s;
+
+    overflow:hidden;
+
+    position:relative;
 }
 
 .deal-card:hover{
-    transform:translateY(-5px);
+
+    transform:translateY(-6px);
+
+    border-color:#f97316;
+}
+
+/* GLASS EFFECT */
+
+.glass{
+
+    backdrop-filter:blur(10px);
+
+    background:rgba(255,255,255,0.08);
+}
+
+/* CAPTION */
+
+.caption{
+
+    color:#cbd5e1;
+
+    line-height:1.8;
+
+    font-size:14px;
+
+    white-space:pre-line;
 }
 
 </style>
@@ -65,40 +129,132 @@ body{
 
 <body>
 
-<!-- HEADER -->
+<!-- ================================================= -->
+<!-- HERO -->
+<!-- ================================================= -->
 
-<header class="bg-white shadow sticky top-0 z-50">
+<section
+class="relative overflow-hidden border-b border-slate-800"
+>
 
-    <div class="max-w-7xl mx-auto px-4 py-4">
+    <div
+    class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20"
+    ></div>
 
-        <div class="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+    <div
+    class="max-w-7xl mx-auto px-4 py-14 relative z-10"
+    >
+
+        <div
+        class="flex flex-col lg:flex-row gap-10 items-center justify-between"
+        >
 
             <div>
 
-                <h1 class="text-3xl font-black text-orange-500">
-                    🔥 Best Deals
+                <div
+                class="inline-flex items-center gap-3 bg-orange-500/20 text-orange-300 px-5 py-2 rounded-full font-semibold"
+                >
+
+                    🔥 LIVE DEAL FEED
+
+                </div>
+
+                <h1
+                class="text-5xl lg:text-7xl font-black text-white mt-6 leading-tight"
+                >
+
+                    Best Deals
+                    <span class="text-orange-500">
+                        Auto Updated
+                    </span>
+
                 </h1>
 
-                <p class="text-gray-500">
-                    Auto Updated in Every 15 min
+                <p
+                class="text-slate-300 text-lg mt-6 max-w-2xl"
+                >
+
+                    Real-time Telegram deals with direct affiliate links,
+                    product banners, discounts, and instant updates.
+
                 </p>
 
             </div>
 
-            <!-- SEARCH -->
+            <!-- LIVE STATUS -->
+
+            <div
+            class="glass rounded-3xl p-8 border border-slate-700"
+            >
+
+                <div
+                class="text-slate-400 text-sm"
+                >
+                    STATUS
+                </div>
+
+                <div
+                class="flex items-center gap-3 mt-3"
+                >
+
+                    <div
+                    class="w-4 h-4 rounded-full bg-green-500 animate-pulse"
+                    ></div>
+
+                    <div
+                    class="text-2xl font-black text-white"
+                    >
+                        LIVE
+                    </div>
+
+                </div>
+
+                <div
+                class="text-slate-400 mt-4"
+                >
+                    Telegram Auto Sync Enabled
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================================================= -->
+<!-- SEARCH + FILTER -->
+<!-- ================================================= -->
+
+<section
+class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur border-b border-slate-800"
+>
+
+    <div
+    class="max-w-7xl mx-auto px-4 py-5"
+    >
+
+        <!-- SEARCH -->
+
+        <div
+        class="flex flex-col lg:flex-row gap-4"
+        >
 
             <input
                 id="searchInput"
                 type="text"
-                placeholder="Search deals..."
-                class="border rounded-2xl px-5 py-3 w-full md:w-80 outline-none"
-            >
+                placeholder="Search products, stores, deals..."
+                class="w-full bg-slate-900 border border-slate-700 text-white rounded-2xl px-6 py-4 outline-none"
+            />
 
         </div>
 
-        <!-- CATEGORY -->
+        <!-- CATEGORIES -->
 
-        <div class="flex gap-3 mt-5 overflow-auto pb-2">
+        <div
+        class="flex gap-3 mt-5 overflow-auto pb-2"
+        >
 
             <button class="category-btn active-cat" data-category="All">
                 All
@@ -128,20 +284,28 @@ body{
 
     </div>
 
-</header>
+</section>
 
-<!-- DEALS -->
+<!-- ================================================= -->
+<!-- DEAL GRID -->
+<!-- ================================================= -->
 
-<main class="max-w-7xl mx-auto px-4 py-8">
+<main
+class="max-w-7xl mx-auto px-4 py-10"
+>
 
     <div
-        id="deals-container"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+    id="deals-container"
+    class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
     >
 
     </div>
 
 </main>
+
+<!-- ================================================= -->
+<!-- SCRIPT -->
+<!-- ================================================= -->
 
 <script>
 
@@ -151,13 +315,20 @@ let currentCategory = "All";
 
 async function loadDeals(){
 
-    const response = await fetch(
-        "deals.json?t=" + Date.now()
-    );
+    try{
 
-    allDeals = await response.json();
+        const response = await fetch(
+            "deals.json?t=" + Date.now()
+        );
 
-    renderDeals();
+        allDeals = await response.json();
+
+        renderDeals();
+
+    }catch(error){
+
+        console.error(error);
+    }
 }
 
 function renderDeals(){
@@ -204,10 +375,12 @@ function renderDeals(){
 
         container.innerHTML = `
 
-            <div class="col-span-full text-center py-20">
+            <div class="col-span-full text-center py-24">
 
-                <h2 class="text-3xl font-bold text-gray-400">
+                <h2 class="text-5xl font-black text-slate-500">
+
                     No Deals Found
+
                 </h2>
 
             </div>
@@ -226,10 +399,10 @@ function renderDeals(){
                 <a
                     href="${link}"
                     target="_blank"
-                    class="block bg-orange-500 hover:bg-orange-600 text-white text-center py-3 rounded-2xl font-bold"
+                    class="block bg-gradient-to-r from-orange-500 to-red-500 hover:scale-[1.02] transition text-white text-center py-4 rounded-2xl font-bold"
                 >
 
-                    🔥 Grab Deal ${index+1}
+                    🔥 Open Deal ${index+1}
 
                 </a>
 
@@ -237,69 +410,110 @@ function renderDeals(){
 
         const card = `
 
-        <div class="deal-card bg-white rounded-3xl overflow-hidden shadow-md">
+        <div
+        class="deal-card rounded-3xl"
+        >
 
-            <img
-                src="${deal.image}"
-                class="w-full h-72 object-cover"
-            >
+            <!-- IMAGE -->
 
-            <div class="p-5">
+            <div class="relative">
 
-                <div class="flex items-center justify-between mb-3">
+                <img
+                    src="${deal.image}"
+                    class="w-full h-[350px] object-cover"
+                />
 
-                    <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                <!-- OVERLAY -->
 
-                        ${deal.category}
+                <div
+                class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"
+                ></div>
 
-                    </span>
+                <!-- BADGES -->
 
-                    <span class="bg-gray-800 text-white px-3 py-1 rounded-full text-xs font-bold">
+                <div
+                class="absolute top-4 left-4 flex gap-2"
+                >
 
-                        ${deal.store}
-
-                    </span>
-
-                </div>
-
-                <h2 class="text-xl font-black text-gray-800 leading-tight">
-
-                    ${deal.title}
-
-                </h2>
-
-                <div class="flex items-center gap-3 mt-4">
-
-                    <span class="text-3xl font-black">
-
-                        ₹${deal.new_price}
-
-                    </span>
-
-                    <span class="line-through text-gray-400">
-
-                        ₹${deal.old_price}
-
-                    </span>
-
-                </div>
-
-                <div class="mt-2 text-red-500 font-bold">
-
-                    ${deal.discount}
-
-                </div>
-
-                ${deal.live_price
-                    ? `
-                    <div class="mt-3 text-green-600 font-bold">
-                        Live Price: ${deal.live_price}
+                    <div
+                    class="bg-red-500 text-white px-4 py-2 rounded-full font-bold text-sm"
+                    >
+                        ${deal.discount}
                     </div>
-                    `
-                    : ""
-                }
 
-                <div class="mt-5 space-y-3">
+                    <div
+                    class="bg-orange-500 text-white px-4 py-2 rounded-full font-bold text-sm"
+                    >
+                        ${deal.category}
+                    </div>
+
+                </div>
+
+                <!-- STORE -->
+
+                <div
+                class="absolute top-4 right-4 bg-black/70 text-white px-4 py-2 rounded-full font-bold text-sm"
+                >
+                    ${deal.store}
+                </div>
+
+                <!-- TITLE -->
+
+                <div
+                class="absolute bottom-0 p-6"
+                >
+
+                    <h2
+                    class="text-2xl font-black text-white leading-tight"
+                    >
+
+                        ${deal.title}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <!-- CONTENT -->
+
+            <div class="p-6">
+
+                <!-- PRICE -->
+
+                <div
+                class="flex items-center gap-4"
+                >
+
+                    <div
+                    class="text-4xl font-black text-white"
+                    >
+                        ₹${deal.new_price}
+                    </div>
+
+                    <div
+                    class="text-xl line-through text-slate-500"
+                    >
+                        ₹${deal.old_price}
+                    </div>
+
+                </div>
+
+                <!-- CAPTION -->
+
+                <div
+                class="caption mt-6"
+                >
+
+                    ${deal.caption}
+
+                </div>
+
+                <!-- LINKS -->
+
+                <div
+                class="mt-6 space-y-3"
+                >
 
                     ${buttons}
 
@@ -315,12 +529,16 @@ function renderDeals(){
     });
 }
 
+/* SEARCH */
+
 document.getElementById(
     "searchInput"
 ).addEventListener(
     "input",
     renderDeals
 );
+
+/* CATEGORY */
 
 document.querySelectorAll(
     ".category-btn"
@@ -343,7 +561,11 @@ document.querySelectorAll(
     });
 });
 
+/* LOAD */
+
 loadDeals();
+
+/* AUTO REFRESH */
 
 setInterval(
     loadDeals,

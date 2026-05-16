@@ -40,7 +40,7 @@ IMAGES_DIR = os.path.join(
 )
 
 # =====================================================
-# CREATE REQUIRED FOLDERS
+# CREATE FOLDERS
 # =====================================================
 
 os.makedirs(IMAGES_DIR, exist_ok=True)
@@ -72,6 +72,7 @@ try:
         raw = f.read().strip()
 
         if raw == "":
+
             deals = []
 
         else:
@@ -80,7 +81,7 @@ try:
 
 except Exception as e:
 
-    print(f"⚠️ JSON FIXED: {e}")
+    print(f"⚠️ JSON ERROR: {e}")
 
     deals = []
 
@@ -125,9 +126,11 @@ def extract_prices(text):
         if len(prices) >= 2:
 
             p1 = int(prices[0].replace(",", ""))
+
             p2 = int(prices[1].replace(",", ""))
 
             old_price = max(p1, p2)
+
             new_price = min(p1, p2)
 
             if old_price > 0:
@@ -147,8 +150,9 @@ def extract_prices(text):
 
             old_price = new_price
 
-    except:
-        pass
+    except Exception as e:
+
+        print(f"⚠️ Price Extraction Error: {e}")
 
     return old_price, new_price, discount
 
@@ -183,18 +187,26 @@ def detect_store(text):
 
 def save_json():
 
-    with open(
-        JSON_FILE,
-        "w",
-        encoding="utf-8"
-    ) as f:
+    try:
 
-        json.dump(
-            deals,
-            f,
-            ensure_ascii=False,
-            indent=2
-        )
+        with open(
+            JSON_FILE,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
+            json.dump(
+                deals,
+                f,
+                ensure_ascii=False,
+                indent=2
+            )
+
+        print("✅ deals.json Updated")
+
+    except Exception as e:
+
+        print(f"❌ JSON Save Error: {e}")
 
 # =====================================================
 # MESSAGE HANDLER
@@ -208,9 +220,14 @@ async def handler(event):
         text = event.message.message or ""
 
         if not text:
+
             return
 
-        print("📩 New Telegram Deal")
+        print("\n📩 New Telegram Deal Received")
+
+        # =============================================
+        # EXTRACT LINKS
+        # =============================================
 
         urls = re.findall(
             r'(https?://\\S+)',
@@ -219,41 +236,59 @@ async def handler(event):
 
         main_link = urls[0] if urls else "#"
 
-        title = text.split("\\n")[0][:180]
+        # =============================================
+        # TITLE
+        # =============================================
+
+        title = text.split("\n")[0][:180]
+
+        # =============================================
+        # PRICE
+        # =============================================
 
         old_price, new_price, discount = (
             extract_prices(text)
         )
 
+        # =============================================
+        # STORE
+        # =============================================
+
         store = detect_store(text)
 
         # =============================================
-        # IMAGE DOWNLOAD
+        # DOWNLOAD IMAGE
         # =============================================
 
         image_path = ""
 
         if event.photo:
 
-            downloaded = await event.download_media()
+            try:
 
-            filename = os.path.basename(
-                downloaded
-            )
+                downloaded = await event.download_media()
 
-            final_path = os.path.join(
-                IMAGES_DIR,
-                filename
-            )
+                filename = os.path.basename(
+                    downloaded
+                )
 
-            shutil.move(
-                downloaded,
-                final_path
-            )
+                final_path = os.path.join(
+                    IMAGES_DIR,
+                    filename
+                )
 
-            image_path = f"images/{filename}"
+                shutil.move(
+                    downloaded,
+                    final_path
+                )
 
-            print("🖼 Image Saved")
+                image_path = f"images/{filename}"
+
+                print("🖼 Image Downloaded")
+
+            except Exception as e:
+
+                print(f"❌ Image Error: {e}")
 
         # =============================================
         # CREATE DEAL OBJECT
@@ -280,6 +315,7 @@ async def handler(event):
             "all_links": urls,
 
             "store": store
+
         }
 
         # =============================================
@@ -294,7 +330,7 @@ async def handler(event):
 
         save_json()
 
-        print("✅ Deal Saved")
+        print("✅ Deal Saved Successfully")
 
     except Exception as e:
 
@@ -306,14 +342,32 @@ async def handler(event):
 
 async def main():
 
-    print(f"🚀 Listening To {CHANNEL_USERNAME}")
+    try:
 
-    await client.start()
+        print("🚀 Starting Telegram Bot...")
 
-    print("✅ Telegram Connected")
+        print("🔌 Connecting To Telegram...")
 
-    await client.run_until_disconnected()
+        await client.start()
 
+        print("✅ Telegram Connected Successfully")
+
+        me = await client.get_me()
+
+        print(f"👤 Logged In As: {me.first_name}")
+
+        print(f"📡 Listening To Channel: {CHANNEL_USERNAME}")
+
+        print("⏳ Waiting For New Messages...")
+
+        await client.run_until_disconnected()
+
+    except Exception as e:
+
+        print(f"❌ MAIN ERROR: {e}")
+
+# =====================================================
+# START
 # =====================================================
 
 if __name__ == "__main__":

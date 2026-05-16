@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '* * * * *'
 
 jobs:
 
@@ -21,19 +21,36 @@ jobs:
 
     steps:
 
+      # =============================================
+      # CHECKOUT
+      # =============================================
+
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      # =============================================
+      # PYTHON
+      # =============================================
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
+      # =============================================
+      # INSTALL REQUIREMENTS
+      # =============================================
+
       - name: Install Dependencies
         run: |
           pip install -r backend/requirements.txt
 
+      # =============================================
+      # RUN BOT
+      # =============================================
+
       - name: Run Telegram Fetcher
+
         env:
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}
@@ -41,6 +58,10 @@ jobs:
 
         run: |
           python -u backend/telegram_bot.py
+
+      # =============================================
+      # COMMIT CHANGES
+      # =============================================
 
       - name: Commit Updated Deals
 
@@ -54,4 +75,6 @@ jobs:
 
           git commit -m "auto update deals" || echo "No changes"
 
-          git push
+          git pull --rebase origin main || true
+
+          git push || true

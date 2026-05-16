@@ -151,353 +151,310 @@
     <!-- JAVASCRIPT -->
     <!-- ===================================================== -->
 
-    <script>
+   <script>
 
-        // =====================================================
-        // IMPORTANT:
-        // Replace with your Google Sheet CSV URL
-        // =====================================================
+const SHEET_CSV_URL =
+"https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=csv&gid=0";
 
-        const SHEET_CSV_URL =
-        "https://docs.google.com/spreadsheets/d/1a0n3BFI1icw2Bv_-kMneuFf0Fz4Pp6v6t8mPTyT2eZo/edit?gid=0#gid=0";
+let allDeals = [];
+let currentStoreFilter = "All";
 
 
-        let allDeals = [];
+// =====================================================
+// LOAD DEALS
+// =====================================================
 
-        let currentStoreFilter = "All";
+async function loadDeals() {
 
+    try {
 
-        // =====================================================
-        // LOAD DEALS
-        // =====================================================
+        const response = await fetch(SHEET_CSV_URL);
 
-        async function loadDeals() {
-
-            try {
-
-                const response = await fetch(SHEET_CSV_URL);
-
-                if (!response.ok) {
-                    throw new Error("Failed to fetch data");
-                }
-
-                const csvData = await response.text();
-
-                parseCSV(csvData);
-
-                renderDeals(allDeals);
-
-            }
-            catch (error) {
-
-                console.error(error);
-
-                document.getElementById("deals-container").innerHTML = `
-                    <div class="col-span-full text-center py-12">
-
-                        <p class="text-red-500 text-2xl font-bold">
-                            ❌ Data Loading Failed
-                        </p>
-
-                        <p class="text-gray-500 mt-2">
-                            Check Google Sheet Publish Settings
-                        </p>
-
-                    </div>
-                `;
-            }
+        if (!response.ok) {
+            throw new Error("CSV Fetch Failed");
         }
 
+        const csvText = await response.text();
 
-        // =====================================================
-        // CSV PARSER
-        // =====================================================
+        parseCSV(csvText);
 
-        function parseCSV(csvText) {
+        renderDeals(allDeals);
 
-            const lines = csvText.split(/\r?\n/);
+    }
+    catch (error) {
 
-            allDeals = [];
+        console.error(error);
 
-            for (let i = 1; i < lines.length; i++) {
+        document.getElementById("deals-container").innerHTML = `
+            <div class="col-span-full text-center py-16">
 
-                if (!lines[i].trim()) continue;
+                <h2 class="text-red-500 text-2xl font-bold">
+                    ❌ Data Loading Failed
+                </h2>
 
-                const columns =
-                    lines[i].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+                <p class="text-gray-500 mt-2">
+                    Check Google Sheet Publish Settings
+                </p>
 
-                if (!columns || columns.length < 7) continue;
+            </div>
+        `;
+    }
+}
 
-                const [
-                    timestamp,
-                    title,
-                    img,
-                    oldPrice,
-                    newPrice,
-                    discount,
-                    link
-                ] = columns;
 
-                let store = "Store";
+// =====================================================
+// PARSE CSV
+// =====================================================
 
-                if (title.includes("Amazon")) {
-                    store = "Amazon";
-                }
-                else if (title.includes("Flipkart")) {
-                    store = "Flipkart";
-                }
-                else if (title.includes("Myntra")) {
-                    store = "Myntra";
-                }
-                else if (title.includes("Ajio")) {
-                    store = "Ajio";
-                }
-                else if (title.includes("Nykaa")) {
-                    store = "Nykaa";
-                }
+function parseCSV(csvText) {
 
-                allDeals.push({
+    const rows = csvText.split("\n");
 
-                    id: timestamp.trim(),
+    allDeals = [];
 
-                    title: title.replace(/"/g, "").trim(),
+    // Skip Header
+    for (let i = 1; i < rows.length; i++) {
 
-                    img: img.replace(/"/g, "").trim(),
+        if (!rows[i].trim()) continue;
 
-                    oldPrice: parseInt(oldPrice) || 0,
+        // Proper CSV Parsing
+        const cols = rows[i]
+            .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
 
-                    newPrice: parseInt(newPrice) || 0,
+        if (cols.length < 7) continue;
 
-                    discount: discount.replace(/"/g, "").trim(),
+        const product = {
 
-                    link: link.replace(/"/g, "").trim(),
+            id: cols[0]?.replace(/"/g, "").trim(),
 
-                    store: store
+            title: cols[1]?.replace(/"/g, "").trim(),
 
-                });
+            img: cols[2]?.replace(/"/g, "").trim(),
 
-            }
+            oldPrice: parseInt(cols[3]) || 0,
 
-            // Latest first
+            newPrice: parseInt(cols[4]) || 0,
 
-            allDeals.reverse();
+            discount: cols[5]?.replace(/"/g, "").trim(),
 
+            link: cols[6]?.replace(/"/g, "").trim()
+
+        };
+
+        // Store Detection
+        if (product.title.toLowerCase().includes("amazon")) {
+            product.store = "Amazon";
+        }
+        else if (product.title.toLowerCase().includes("flipkart")) {
+            product.store = "Flipkart";
+        }
+        else if (product.title.toLowerCase().includes("myntra")) {
+            product.store = "Myntra";
+        }
+        else if (product.title.toLowerCase().includes("ajio")) {
+            product.store = "Ajio";
+        }
+        else if (product.title.toLowerCase().includes("nykaa")) {
+            product.store = "Nykaa";
+        }
+        else {
+            product.store = "Store";
         }
 
+        allDeals.push(product);
+    }
 
-        // =====================================================
-        // RENDER DEALS
-        // =====================================================
-
-        function renderDeals(dealsList) {
-
-            const container =
-                document.getElementById("deals-container");
-
-            container.innerHTML = "";
-
-            if (dealsList.length === 0) {
-
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-16">
-
-                        <p class="text-gray-500 text-xl font-semibold">
-                            No Deals Found
-                        </p>
-
-                    </div>
-                `;
-
-                return;
-            }
-
-            dealsList.forEach(deal => {
-
-                let badgeColor = "bg-gray-700";
-
-                if (deal.store === "Amazon")
-                    badgeColor = "bg-amber-500";
-
-                else if (deal.store === "Flipkart")
-                    badgeColor = "bg-blue-600";
-
-                else if (deal.store === "Myntra")
-                    badgeColor = "bg-pink-600";
-
-                else if (deal.store === "Ajio")
-                    badgeColor = "bg-indigo-600";
-
-                else if (deal.store === "Nykaa")
-                    badgeColor = "bg-purple-600";
+    // Latest First
+    allDeals.reverse();
+}
 
 
-                const cardHTML = `
+// =====================================================
+// RENDER DEALS
+// =====================================================
 
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-2xl overflow-hidden transition duration-300 p-4 flex flex-col justify-between">
+function renderDeals(deals) {
 
-                    <div>
+    const container =
+        document.getElementById("deals-container");
 
-                        <!-- Image -->
+    container.innerHTML = "";
 
-                        <div class="relative bg-gray-50 rounded-xl h-52 flex items-center justify-center overflow-hidden">
+    if (deals.length === 0) {
 
-                            <img
-                                src="${deal.img}"
-                                alt="${deal.title}"
-                                class="max-h-full max-w-full object-contain hover:scale-105 transition duration-300"
-                            >
+        container.innerHTML = `
+            <div class="col-span-full text-center py-16">
 
-                            <!-- Discount -->
+                <p class="text-gray-500 text-xl">
+                    No Deals Found
+                </p>
 
-                            <span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-black px-2 py-1 rounded-lg shadow">
+            </div>
+        `;
 
-                                ${deal.discount}
+        return;
+    }
 
-                            </span>
+    deals.forEach(deal => {
 
-                            <!-- Store -->
+        let badgeColor = "bg-gray-700";
 
-                            <span class="absolute top-3 right-3 ${badgeColor} text-white text-xs font-bold px-2 py-1 rounded-lg shadow">
+        if (deal.store === "Amazon")
+            badgeColor = "bg-amber-500";
 
-                                ${deal.store}
+        if (deal.store === "Flipkart")
+            badgeColor = "bg-blue-600";
 
-                            </span>
+        if (deal.store === "Myntra")
+            badgeColor = "bg-pink-600";
 
-                        </div>
+        if (deal.store === "Ajio")
+            badgeColor = "bg-indigo-600";
 
-                        <!-- Title -->
+        if (deal.store === "Nykaa")
+            badgeColor = "bg-purple-600";
 
-                        <h2 class="mt-4 text-sm font-semibold text-gray-800 line-clamp-2">
 
-                            ${deal.title}
+        const card = `
 
-                        </h2>
+        <div class="bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 overflow-hidden transition duration-300 p-4 flex flex-col justify-between">
 
-                    </div>
+            <div>
 
-                    <!-- Price -->
+                <!-- IMAGE -->
 
-                    <div class="mt-4">
+                <div class="relative bg-gray-50 rounded-xl h-52 flex items-center justify-center overflow-hidden">
 
-                        <div class="flex items-center gap-2">
+                    <img
+                        src="${deal.img}"
+                        alt="${deal.title}"
+                        class="max-h-full max-w-full object-contain hover:scale-105 transition duration-300"
+                        onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'"
+                    >
 
-                            <span class="text-2xl font-black text-gray-900">
+                    <!-- Discount -->
 
-                                ₹${deal.newPrice.toLocaleString('en-IN')}
+                    <span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-lg">
 
-                            </span>
+                        ${deal.discount}
 
-                            <span class="text-sm text-gray-400 line-through">
+                    </span>
 
-                                ₹${deal.oldPrice.toLocaleString('en-IN')}
+                    <!-- Store -->
 
-                            </span>
+                    <span class="absolute top-3 right-3 ${badgeColor} text-white text-xs font-bold px-2 py-1 rounded-lg">
 
-                        </div>
+                        ${deal.store}
 
-                        <!-- Button -->
-
-                        <a
-                            href="${deal.link}"
-                            target="_blank"
-                            class="block text-center mt-4 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-3 rounded-xl transition"
-                        >
-
-                            Grab Deal ➜
-
-                        </a>
-
-                    </div>
+                    </span>
 
                 </div>
-                `;
 
-                container.innerHTML += cardHTML;
+                <!-- TITLE -->
 
-            });
+                <h2 class="mt-4 text-sm font-semibold text-gray-800 line-clamp-2">
 
-        }
+                    ${deal.title}
 
+                </h2>
 
-        // =====================================================
-        // STORE FILTER
-        // =====================================================
+            </div>
 
-        function filterStore(storeName) {
+            <!-- PRICE -->
 
-            currentStoreFilter = storeName;
+            <div class="mt-4">
 
-            const buttons =
-                document.querySelectorAll(".store-btn");
+                <div class="flex items-center gap-2">
 
-            buttons.forEach(btn => {
+                    <span class="text-2xl font-black text-gray-900">
 
-                btn.classList.remove(
-                    "bg-gray-900",
-                    "text-white"
-                );
+                        ₹${deal.newPrice}
 
-                btn.classList.add(
-                    "bg-gray-100"
-                );
+                    </span>
 
-            });
+                    <span class="text-sm text-gray-400 line-through">
 
-            event.target.classList.remove("bg-gray-100");
+                        ₹${deal.oldPrice}
 
-            event.target.classList.add(
-                "bg-gray-900",
-                "text-white"
-            );
+                    </span>
 
-            filterDeals();
+                </div>
 
-        }
+                <!-- BUTTON -->
 
+                <a
+                    href="${deal.link}"
+                    target="_blank"
+                    class="block text-center mt-4 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-3 rounded-xl transition"
+                >
 
-        // =====================================================
-        // SEARCH + FILTER
-        // =====================================================
+                    Grab Deal ➜
 
-        function filterDeals() {
+                </a>
 
-            const search =
-                document.getElementById("search-input")
-                .value
-                .toLowerCase();
+            </div>
 
-            const filtered = allDeals.filter(deal => {
+        </div>
+        `;
 
-                const storeMatch =
-                    currentStoreFilter === "All"
-                    || deal.store === currentStoreFilter;
-
-                const searchMatch =
-                    deal.title.toLowerCase().includes(search);
-
-                return storeMatch && searchMatch;
-
-            });
-
-            renderDeals(filtered);
-
-        }
+        container.innerHTML += card;
+    });
+}
 
 
-        // =====================================================
-        // AUTO REFRESH
-        // =====================================================
+// =====================================================
+// FILTER STORE
+// =====================================================
 
-        setInterval(loadDeals, 30000);
+function filterStore(storeName) {
+
+    currentStoreFilter = storeName;
+
+    filterDeals();
+}
 
 
-        // =====================================================
-        // INITIAL LOAD
-        // =====================================================
+// =====================================================
+// SEARCH FILTER
+// =====================================================
 
-        window.onload = loadDeals;
+function filterDeals() {
 
-    </script>
+    const search =
+        document.getElementById("search-input")
+        .value
+        .toLowerCase();
+
+    const filtered = allDeals.filter(deal => {
+
+        const storeMatch =
+            currentStoreFilter === "All"
+            || deal.store === currentStoreFilter;
+
+        const searchMatch =
+            deal.title.toLowerCase().includes(search);
+
+        return storeMatch && searchMatch;
+    });
+
+    renderDeals(filtered);
+}
+
+
+// =====================================================
+// AUTO REFRESH
+// =====================================================
+
+setInterval(loadDeals, 30000);
+
+
+// =====================================================
+// INITIAL LOAD
+// =====================================================
+
+window.onload = loadDeals;
+
+</script>
 
 </body>
 </html>

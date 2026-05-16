@@ -1,15 +1,8 @@
-# =====================================================
-# FILE: backend/telegram_bot.py
-# =====================================================
-
 import asyncio
 import os
 import re
 import json
 import shutil
-import requests
-
-from bs4 import BeautifulSoup
 
 from telethon import TelegramClient
 from telethon.sessions import StringSession
@@ -55,7 +48,7 @@ IMAGES_DIR = os.path.join(
 os.makedirs(IMAGES_DIR, exist_ok=True)
 
 # =====================================================
-# LOAD JSON
+# LOAD EXISTING DEALS
 # =====================================================
 
 deals = []
@@ -185,103 +178,35 @@ def detect_category(text):
     if any(word in lower for word in [
         "mobile",
         "iphone",
-        "redmi",
         "realme",
-        "samsung",
-        "vivo",
-        "oppo"
+        "redmi",
+        "samsung"
     ]):
         return "Mobiles"
 
     elif any(word in lower for word in [
         "laptop",
         "macbook",
-        "hp",
         "dell",
-        "lenovo"
+        "hp"
     ]):
         return "Laptops"
 
     elif any(word in lower for word in [
         "shirt",
         "shoe",
-        "fashion",
-        "jeans"
+        "fashion"
     ]):
         return "Fashion"
 
     elif any(word in lower for word in [
-        "earbuds",
         "watch",
-        "boat",
-        "headphone"
+        "earbuds",
+        "boat"
     ]):
         return "Electronics"
 
     return "Other"
-
-# =====================================================
-# LIVE PRICE FETCH
-# =====================================================
-
-def fetch_live_price(url):
-
-    try:
-
-        headers = {
-
-            "User-Agent":
-            "Mozilla/5.0"
-        }
-
-        response = requests.get(
-            url,
-            headers=headers,
-            timeout=10
-        )
-
-        html = response.text
-
-        soup = BeautifulSoup(
-            html,
-            "html.parser"
-        )
-
-        # AMAZON
-
-        if "amazon" in url:
-
-            price = soup.select_one(
-                ".a-price-whole"
-            )
-
-            if price:
-
-                return (
-                    "₹" +
-                    price.text.strip()
-                )
-
-        # FLIPKART
-
-        elif "flipkart" in url:
-
-            price = soup.select_one(
-                "._30jeq3"
-            )
-
-            if price:
-
-                return price.text.strip()
-
-    except Exception as e:
-
-        print(
-            f"⚠️ PRICE FETCH ERROR: {e}",
-            flush=True
-        )
-
-    return ""
 
 # =====================================================
 # SAVE JSON
@@ -384,18 +309,6 @@ async def main():
             category = detect_category(text)
 
             # =========================================
-            # LIVE PRICE
-            # =========================================
-
-            live_price = ""
-
-            if urls:
-
-                live_price = fetch_live_price(
-                    urls[0]
-                )
-
-            # =========================================
             # DOWNLOAD IMAGE
             # =========================================
 
@@ -403,32 +316,41 @@ async def main():
 
             if message.photo:
 
-                downloaded = (
-                    await message.download_media()
-                )
+                try:
 
-                filename = os.path.basename(
-                    downloaded
-                )
+                    downloaded = (
+                        await message.download_media()
+                    )
 
-                final_path = os.path.join(
-                    IMAGES_DIR,
-                    filename
-                )
+                    filename = os.path.basename(
+                        downloaded
+                    )
 
-                shutil.move(
-                    downloaded,
-                    final_path
-                )
+                    final_path = os.path.join(
+                        IMAGES_DIR,
+                        filename
+                    )
 
-                image_path = (
-                    f"images/{filename}"
-                )
+                    shutil.move(
+                        downloaded,
+                        final_path
+                    )
 
-                print(
-                    "🖼 IMAGE SAVED",
-                    flush=True
-                )
+                    image_path = (
+                        f"images/{filename}"
+                    )
+
+                    print(
+                        "🖼 IMAGE SAVED",
+                        flush=True
+                    )
+
+                except Exception as e:
+
+                    print(
+                        f"⚠️ IMAGE ERROR: {e}",
+                        flush=True
+                    )
 
             # =========================================
             # CREATE DEAL
@@ -456,9 +378,7 @@ async def main():
 
                 "store": store,
 
-                "category": category,
-
-                "live_price": live_price
+                "category": category
             }
 
             deals.insert(0, deal)

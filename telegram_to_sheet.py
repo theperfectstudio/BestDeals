@@ -1,4 +1,5 @@
 import time
+import asyncio  # અસિંક્રોનસ લૂપ માટે જરૂરી
 import re
 import os
 import json
@@ -19,8 +20,11 @@ SHEET_NAME = "EarnKaro_Deals"
 def connect_sheet():
     try:
         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        
+        # GitHub સિક્રેટના JSON ટેક્સ્ટને ડિક્શનરીમાં ફેરવવું
         creds_dict = json.loads(CREDENTIALS_JSON)
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+        
         client = gspread.authorize(creds)
         return client.open(SHEET_NAME).sheet1
     except Exception as e:
@@ -53,7 +57,7 @@ async def handler(event):
     msg_text = event.message.message
     if not msg_text: return
 
-    print(f"\n📩 નવી પોસ્ટ એનાલિસિસ...")
+    print(f"\n📩 નવી પોસ્ટ મળી, એનાલિસિસ ચાલુ...")
     urls = re.findall(r'(https?://\S+)', msg_text)
     
     if urls:
@@ -67,19 +71,18 @@ async def handler(event):
             try:
                 timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
                 sheet.append_row([timestamp, title, image_url, old_p, new_p, discount, profit_link])
-                print(f"✅ સેવ થયું: {title}")
+                print(f"✅ શીટમાં સેવ થયું: {title}")
             except Exception as e:
                 print(f"❌ Sheet Update Error: {e}")
 
 # --- ૫. રન (Always Live Infinite Loop) ---
 async def main():
     print(f"🚀 GitHub Action Bot Started & Listening to {CHANNEL_USERNAME}...")
-    # ક્લાયન્ટ કનેક્ટ કરો
     await client.start()
     
-    # જ્યાં સુધી મેન્યુઅલી બંધ ન થાય ત્યાં સુધી લૂપ ચાલુ રાખશે
+    # બોટને સતત બેકગ્રાઉન્ડમાં લાઈવ રાખવા માટેનો લૂપ
     while True:
-        await time.sleep(10) # દર ૧૦ સેકન્ડે કનેક્શન જીવંત રાખશે
+        await asyncio.sleep(10) 
 
 with client:
     client.loop.run_until_complete(main())

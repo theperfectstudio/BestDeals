@@ -1,892 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8"/>
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-/>
-
-<title>
-DealVerse AI 🔥
-</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
-rel="stylesheet"
-/>
-
-<style>
-
-*{
-    font-family:'Poppins',sans-serif;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-
-    background:
-    radial-gradient(circle at top left,#2563eb22,transparent 25%),
-    radial-gradient(circle at bottom right,#7c3aed22,transparent 25%),
-    #020617;
-
-    overflow-x:hidden;
-
-    color:white;
-}
-
-/* SCROLLBAR */
-
-::-webkit-scrollbar{
-    width:8px;
-}
-
-::-webkit-scrollbar-thumb{
-    background:#334155;
-    border-radius:999px;
-}
-
-/* GLASS */
-
-.glass{
-
-    background:rgba(255,255,255,0.05);
-
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,0.08);
-}
-
-/* HERO */
-
-.hero-glow{
-
-    position:absolute;
-
-    width:700px;
-    height:700px;
-
-    border-radius:999px;
-
-    filter:blur(150px);
-
-    opacity:0.25;
-}
-
-/* CATEGORY */
-
-.category-btn{
-
-    padding:10px 18px;
-
-    border-radius:999px;
-
-    background:#111827;
-
-    border:1px solid #1e293b;
-
-    transition:0.3s;
-
-    font-weight:700;
-
-    white-space:nowrap;
-
-    font-size:14px;
-}
-
-.category-btn:hover{
-
-    background:#1e293b;
-
-    transform:translateY(-2px);
-}
-
-.active-cat{
-
-    background:
-    linear-gradient(
-        90deg,
-        #2563eb,
-        #7c3aed
-    );
-
-    border:none;
-}
-
-/* DEAL CARD */
-
-.deal-card{
-
-    position:relative;
-
-    overflow:hidden;
-
-    border-radius:32px;
-
-    background:#111827;
-
-    border:1px solid #1e293b;
-
-    transition:0.35s;
-
-    cursor:pointer;
-}
-
-.deal-card:hover{
-
-    transform:
-    translateY(-8px)
-    scale(1.01);
-
-    border-color:#fb923c;
-
-    box-shadow:
-    0 20px 60px rgba(255,120,0,0.25);
-}
-
-/* CLAMP */
-
-.line-clamp-2{
-
-    display:-webkit-box;
-
-    -webkit-line-clamp:2;
-
-    -webkit-box-orient:vertical;
-
-    overflow:hidden;
-}
-
-.line-clamp-3{
-
-    display:-webkit-box;
-
-    -webkit-line-clamp:3;
-
-    -webkit-box-orient:vertical;
-
-    overflow:hidden;
-}
-
-/* FLOAT */
-
-.float{
-    animation:float 6s ease-in-out infinite;
-}
-
-@keyframes float{
-
-    0%{
-        transform:translateY(0px);
-    }
-
-    50%{
-        transform:translateY(-10px);
-    }
-
-    100%{
-        transform:translateY(0px);
-    }
-}
-
-/* MODAL */
-
-.modal{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,0.92);
-
-    z-index:999;
-
-    display:none;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:10px;
-}
-
-.modal-content{
-
-    width:100%;
-
-    max-width:1100px;
-
-    max-height:95vh;
-
-    overflow:auto;
-
-    border-radius:35px;
-
-    background:#0f172a;
-
-    border:1px solid #1e293b;
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-    .hero-title{
-        font-size:52px;
-        line-height:1;
-    }
-
-    .deal-image{
-        height:220px !important;
-    }
-
-    .modal-image{
-        height:260px !important;
-    }
-}
-
-</style>
-
-</head>
-
-<body>
-
-<!-- HERO -->
-
-<section
-class="relative overflow-hidden border-b border-slate-800"
->
-
-<div
-class="hero-glow bg-blue-500 top-[-200px] left-[-200px]"
-></div>
-
-<div
-class="hero-glow bg-purple-500 bottom-[-200px] right-[-200px]"
-></div>
-
-<div
-class="max-w-7xl mx-auto px-4 py-14 relative z-10"
->
-
-<div
-class="flex flex-col lg:flex-row items-center justify-between gap-10"
->
-
-<!-- LEFT -->
-
-<div>
-
-<div
-class="inline-flex items-center gap-3 bg-blue-500/20 text-blue-300 px-5 py-3 rounded-full font-bold text-sm"
->
-⚡ AI POWERED DEAL PLATFORM
-</div>
-
-<h1
-class="hero-title text-6xl lg:text-8xl font-black mt-8 leading-tight"
->
-
-Deal
-<span class="text-orange-400">
-Verse
-</span>
-
-</h1>
-
-<div
-class="flex flex-wrap gap-3 mt-7"
->
-
-<div
-class="bg-gradient-to-r from-red-500 to-orange-500 px-5 py-2 rounded-full font-black text-sm animate-pulse"
->
-🔥 LIVE DEALS
-</div>
-
-<div
-class="bg-gradient-to-r from-blue-500 to-indigo-500 px-5 py-2 rounded-full font-black text-sm"
->
-⚡ TRENDING
-</div>
-
-<div
-class="bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-2 rounded-full font-black text-sm"
->
-🚀 BEST PRICES
-</div>
-
-</div>
-
-<p
-class="text-slate-300 text-lg mt-7 leading-8 max-w-2xl"
->
-
-Discover viral deals, cashback finds, Amazon offers, Flipkart discounts and trending shopping products instantly.
-
-</p>
-
-<div class="flex flex-wrap gap-4 mt-10">
-
-<a
-href="https://t.me/best_dealsareon"
-target="_blank"
-class="bg-gradient-to-r from-sky-500 to-blue-600 hover:scale-105 transition text-white px-8 py-4 rounded-2xl font-black shadow-2xl flex items-center gap-3"
->
-🚀 Join Telegram
-</a>
-
-</div>
-
-</div>
-
-<!-- RIGHT -->
-
-<div class="hidden lg:block float">
-
-<div
-class="glass rounded-[40px] p-5"
->
-
-<img
-src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=1200"
-class="w-[420px] rounded-[30px]"
-/>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- SEARCH ENGINE -->
-
-<section
-class="max-w-7xl mx-auto px-4 py-10"
->
-
-<div
-class="glass rounded-[35px] p-6 lg:p-10 overflow-hidden relative border border-slate-800"
->
-
-<div
-class="absolute top-0 right-0 w-72 h-72 bg-blue-500/20 blur-[120px]"
-></div>
-
-<div
-class="absolute bottom-0 left-0 w-72 h-72 bg-purple-500/20 blur-[120px]"
-></div>
-
-<div class="relative z-10">
-
-<div
-class="flex flex-col lg:flex-row gap-8 items-center justify-between"
->
-
-<!-- LEFT -->
-
-<div
-class="w-full lg:w-[55%]"
->
-
-<div
-class="inline-flex items-center gap-3 bg-orange-500/20 text-orange-300 px-5 py-3 rounded-full font-bold text-sm"
->
-🔥 SEARCH ANY PRODUCT
-</div>
-
-<h2
-class="text-4xl lg:text-6xl font-black mt-6 leading-tight"
->
-Find Best Deals
-Instantly ⚡
-</h2>
-
-<p
-class="text-slate-300 mt-6 text-lg leading-8"
->
-Search products instantly across Amazon, Flipkart and Google shopping.
-</p>
-
-<div
-class="flex flex-wrap gap-3 mt-8"
->
-
-<button
-onclick="quickSearch('iPhone 15')"
-class="bg-slate-800 hover:bg-slate-700 transition px-5 py-3 rounded-full text-sm font-bold border border-slate-700"
->
-📱 iPhone
-</button>
-
-<button
-onclick="quickSearch('Boat Airdopes')"
-class="bg-slate-800 hover:bg-slate-700 transition px-5 py-3 rounded-full text-sm font-bold border border-slate-700"
->
-🎧 Boat
-</button>
-
-<button
-onclick="quickSearch('Gaming Laptop')"
-class="bg-slate-800 hover:bg-slate-700 transition px-5 py-3 rounded-full text-sm font-bold border border-slate-700"
->
-💻 Laptop
-</button>
-
-<button
-onclick="quickSearch('Smart Watch')"
-class="bg-slate-800 hover:bg-slate-700 transition px-5 py-3 rounded-full text-sm font-bold border border-slate-700"
->
-⌚ Watch
-</button>
-
-</div>
-
-</div>
-
-<!-- RIGHT -->
-
-<div
-class="w-full lg:w-[450px]"
->
-
-<div
-class="bg-slate-950 border border-slate-800 rounded-[35px] p-6"
->
-
-<div
-class="bg-slate-900 border border-slate-700 rounded-[24px] px-5 py-5 flex items-center gap-4"
->
-
-<div class="text-3xl">
-🔍
-</div>
-
-<input
-id="productSearchInput"
-type="text"
-placeholder="Search products..."
-class="w-full bg-transparent outline-none text-white text-lg"
-/>
-
-</div>
-
-<div
-class="grid grid-cols-3 gap-3 mt-6"
->
-
-<button
-onclick="searchAmazon()"
-class="bg-yellow-500 hover:bg-yellow-400 transition text-black py-4 rounded-2xl font-black"
->
-🛒 Amazon
-</button>
-
-<button
-onclick="searchFlipkart()"
-class="bg-blue-500 hover:bg-blue-400 transition text-white py-4 rounded-2xl font-black"
->
-🛍 Flipkart
-</button>
-
-<button
-onclick="searchGoogle()"
-class="bg-slate-700 hover:bg-slate-600 transition text-white py-4 rounded-2xl font-black"
->
-🔍 Google
-</button>
-
-</div>
-
-<button
-onclick="searchAll()"
-class="mt-6 w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:scale-[1.02] transition text-white py-5 rounded-2xl font-black text-lg animate-pulse"
->
-⚡ SEARCH EVERYWHERE
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- STATS -->
-
-<section
-class="max-w-7xl mx-auto px-4 py-2"
->
-
-<div
-class="grid grid-cols-2 lg:grid-cols-4 gap-4"
->
-
-<div class="glass rounded-3xl p-5">
-
-<div class="text-slate-400 text-xs">
-🔥 HOT TODAY
-</div>
-
-<div class="font-black text-3xl mt-2 text-orange-400">
-79%
-</div>
-
-</div>
-
-<div class="glass rounded-3xl p-5">
-
-<div class="text-slate-400 text-xs">
-⚡ LIVE DEALS
-</div>
-
-<div
-id="dealCount"
-class="font-black text-3xl mt-2 text-blue-400"
->
-0
-</div>
-
-</div>
-
-<div class="glass rounded-3xl p-5">
-
-<div class="text-slate-400 text-xs">
-🟢 STATUS
-</div>
-
-<div class="font-black text-3xl mt-2 text-green-400">
-LIVE
-</div>
-
-</div>
-
-<div class="glass rounded-3xl p-5">
-
-<div class="text-slate-400 text-xs">
-🚀 TRENDING
-</div>
-
-<div class="font-black text-3xl mt-2 text-pink-400">
-GADGETS
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- FILTER -->
-
-<section
-class="sticky top-0 z-50 bg-[#020617]/90 backdrop-blur border-b border-slate-800 mt-8"
->
-
-<div
-class="max-w-7xl mx-auto px-4 py-5"
->
-
-<input
-id="searchInput"
-type="text"
-placeholder="Search deals..."
-class="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 outline-none text-white"
-/>
-
-</div>
-
-</section>
-
-<!-- DEALS -->
-
-<main
-class="max-w-7xl mx-auto px-4 py-10"
->
-
-<div
-id="deals-container"
-class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-7"
->
-
-</div>
-
-</main>
-
-<!-- MODAL -->
-
-<div
-id="dealModal"
-class="modal"
->
-
-<div class="modal-content">
-
-<div id="modalBody"></div>
-
-</div>
-
-</div>
-
-<script>
-
-let allDeals = [];
-
-/* LOAD DEALS */
-
-async function loadDeals(){
-
-    try{
-
-        const response = await fetch(
-            "deals.json?t=" + Date.now()
-        );
-
-        allDeals = await response.json();
-
-        renderDeals();
-
-        document.getElementById(
-            "dealCount"
-        ).innerText =
-        allDeals.length;
-
-    }catch(error){
-
-        console.log(error);
-    }
-}
-
-/* RENDER */
-
-function renderDeals(){
-
-    const container =
-    document.getElementById(
-        "deals-container"
-    );
-
-    const search =
-    document.getElementById(
-        "searchInput"
-    ).value.toLowerCase();
-
-    container.innerHTML = "";
-
-    const filtered =
-    allDeals.filter(deal =>
-
-        deal.title
-        .toLowerCase()
-        .includes(search)
-
-        ||
-
-        deal.caption
-        .toLowerCase()
-        .includes(search)
-    );
-
-    filtered.forEach((deal,index)=>{
-
-        container.innerHTML += `
-
-        <div
-        class="deal-card"
-        onclick="openDeal(${index})"
-        >
-
-            <div class="relative">
-
-                <img
-                src="${deal.image}"
-                class="deal-image w-full h-[240px] object-cover"
-                />
-
-                <div
-                class="absolute inset-0 bg-gradient-to-t from-black to-transparent"
-                ></div>
-
-                <div
-                class="absolute bottom-0 p-5"
-                >
-
-                    <div
-                    class="bg-black/60 px-3 py-1 rounded-full inline-block text-xs font-bold mb-3"
-                    >
-                        ${deal.store}
-                    </div>
-
-                    <h2
-                    class="text-xl font-black line-clamp-2"
-                    >
-                        ${deal.title}
-                    </h2>
-
-                </div>
-
-            </div>
-
-            <div class="p-5">
-
-                <div
-                class="text-slate-400 text-sm line-clamp-3 leading-7"
-                >
-                    ${deal.caption}
-                </div>
-
-                <button
-                class="mt-5 w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white py-4 rounded-2xl font-black"
-                >
-                    🛒 VIEW DEAL
-                </button>
-
-            </div>
-
-        </div>
-
-        `;
-    });
-}
-
-/* OPEN DEAL */
-
-function openDeal(index){
-
-    const deal = allDeals[index];
-
-    let buttons = "";
-
-    for(let i=0;i<deal.all_links.length;i++){
-
-        const link =
-        deal.all_links[i];
-
-        buttons += `
-
-        <div class="grid grid-cols-3 gap-3">
-
-            <a
-            href="${link}"
-            target="_blank"
-            class="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white text-center py-4 rounded-2xl font-black"
-            >
-                🛒 BUY
-            </a>
-
-            <a
-            href="${deal.amazon_search}"
-            target="_blank"
-            class="bg-yellow-500 text-black text-center py-4 rounded-2xl font-black"
-            >
-                🛒 AMAZON
-            </a>
-
-            <a
-            href="${deal.flipkart_search}"
-            target="_blank"
-            class="bg-blue-500 text-white text-center py-4 rounded-2xl font-black"
-            >
-                🛍 FLIPKART
-            </a>
-
-        </div>
-
-        `;
-    }
-
-    document.getElementById(
-        "modalBody"
-    ).innerHTML = `
-
-    <div class="relative">
-
-        <img
-        src="${deal.image}"
-        class="modal-image w-full h-[420px] object-cover"
-        />
-
-        <button
-        onclick="closeModal()"
-        class="absolute top-5 right-5 bg-red-500 w-12 h-12 rounded-full text-2xl font-black"
-        >
-            ×
-        </button>
-
-    </div>
-
-    <div class="p-6">
-
-        <h1
-        class="text-3xl font-black leading-tight"
-        >
-            ${deal.title}
-        </h1>
-
-        <div
-        class="text-slate-300 leading-8 mt-6 whitespace-pre-line"
-        >
-            ${deal.caption}
-        </div>
-
-        <div class="grid gap-4 mt-7">
-
-            ${buttons}
-
-        </div>
-
-    </div>
-
-    `;
-
-    document.getElementById(
-        "dealModal"
-    ).style.display = "flex";
-}
-
-/* CLOSE */
-
-function closeModal(){
-
-    document.getElementById(
-        "dealModal"
-    ).style.display = "none";
-}
-
-/* QUICK SEARCH */
-
-function quickSearch(product){
-
-    document.getElementById(
-        "productSearchInput"
-    ).value = product;
-}
-
-/* GET VALUE */
-
-function getSearchValue(){
-
-    return document.getElementById(
-        "productSearchInput"
-    ).value.trim();
-}
-
-/* AMAZON */
+/* ============================================= */
+/* AMAZON SEARCH */
+/* ============================================= */
 
 function searchAmazon(){
 
@@ -895,23 +9,30 @@ function searchAmazon(){
 
     if(!query){
 
-        alert("Enter product");
+        alert(
+            "Enter product"
+        );
 
         return;
     }
 
     const url =
 
-    "/search.html?store=amazon&q="
+    "./search.html?store=amazon&q="
 
     +
 
     encodeURIComponent(query);
 
-    window.open(url,"_blank");
+    window.open(
+        url,
+        "_blank"
+    );
 }
 
-/* FLIPKART */
+/* ============================================= */
+/* FLIPKART SEARCH */
+/* ============================================= */
 
 function searchFlipkart(){
 
@@ -920,23 +41,30 @@ function searchFlipkart(){
 
     if(!query){
 
-        alert("Enter product");
+        alert(
+            "Enter product"
+        );
 
         return;
     }
 
     const url =
 
-    "/search.html?store=flipkart&q="
+    "./search.html?store=flipkart&q="
 
     +
 
     encodeURIComponent(query);
 
-    window.open(url,"_blank");
+    window.open(
+        url,
+        "_blank"
+    );
 }
 
-/* GOOGLE */
+/* ============================================= */
+/* GOOGLE SEARCH */
+/* ============================================= */
 
 function searchGoogle(){
 
@@ -945,23 +73,30 @@ function searchGoogle(){
 
     if(!query){
 
-        alert("Enter product");
+        alert(
+            "Enter product"
+        );
 
         return;
     }
 
     const url =
 
-    "/search.html?q="
+    "./search.html?q="
 
     +
 
     encodeURIComponent(query);
 
-    window.open(url,"_blank");
+    window.open(
+        url,
+        "_blank"
+    );
 }
 
-/* SEARCH ALL */
+/* ============================================= */
+/* SEARCH EVERYWHERE */
+/* ============================================= */
 
 function searchAll(){
 
@@ -979,31 +114,3 @@ function searchAll(){
 
     },1000);
 }
-
-/* SEARCH */
-
-document.getElementById(
-    "searchInput"
-).addEventListener(
-
-    "input",
-
-    renderDeals
-);
-
-/* LOAD */
-
-loadDeals();
-
-/* AUTO REFRESH */
-
-setInterval(
-    loadDeals,
-    15000
-);
-
-</script>
-
-</body>
-
-</html>

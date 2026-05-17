@@ -27,6 +27,10 @@ rel="stylesheet"
     font-family:'Poppins',sans-serif;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
 
     background:
@@ -50,7 +54,18 @@ body{
     border-radius:999px;
 }
 
-/* HERO GLOW */
+/* GLASS */
+
+.glass{
+
+    background:rgba(255,255,255,0.05);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+/* HERO */
 
 .hero-glow{
 
@@ -63,68 +78,7 @@ body{
 
     filter:blur(150px);
 
-    opacity:0.3;
-}
-
-/* GLASS */
-
-.glass{
-
-    position:relative;
-
-    overflow:hidden;
-
-    background:rgba(255,255,255,0.05);
-
-    backdrop-filter:blur(20px);
-
-    border:1px solid rgba(255,255,255,0.08);
-}
-
-/* SHINE */
-
-.glass::before{
-
-    content:"";
-
-    position:absolute;
-
-    top:-120%;
-
-    left:-120%;
-
-    width:220%;
-
-    height:220%;
-
-    background:
-    linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,0.06),
-        transparent
-    );
-
-    transform:rotate(25deg);
-
-    animation:shine 7s linear infinite;
-}
-
-@keyframes shine{
-
-    0%{
-
-        transform:
-        translateX(-100%)
-        rotate(25deg);
-    }
-
-    100%{
-
-        transform:
-        translateX(100%)
-        rotate(25deg);
-    }
+    opacity:0.25;
 }
 
 /* CATEGORY */
@@ -141,7 +95,7 @@ body{
 
     transition:0.3s;
 
-    font-weight:600;
+    font-weight:700;
 
     white-space:nowrap;
 
@@ -150,14 +104,15 @@ body{
 
 .category-btn:hover{
 
-    transform:translateY(-2px);
-
     background:#1e293b;
+
+    transform:translateY(-2px);
 }
 
 .active-cat{
 
-    background:linear-gradient(
+    background:
+    linear-gradient(
         90deg,
         #2563eb,
         #7c3aed
@@ -195,6 +150,30 @@ body{
 
     box-shadow:
     0 20px 60px rgba(255,120,0,0.25);
+}
+
+/* CLAMP */
+
+.line-clamp-2{
+
+    display:-webkit-box;
+
+    -webkit-line-clamp:2;
+
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
+}
+
+.line-clamp-3{
+
+    display:-webkit-box;
+
+    -webkit-line-clamp:3;
+
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
 }
 
 /* FLOAT */
@@ -256,36 +235,12 @@ body{
     border:1px solid #1e293b;
 }
 
-/* CLAMP */
-
-.line-clamp-2{
-
-    display:-webkit-box;
-
-    -webkit-line-clamp:2;
-
-    -webkit-box-orient:vertical;
-
-    overflow:hidden;
-}
-
-.line-clamp-3{
-
-    display:-webkit-box;
-
-    -webkit-line-clamp:3;
-
-    -webkit-box-orient:vertical;
-
-    overflow:hidden;
-}
-
 /* MOBILE */
 
 @media(max-width:768px){
 
     .hero-title{
-        font-size:54px;
+        font-size:52px;
         line-height:1;
     }
 
@@ -319,14 +274,6 @@ class="hero-glow bg-purple-500 bottom-[-200px] right-[-200px]"
 ></div>
 
 <div
-class="absolute top-20 right-10 w-72 h-72 bg-blue-500/20 rounded-full blur-[120px]"
-></div>
-
-<div
-class="absolute bottom-10 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-[120px]"
-></div>
-
-<div
 class="max-w-7xl mx-auto px-4 py-14 relative z-10"
 >
 
@@ -355,28 +302,26 @@ Verse
 
 </h1>
 
-<!-- BADGES -->
-
 <div
 class="flex flex-wrap gap-3 mt-7"
 >
 
 <div
-class="bg-gradient-to-r from-red-500 to-orange-500 px-5 py-2 rounded-full font-black text-sm shadow-[0_0_25px_rgba(255,100,0,0.4)] animate-pulse"
+class="bg-gradient-to-r from-red-500 to-orange-500 px-5 py-2 rounded-full font-black text-sm animate-pulse"
 >
-🔥 LOOT DEALS LIVE
+🔥 LIVE DEALS
 </div>
 
 <div
-class="bg-gradient-to-r from-blue-500 to-indigo-500 px-5 py-2 rounded-full font-black text-sm shadow-[0_0_25px_rgba(59,130,246,0.4)]"
+class="bg-gradient-to-r from-blue-500 to-indigo-500 px-5 py-2 rounded-full font-black text-sm"
 >
-⚡ INSTANT OFFERS
+⚡ TRENDING
 </div>
 
 <div
-class="bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-2 rounded-full font-black text-sm shadow-[0_0_25px_rgba(168,85,247,0.4)]"
+class="bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-2 rounded-full font-black text-sm"
 >
-🚀 TRENDING PRODUCTS
+🚀 BEST PRICES
 </div>
 
 </div>
@@ -385,12 +330,9 @@ class="bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-2 rounded-full font-
 class="text-slate-300 text-lg mt-7 leading-8 max-w-2xl"
 >
 
-⚡ Discover Viral Deals Before Everyone Else  
-AI curated Telegram shopping offers, cashback finds, trending products and instant affiliate deals — all in one premium experience.
+Discover viral deals, cashback finds, Amazon offers, Flipkart discounts and trending shopping products instantly.
 
 </p>
-
-<!-- BUTTON -->
 
 <div class="flex flex-wrap gap-4 mt-10">
 
@@ -399,7 +341,7 @@ href="https://t.me/best_dealsareon"
 target="_blank"
 class="bg-gradient-to-r from-sky-500 to-blue-600 hover:scale-105 transition text-white px-8 py-4 rounded-2xl font-black shadow-2xl flex items-center gap-3"
 >
-🚀 Subscribe Telegram
+🚀 Join Telegram
 </a>
 
 </div>
@@ -416,7 +358,7 @@ class="glass rounded-[40px] p-5"
 
 <img
 src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=1200"
-class="w-[400px] rounded-[30px]"
+class="w-[420px] rounded-[30px]"
 />
 
 </div>
@@ -429,10 +371,170 @@ class="w-[400px] rounded-[30px]"
 
 </section>
 
-<!-- LIVE STATS -->
+<!-- SEARCH ENGINE -->
 
 <section
-class="max-w-7xl mx-auto px-4 py-8"
+class="max-w-7xl mx-auto px-4 py-10"
+>
+
+<div
+class="glass rounded-[35px] p-6 lg:p-10 overflow-hidden relative border border-slate-800"
+>
+
+<div
+class="absolute top-0 right-0 w-72 h-72 bg-blue-500/20 blur-[120px]"
+></div>
+
+<div
+class="absolute bottom-0 left-0 w-72 h-72 bg-purple-500/20 blur-[120px]"
+></div>
+
+<div class="relative z-10">
+
+<div
+class="flex flex-col lg:flex-row gap-8 items-center justify-between"
+>
+
+<!-- LEFT -->
+
+<div
+class="w-full lg:w-[55%]"
+>
+
+<div
+class="inline-flex items-center gap-3 bg-orange-500/20 text-orange-300 px-5 py-3 rounded-full font-bold text-sm"
+>
+🔥 SEARCH ANY PRODUCT
+</div>
+
+<h2
+class="text-4xl lg:text-6xl font-black mt-6 leading-tight"
+>
+
+Find Best Deals
+Instantly ⚡
+
+</h2>
+
+<p
+class="text-slate-300 mt-6 text-lg leading-8"
+>
+
+Search products instantly across Amazon, Flipkart and Google shopping.
+
+</p>
+
+<div
+class="flex flex-wrap gap-3 mt-8"
+>
+
+<button
+onclick="quickSearch('iPhone 15')"
+class="bg-slate-800 hover:bg-slate-700 transition px-5 py-3 rounded-full text-sm font-bold border border-slate-700"
+>
+📱 iPhone
+</button>
+
+<button
+onclick="quickSearch('Boat Airdopes')"
+class="bg-slate-800 hover:bg-slate-700 transition px-5 py-3 rounded-full text-sm font-bold border border-slate-700"
+>
+🎧 Boat
+</button>
+
+<button
+onclick="quickSearch('Gaming Laptop')"
+class="bg-slate-800 hover:bg-slate-700 transition px-5 py-3 rounded-full text-sm font-bold border border-slate-700"
+>
+💻 Laptop
+</button>
+
+<button
+onclick="quickSearch('Smart Watch')"
+class="bg-slate-800 hover:bg-slate-700 transition px-5 py-3 rounded-full text-sm font-bold border border-slate-700"
+>
+⌚ Watch
+</button>
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+
+<div
+class="w-full lg:w-[450px]"
+>
+
+<div
+class="bg-slate-950 border border-slate-800 rounded-[35px] p-6"
+>
+
+<div
+class="bg-slate-900 border border-slate-700 rounded-[24px] px-5 py-5 flex items-center gap-4"
+>
+
+<div class="text-3xl">
+🔍
+</div>
+
+<input
+id="productSearchInput"
+type="text"
+placeholder="Search products..."
+class="w-full bg-transparent outline-none text-white text-lg"
+/>
+
+</div>
+
+<div
+class="grid grid-cols-3 gap-3 mt-6"
+>
+
+<button
+onclick="searchAmazon()"
+class="bg-yellow-500 hover:bg-yellow-400 transition text-black py-4 rounded-2xl font-black"
+>
+🛒 Amazon
+</button>
+
+<button
+onclick="searchFlipkart()"
+class="bg-blue-500 hover:bg-blue-400 transition text-white py-4 rounded-2xl font-black"
+>
+🛍 Flipkart
+</button>
+
+<button
+onclick="searchGoogle()"
+class="bg-slate-700 hover:bg-slate-600 transition text-white py-4 rounded-2xl font-black"
+>
+🔍 Google
+</button>
+
+</div>
+
+<button
+onclick="searchAll()"
+class="mt-6 w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:scale-[1.02] transition text-white py-5 rounded-2xl font-black text-lg animate-pulse"
+>
+⚡ SEARCH EVERYWHERE
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- STATS -->
+
+<section
+class="max-w-7xl mx-auto px-4 py-2"
 >
 
 <div
@@ -453,10 +555,6 @@ class="font-black text-3xl mt-2 text-orange-400"
 79%
 </div>
 
-<div class="text-xs text-orange-300 mt-1">
-MAX SAVINGS
-</div>
-
 </div>
 
 <div
@@ -472,10 +570,6 @@ id="dealCount"
 class="font-black text-3xl mt-2 text-blue-400"
 >
 0
-</div>
-
-<div class="text-xs text-blue-300 mt-1">
-UPDATED LIVE
 </div>
 
 </div>
@@ -494,10 +588,6 @@ class="font-black text-3xl mt-2 text-green-400"
 LIVE
 </div>
 
-<div class="text-xs text-green-300 mt-1">
-AUTO SYNC ACTIVE
-</div>
-
 </div>
 
 <div
@@ -514,20 +604,16 @@ class="font-black text-3xl mt-2 text-pink-400"
 GADGETS
 </div>
 
-<div class="text-xs text-pink-300 mt-1">
-HIGH CTR
-</div>
-
 </div>
 
 </div>
 
 </section>
 
-<!-- SEARCH -->
+<!-- FILTER -->
 
 <section
-class="sticky top-0 z-50 bg-[#020617]/90 backdrop-blur border-b border-slate-800"
+class="sticky top-0 z-50 bg-[#020617]/90 backdrop-blur border-b border-slate-800 mt-8"
 >
 
 <div
@@ -540,8 +626,6 @@ type="text"
 placeholder="Search deals..."
 class="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 outline-none text-white"
 />
-
-<!-- CATEGORY -->
 
 <div
 class="flex gap-3 mt-5 overflow-auto pb-2"
@@ -627,22 +711,15 @@ async function loadDeals(){
 
         renderDeals();
 
-        updateDealCount();
+        document.getElementById(
+            "dealCount"
+        ).innerText =
+        allDeals.length;
 
     }catch(error){
 
         console.log(error);
     }
-}
-
-/* DEAL COUNT */
-
-function updateDealCount(){
-
-    document.getElementById(
-        "dealCount"
-    ).innerText =
-    allDeals.length;
 }
 
 /* COUNTDOWN */
@@ -667,14 +744,14 @@ function randomCountdown(){
     return `${hours}:${minutes}:${seconds}`;
 }
 
-/* RENDER */
+/* RENDER DEALS */
 
 function renderDeals(){
 
     const container =
-        document.getElementById(
-            "deals-container"
-        );
+    document.getElementById(
+        "deals-container"
+    );
 
     const search =
     document.getElementById(
@@ -704,7 +781,7 @@ function renderDeals(){
             Math.random()*40
         ) + 12;
 
-        const card = `
+        container.innerHTML += `
 
         <div
         class="deal-card group"
@@ -723,7 +800,7 @@ function renderDeals(){
                 ></div>
 
                 <div
-                class="absolute left-0 top-5 bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded-r-full font-black text-xs shadow-2xl animate-pulse"
+                class="absolute left-0 top-5 bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded-r-full font-black text-xs animate-pulse"
                 >
                     🔥 TRENDING
                 </div>
@@ -739,15 +816,9 @@ function renderDeals(){
                 >
 
                     <div
-                    class="flex items-center gap-2 flex-wrap mb-3"
+                    class="bg-white/10 backdrop-blur px-3 py-1 rounded-full text-xs font-bold inline-block mb-3"
                     >
-
-                        <div
-                        class="bg-white/10 backdrop-blur px-3 py-1 rounded-full text-xs font-bold"
-                        >
-                            ${deal.store}
-                        </div>
-
+                        ${deal.store}
                     </div>
 
                     <h2
@@ -795,7 +866,7 @@ function renderDeals(){
                         <div
                         class="text-xs text-orange-300 font-bold"
                         >
-                            ⏳ DEAL ENDING SOON
+                            ⏳ ENDING SOON
                         </div>
 
                         <div
@@ -809,7 +880,7 @@ function renderDeals(){
                 </div>
 
                 <button
-                class="mt-5 w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:scale-[1.03] transition text-white py-4 rounded-2xl font-black shadow-[0_0_25px_rgba(255,80,0,0.35)] animate-pulse"
+                class="mt-5 w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white py-4 rounded-2xl font-black animate-pulse"
                 >
                     🛒 GRAB DEAL NOW
                 </button>
@@ -819,8 +890,6 @@ function renderDeals(){
         </div>
 
         `;
-
-        container.innerHTML += card;
     });
 }
 
@@ -905,26 +974,20 @@ async function openDeal(index){
         class="grid grid-cols-3 gap-3"
         >
 
-            <!-- BUY -->
-
             <a
             href="${link}"
             target="_blank"
-            class="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white text-center py-4 rounded-2xl font-black hover:scale-[1.02] transition shadow-[0_0_25px_rgba(255,80,0,0.35)]"
+            class="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white text-center py-4 rounded-2xl font-black"
             >
                 🛒 BUY
             </a>
 
-            <!-- STORE -->
-
             ${storeButton}
-
-            <!-- GOOGLE -->
 
             <a
             href="${deal.google_search}"
             target="_blank"
-            class="bg-slate-800 border border-slate-700 text-white text-center py-4 rounded-2xl font-black hover:bg-slate-700 transition"
+            class="bg-slate-800 border border-slate-700 text-white text-center py-4 rounded-2xl font-black"
             >
                 🔍 GOOGLE
             </a>
@@ -1049,7 +1112,159 @@ window.onclick = function(event){
     }
 }
 
-/* SEARCH */
+/* QUICK SEARCH */
+
+function quickSearch(product){
+
+    document.getElementById(
+        "productSearchInput"
+    ).value = product;
+}
+
+/* GET VALUE */
+
+function getSearchValue(){
+
+    return document.getElementById(
+        "productSearchInput"
+    ).value.trim();
+}
+
+/* AMAZON */
+
+function searchAmazon(){
+
+    const query =
+    getSearchValue();
+
+    if(!query){
+
+        alert("Enter product");
+
+        return;
+    }
+
+    const url =
+
+    "https://www.amazon.in/s?k="
+
+    +
+
+    encodeURIComponent(query);
+
+    window.open(url,"_blank");
+}
+
+/* FLIPKART */
+
+function searchFlipkart(){
+
+    const query =
+    getSearchValue();
+
+    if(!query){
+
+        alert("Enter product");
+
+        return;
+    }
+
+    const url =
+
+    "https://www.flipkart.com/search?q="
+
+    +
+
+    encodeURIComponent(query);
+
+    window.open(url,"_blank");
+}
+
+/* GOOGLE */
+
+function searchGoogle(){
+
+    const query =
+    getSearchValue();
+
+    if(!query){
+
+        alert("Enter product");
+
+        return;
+    }
+
+    const url =
+
+    "https://www.google.com/search?q="
+
+    +
+
+    encodeURIComponent(query);
+
+    window.open(url,"_blank");
+}
+
+/* SEARCH ALL */
+
+function searchAll(){
+
+    const query =
+    getSearchValue();
+
+    if(!query){
+
+        alert("Enter product");
+
+        return;
+    }
+
+    const amazon =
+
+    "https://www.amazon.in/s?k="
+
+    +
+
+    encodeURIComponent(query);
+
+    const flipkart =
+
+    "https://www.flipkart.com/search?q="
+
+    +
+
+    encodeURIComponent(query);
+
+    const google =
+
+    "https://www.google.com/search?q="
+
+    +
+
+    encodeURIComponent(query);
+
+    window.open(amazon,"_blank");
+
+    setTimeout(()=>{
+
+        window.open(
+            flipkart,
+            "_blank"
+        );
+
+    },500);
+
+    setTimeout(()=>{
+
+        window.open(
+            google,
+            "_blank"
+        );
+
+    },1000);
+}
+
+/* SEARCH INPUT */
 
 document.getElementById(
     "searchInput"

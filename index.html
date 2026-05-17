@@ -410,18 +410,14 @@ class="inline-flex items-center gap-3 bg-orange-500/20 text-orange-300 px-5 py-3
 <h2
 class="text-4xl lg:text-6xl font-black mt-6 leading-tight"
 >
-
 Find Best Deals
 Instantly ⚡
-
 </h2>
 
 <p
 class="text-slate-300 mt-6 text-lg leading-8"
 >
-
 Search products instantly across Amazon, Flipkart and Google shopping.
-
 </p>
 
 <div
@@ -541,25 +537,19 @@ class="max-w-7xl mx-auto px-4 py-2"
 class="grid grid-cols-2 lg:grid-cols-4 gap-4"
 >
 
-<div
-class="glass rounded-3xl p-5"
->
+<div class="glass rounded-3xl p-5">
 
 <div class="text-slate-400 text-xs">
 🔥 HOT TODAY
 </div>
 
-<div
-class="font-black text-3xl mt-2 text-orange-400"
->
+<div class="font-black text-3xl mt-2 text-orange-400">
 79%
 </div>
 
 </div>
 
-<div
-class="glass rounded-3xl p-5"
->
+<div class="glass rounded-3xl p-5">
 
 <div class="text-slate-400 text-xs">
 ⚡ LIVE DEALS
@@ -574,33 +564,25 @@ class="font-black text-3xl mt-2 text-blue-400"
 
 </div>
 
-<div
-class="glass rounded-3xl p-5"
->
+<div class="glass rounded-3xl p-5">
 
 <div class="text-slate-400 text-xs">
 🟢 STATUS
 </div>
 
-<div
-class="font-black text-3xl mt-2 text-green-400"
->
+<div class="font-black text-3xl mt-2 text-green-400">
 LIVE
 </div>
 
 </div>
 
-<div
-class="glass rounded-3xl p-5"
->
+<div class="glass rounded-3xl p-5">
 
 <div class="text-slate-400 text-xs">
 🚀 TRENDING
 </div>
 
-<div
-class="font-black text-3xl mt-2 text-pink-400"
->
+<div class="font-black text-3xl mt-2 text-pink-400">
 GADGETS
 </div>
 
@@ -626,36 +608,6 @@ type="text"
 placeholder="Search deals..."
 class="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 outline-none text-white"
 />
-
-<div
-class="flex gap-3 mt-5 overflow-auto pb-2"
->
-
-<button class="category-btn active-cat">
-All
-</button>
-
-<button class="category-btn">
-Mobiles
-</button>
-
-<button class="category-btn">
-Laptops
-</button>
-
-<button class="category-btn">
-Fashion
-</button>
-
-<button class="category-btn">
-Electronics
-</button>
-
-<button class="category-btn">
-Other
-</button>
-
-</div>
 
 </div>
 
@@ -683,9 +635,7 @@ id="dealModal"
 class="modal"
 >
 
-<div
-class="modal-content"
->
+<div class="modal-content">
 
 <div id="modalBody"></div>
 
@@ -722,29 +672,7 @@ async function loadDeals(){
     }
 }
 
-/* COUNTDOWN */
-
-function randomCountdown(){
-
-    const hours =
-    String(
-        Math.floor(Math.random()*3)+1
-    ).padStart(2,"0");
-
-    const minutes =
-    String(
-        Math.floor(Math.random()*59)
-    ).padStart(2,"0");
-
-    const seconds =
-    String(
-        Math.floor(Math.random()*59)
-    ).padStart(2,"0");
-
-    return `${hours}:${minutes}:${seconds}`;
-}
-
-/* RENDER DEALS */
+/* RENDER */
 
 function renderDeals(){
 
@@ -776,72 +704,39 @@ function renderDeals(){
 
     filtered.forEach((deal,index)=>{
 
-        const viewers =
-        Math.floor(
-            Math.random()*40
-        ) + 12;
-
         container.innerHTML += `
 
         <div
-        class="deal-card group"
+        class="deal-card"
         onclick="openDeal(${index})"
         >
 
-            <div class="relative overflow-hidden">
+            <div class="relative">
 
                 <img
                 src="${deal.image}"
-                class="deal-image w-full h-[240px] object-cover transition duration-500 group-hover:scale-110"
+                class="deal-image w-full h-[240px] object-cover"
                 />
 
                 <div
-                class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"
+                class="absolute inset-0 bg-gradient-to-t from-black to-transparent"
                 ></div>
 
                 <div
-                class="absolute left-0 top-5 bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded-r-full font-black text-xs animate-pulse"
-                >
-                    🔥 TRENDING
-                </div>
-
-                <div
-                class="absolute top-4 right-4 bg-black/60 backdrop-blur text-white px-4 py-2 rounded-full font-bold text-xs"
-                >
-                    ${deal.category}
-                </div>
-
-                <div
-                class="absolute bottom-0 p-5 w-full"
+                class="absolute bottom-0 p-5"
                 >
 
                     <div
-                    class="bg-white/10 backdrop-blur px-3 py-1 rounded-full text-xs font-bold inline-block mb-3"
+                    class="bg-black/60 px-3 py-1 rounded-full inline-block text-xs font-bold mb-3"
                     >
                         ${deal.store}
                     </div>
 
                     <h2
-                    class="text-xl font-black leading-tight line-clamp-2"
+                    class="text-xl font-black line-clamp-2"
                     >
                         ${deal.title}
                     </h2>
-
-                    <div
-                    class="flex items-center gap-2 mt-3"
-                    >
-
-                        <div
-                        class="w-2 h-2 rounded-full bg-green-500 animate-pulse"
-                        ></div>
-
-                        <div
-                        class="text-xs text-green-400 font-bold"
-                        >
-                            ${viewers} PEOPLE VIEWING
-                        </div>
-
-                    </div>
 
                 </div>
 
@@ -850,39 +745,15 @@ function renderDeals(){
             <div class="p-5">
 
                 <div
-                class="text-slate-400 text-sm leading-7 line-clamp-3"
+                class="text-slate-400 text-sm line-clamp-3 leading-7"
                 >
                     ${deal.caption}
                 </div>
 
-                <div
-                class="mt-4 bg-black/40 rounded-2xl p-3 border border-orange-500/20"
-                >
-
-                    <div
-                    class="flex items-center justify-between"
-                    >
-
-                        <div
-                        class="text-xs text-orange-300 font-bold"
-                        >
-                            ⏳ ENDING SOON
-                        </div>
-
-                        <div
-                        class="text-xs font-black text-white"
-                        >
-                            ${randomCountdown()}
-                        </div>
-
-                    </div>
-
-                </div>
-
                 <button
-                class="mt-5 w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white py-4 rounded-2xl font-black animate-pulse"
+                class="mt-5 w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white py-4 rounded-2xl font-black"
                 >
-                    🛒 GRAB DEAL NOW
+                    🛒 VIEW DEAL
                 </button>
 
             </div>
@@ -893,86 +764,22 @@ function renderDeals(){
     });
 }
 
-/* MODAL */
+/* OPEN DEAL */
 
-async function openDeal(index){
+function openDeal(index){
 
     const deal = allDeals[index];
 
     let buttons = "";
 
-    for(
-
-        let i=0;
-
-        i<deal.all_links.length;
-
-        i++
-    ){
+    for(let i=0;i<deal.all_links.length;i++){
 
         const link =
         deal.all_links[i];
 
-        let storeButton = "";
-
-        if(
-
-            deal.store === "Amazon"
-
-        ){
-
-            storeButton = `
-
-            <a
-            href="${deal.amazon_search}"
-            target="_blank"
-            class="bg-yellow-500 hover:bg-yellow-400 transition text-black py-4 rounded-2xl font-black text-center"
-            >
-                🛒 AMAZON
-            </a>
-
-            `;
-        }
-
-        else if(
-
-            deal.store === "Flipkart"
-
-        ){
-
-            storeButton = `
-
-            <a
-            href="${deal.flipkart_search}"
-            target="_blank"
-            class="bg-blue-500 hover:bg-blue-400 transition text-white py-4 rounded-2xl font-black text-center"
-            >
-                🛍 FLIPKART
-            </a>
-
-            `;
-        }
-
-        else{
-
-            storeButton = `
-
-            <a
-            href="${deal.google_search}"
-            target="_blank"
-            class="bg-slate-700 hover:bg-slate-600 transition text-white py-4 rounded-2xl font-black text-center"
-            >
-                🛒 STORE
-            </a>
-
-            `;
-        }
-
         buttons += `
 
-        <div
-        class="grid grid-cols-3 gap-3"
-        >
+        <div class="grid grid-cols-3 gap-3">
 
             <a
             href="${link}"
@@ -982,14 +789,20 @@ async function openDeal(index){
                 🛒 BUY
             </a>
 
-            ${storeButton}
+            <a
+            href="${deal.amazon_search}"
+            target="_blank"
+            class="bg-yellow-500 text-black text-center py-4 rounded-2xl font-black"
+            >
+                🛒 AMAZON
+            </a>
 
             <a
-            href="${deal.google_search}"
+            href="${deal.flipkart_search}"
             target="_blank"
-            class="bg-slate-800 border border-slate-700 text-white text-center py-4 rounded-2xl font-black"
+            class="bg-blue-500 text-white text-center py-4 rounded-2xl font-black"
             >
-                🔍 GOOGLE
+                🛍 FLIPKART
             </a>
 
         </div>
@@ -1008,10 +821,6 @@ async function openDeal(index){
         class="modal-image w-full h-[420px] object-cover"
         />
 
-        <div
-        class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"
-        ></div>
-
         <button
         onclick="closeModal()"
         class="absolute top-5 right-5 bg-red-500 w-12 h-12 rounded-full text-2xl font-black"
@@ -1019,61 +828,23 @@ async function openDeal(index){
             ×
         </button>
 
-        <div
-        class="absolute bottom-0 p-6 w-full"
-        >
-
-            <div
-            class="flex gap-3 flex-wrap mb-5"
-            >
-
-                <div
-                class="bg-orange-500 px-4 py-2 rounded-full font-bold text-sm"
-                >
-                    ${deal.category}
-                </div>
-
-                <div
-                class="bg-black/70 px-4 py-2 rounded-full font-bold text-sm"
-                >
-                    ${deal.store}
-                </div>
-
-            </div>
-
-            <h1
-            class="text-3xl lg:text-5xl font-black leading-tight"
-            >
-                ${deal.title}
-            </h1>
-
-        </div>
-
     </div>
 
     <div class="p-6">
 
-        <div
-        class="glass rounded-3xl p-6"
+        <h1
+        class="text-3xl font-black leading-tight"
         >
+            ${deal.title}
+        </h1>
 
-            <div
-            class="text-2xl font-black text-orange-400 mb-5"
-            >
-                📄 FULL DESCRIPTION
-            </div>
-
-            <div
-            class="text-slate-300 leading-8 whitespace-pre-line text-[15px]"
-            >
-                ${deal.caption}
-            </div>
-
+        <div
+        class="text-slate-300 leading-8 mt-6 whitespace-pre-line"
+        >
+            ${deal.caption}
         </div>
 
-        <div
-        class="grid gap-4 mt-7"
-        >
+        <div class="grid gap-4 mt-7">
 
             ${buttons}
 
@@ -1095,21 +866,6 @@ function closeModal(){
     document.getElementById(
         "dealModal"
     ).style.display = "none";
-}
-
-/* OUTSIDE CLICK */
-
-window.onclick = function(event){
-
-    const modal =
-    document.getElementById(
-        "dealModal"
-    );
-
-    if(event.target === modal){
-
-        closeModal();
-    }
 }
 
 /* QUICK SEARCH */
@@ -1146,7 +902,7 @@ function searchAmazon(){
 
     const url =
 
-    "https://www.amazon.in/s?k="
+    "/search.html?store=amazon&q="
 
     +
 
@@ -1171,7 +927,7 @@ function searchFlipkart(){
 
     const url =
 
-    "https://www.flipkart.com/search?q="
+    "/search.html?store=flipkart&q="
 
     +
 
@@ -1196,7 +952,7 @@ function searchGoogle(){
 
     const url =
 
-    "https://www.google.com/search?q="
+    "/search.html?q="
 
     +
 
@@ -1209,62 +965,22 @@ function searchGoogle(){
 
 function searchAll(){
 
-    const query =
-    getSearchValue();
-
-    if(!query){
-
-        alert("Enter product");
-
-        return;
-    }
-
-    const amazon =
-
-    "https://www.amazon.in/s?k="
-
-    +
-
-    encodeURIComponent(query);
-
-    const flipkart =
-
-    "https://www.flipkart.com/search?q="
-
-    +
-
-    encodeURIComponent(query);
-
-    const google =
-
-    "https://www.google.com/search?q="
-
-    +
-
-    encodeURIComponent(query);
-
-    window.open(amazon,"_blank");
+    searchAmazon();
 
     setTimeout(()=>{
 
-        window.open(
-            flipkart,
-            "_blank"
-        );
+        searchFlipkart();
 
     },500);
 
     setTimeout(()=>{
 
-        window.open(
-            google,
-            "_blank"
-        );
+        searchGoogle();
 
     },1000);
 }
 
-/* SEARCH INPUT */
+/* SEARCH */
 
 document.getElementById(
     "searchInput"

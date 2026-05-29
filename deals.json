@@ -1,5 +1,52 @@
 [
   {
+    "message_id": 12999,
+    "title": "AJIO Footwear Deals",
+    "caption": "AJIO Footwear Deals\n\nAdidas Min. 65% Off\nhttps://ajiio.in/TiIoc3t\n\nAdidas Originals Min. 55% Off\nhttps://ajiio.in/TiIoc3t\n\nPuma Min. 70% Off\nhttps://ajiio.in/0M9A00w\n\nSkechers Min. 65% Off\nhttps://ajiio.in/Nzn1mWW",
+    "image": "images/photo_2026-05-29_06-32-52.jpg",
+    "category": "Other",
+    "store": "Store",
+    "all_links": [
+      "https://ajiio.in/TiIoc3t",
+      "https://ajiio.in/TiIoc3t",
+      "https://ajiio.in/0M9A00w",
+      "https://ajiio.in/Nzn1mWW"
+    ],
+    "amazon_search": "https://www.amazon.in/s?k=AJIO%20Footwear%20Deals",
+    "flipkart_search": "https://www.flipkart.com/search?q=AJIO%20Footwear%20Deals",
+    "google_search": "https://www.google.com/search?q=AJIO%20Footwear%20Deals"
+  },
+  {
+    "message_id": 13000,
+    "title": "Myntra Loot : Upto 87% Off On Libas Women Clothing.",
+    "caption": "Myntra Loot : Upto 87% Off On Libas Women Clothing.\n\nhttps://myntr.it/VF1Vnrd\n\nKurta : https://myntr.it/NS1unK5\nKurta Sets : https://myntr.it/klxx6lJ",
+    "image": "images/photo_2026-05-29_08-28-50.jpg",
+    "category": "Fashion",
+    "store": "Store",
+    "all_links": [
+      "https://myntr.it/VF1Vnrd",
+      "https://myntr.it/NS1unK5",
+      "https://myntr.it/klxx6lJ"
+    ],
+    "amazon_search": "https://www.amazon.in/s?k=Myntra%20Loot%20%3A%20Upto%2087%25%20Off%20On%20Libas%20Women%20Clothing.",
+    "flipkart_search": "https://www.flipkart.com/search?q=Myntra%20Loot%20%3A%20Upto%2087%25%20Off%20On%20Libas%20Women%20Clothing.",
+    "google_search": "https://www.google.com/search?q=Myntra%20Loot%20%3A%20Upto%2087%25%20Off%20On%20Libas%20Women%20Clothing."
+  },
+  {
+    "message_id": 13001,
+    "title": "AJIO: Nyrika Collection | Min 80% Off",
+    "caption": "AJIO: Nyrika Collection | Min 80% Off\n\n✅ USE CODE: 25NYRIKA\n\nhttps://ajiio.in/6FQeQFl\n\nNote: Coupon Valid On Seleted Products Only",
+    "image": "images/photo_2026-05-29_09-45-33.jpg",
+    "category": "Other",
+    "store": "Store",
+    "all_links": [
+      "https://ajiio.in/6FQeQFl"
+    ],
+    "amazon_search": "https://www.amazon.in/s?k=AJIO%3A%20Nyrika%20Collection%20%7C%20Min%2080%25%20Off",
+    "flipkart_search": "https://www.flipkart.com/search?q=AJIO%3A%20Nyrika%20Collection%20%7C%20Min%2080%25%20Off",
+    "google_search": "https://www.google.com/search?q=AJIO%3A%20Nyrika%20Collection%20%7C%20Min%2080%25%20Off"
+  },
+  {
     "message_id": 12995,
     "title": "Loot : https://myntr.it/XlWCXwP",
     "caption": "Loot : https://myntr.it/XlWCXwP",
